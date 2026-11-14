@@ -8,6 +8,9 @@ them from the table (source = PSI ID). Ranges typed here carry `range_basis` + `
 """
 from __future__ import annotations
 
+# Distance units shared by ranking and the recommender: 5 O2 percentage points or 0.2 atm.
+O2_SCALE, P_SCALE = 0.05, 0.2
+
 GUIDE = "NASA ISS Researcher's Guide: Combustion Science (NP-2015-10-034-JSC)"
 MDCA_SENSORS = "analog color camera, radiometer, low-light-level UV camera, two HiBMs cameras (p.52)"
 ACME_SENSORS = ("radiometers, two color cameras, low-light-level UV camera, two HiBMs cameras, "

@@ -26,7 +26,9 @@ FILES = {
     "PSI-99": "PSI-99_Experimental table_SAFFIRE-2.csv",
     "PSI-100": "PSI-100_Experimental table_SAFFIRE-3.csv",
 }
-_NUM = re.compile(r"-?\d*\.?\d+")
+# Unsigned on purpose: every quantity here is non-negative, so "21.5-21.7" must not yield -21.7.
+_NUM = re.compile(r"(?<![\d.])\d*\.?\d+")
+_NOTE = re.compile(r"\((?:note|see)[^)]*\)", re.IGNORECASE)
 
 
 @dataclass
@@ -61,14 +63,22 @@ def parse_first_number(text: str | None) -> tuple[float, bool]:
     """'~ 21.5' -> (21.5, True); '22.1 to 22.0' -> (22.1, False); '20 cm/s' -> (20.0, False)."""
     if text is None or not str(text).strip():
         return np.nan, False
-    m = _NUM.search(str(text))
-    return (float(m.group()) if m else np.nan), "~" in str(text)
+    clean = _NOTE.sub("", str(text))
+    m = _NUM.search(clean)
+    return (float(m.group()) if m else np.nan), "~" in clean
 
 
 def parse_range(text: str | None) -> tuple[float, float]:
-    """All numbers in a cell -> (min, max). '21.5 - 21.7' -> (21.5, 21.7)."""
-    nums = [float(x) for x in _NUM.findall(str(text or "").replace(" - ", " "))]
+    """All numbers in a cell -> (min, max). '21.5 - 21.7' and '21.5-21.7' -> (21.5, 21.7);
+    parenthesised notes such as '(Note 2)' are ignored."""
+    nums = [float(x) for x in _NUM.findall(_NOTE.sub("", str(text or "")))]
     return (min(nums), max(nums)) if nums else (np.nan, np.nan)
+
+
+def _check_fraction(values: pd.Series, label: str) -> None:
+    v = values.dropna()
+    if ((v < 0) | (v > 1)).any():
+        raise ValueError(f"{label}: O2 fraction outside 0..1: {v[(v < 0) | (v > 1)].tolist()}")
 
 
 # --------------------------------------------------------------------------- tables
@@ -87,6 +97,7 @@ def load_bass2() -> PSITable:
         "fan_display_raw": df["Fan display"], "air_display_raw": df["Air display"],
         "flow_restrictor": df["Flow restrictor"],
     })
+    _check_fraction(out["x_o2"], "PSI-25")
     return PSITable("PSI-25", "BASS-II", out, len(raw), dropped)
 
 
@@ -108,6 +119,7 @@ def load_inverse_flame() -> PSITable:
         "p_atm": pd.to_numeric(df["pmean (atm)"], errors="raise"),
         "fuel": "ethylene",
     })
+    _check_fraction(out["x_o2"], "PSI-10")
     return PSITable("PSI-10", "Flame Design (inverse flames)", out, len(raw), dropped)
 
 
@@ -123,15 +135,21 @@ def load_cfig() -> PSITable:
         "p_approx": True,  # header says "approx p (bar)"
         "hot_ignition": df["Hot ignition"].eq("Yes"),
         "cool_flame_raw": df["Cool flame?"],
-        "cool_flame": df["Cool flame?"].str.lower().str.startswith("yes"),
+        # blank = not recorded (unknown), kept as None rather than False
+        "cool_flame": df["Cool flame?"].str.lower().map(
+            lambda v: None if not v else v.startswith("yes")),
         "end_raw": df["Self-ext or flow term"], "outcome": end,
     })
+    _check_fraction(out["x_o2"], "PSI-159")
     return PSITable("PSI-159", "CFI-G (normal flames)", out, len(raw), dropped)
 
 
-def _load_saffire(psi_id: str, name: str, o2_col: str | None, flow_col: str) -> PSITable:
+def _load_saffire(psi_id: str, name: str, o2_col: str | None, flow_col: str,
+                  extra: dict[str, str] | None = None) -> PSITable:
     raw = read_raw(psi_id)
     df, dropped = _drop_non_tests(raw, raw.columns[0], r"S\d+|\d+-\d+")
+    if df[raw.columns[0]].duplicated().any():
+        raise ValueError(f"{psi_id}: duplicate sample ids")
     o2 = [parse_first_number(v) for v in df[o2_col]] if o2_col else [(np.nan, False)] * len(df)
     rng = [parse_range(v) for v in df[o2_col]] if o2_col else [(np.nan, np.nan)] * len(df)
     out = pd.DataFrame({
@@ -142,6 +160,12 @@ def _load_saffire(psi_id: str, name: str, o2_col: str | None, flow_col: str) -> 
         "p_atm": np.nan,
         "flow_cms": [parse_first_number(v)[0] for v in df[flow_col]], "flow_raw": df[flow_col],
     })
+    for new_col, raw_col in (extra or {}).items():   # built from the same filtered frame: no realignment
+        out[new_col] = df[raw_col].to_numpy()
+    for col in ("x_o2", "x_o2_min", "x_o2_max"):
+        _check_fraction(out[col], f"{psi_id} {col}")
+    if (out["x_o2_min"] > out["x_o2_max"]).any():
+        raise ValueError(f"{psi_id}: O2 min > max")
     return PSITable(psi_id, name, out, len(raw), dropped)
 
 
@@ -150,11 +174,9 @@ def load_saffire1() -> PSITable:
 
 
 def load_saffire2() -> PSITable:
-    t = _load_saffire("PSI-99", "Saffire-II", "Percent O2 (Note 1)", "Air Flow (cm/s)")
-    raw = read_raw("PSI-99")
-    rows = raw[raw["Sample Number"].isin(t.data["test_id"])].reset_index(drop=True)
-    t.data["ug_spread_raw"] = rows["?-g Spread Length"].to_numpy()  # header '?-g' = micro-g
-    return t
+    # header '?-g' = micro-g (lost mu character)
+    return _load_saffire("PSI-99", "Saffire-II", "Percent O2 (Note 1)", "Air Flow (cm/s)",
+                         extra={"ug_spread_raw": "?-g Spread Length"})
 
 
 def load_saffire3() -> PSITable:

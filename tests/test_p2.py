@@ -37,6 +37,9 @@ def points():
 
 # --------------------------------------------------------------------------- PSI tables
 def test_parsers():
+    assert parse_range("21.5-21.7") == (21.5, 21.7)          # unspaced hyphen is not a minus sign
+    assert parse_range("21.5 (Note 2)") == (21.5, 21.5)      # note numbers ignored
+    assert parse_first_number(".33 cm") == (0.33, False)
     assert parse_first_number("~ 21.5") == (21.5, True)
     assert parse_first_number("22.1 to 22.0") == (22.1, False)
     assert parse_first_number("20 cm/s") == (20.0, False)
@@ -63,7 +66,8 @@ def test_verified_ranges_match_claude_md(tables):
     cf = tables["PSI-159"].data
     assert len(cf) == 179 and cf["x_o2"].min() == pytest.approx(0.1797, abs=1e-4)
     assert cf["x_o2"].max() == pytest.approx(0.3997, abs=1e-4)
-    assert cf["cool_flame"].sum() == 7 and cf["hot_ignition"].sum() == 132
+    assert (cf["cool_flame"] == True).sum() == 7 and cf["cool_flame"].isna().sum() == 171  # noqa: E712
+    assert cf["hot_ignition"].sum() == 132
     assert cf["end_raw"].value_counts().to_dict() == {"SE": 102, "-": 46, "FT": 31}
 
 
@@ -127,6 +131,10 @@ def test_cards_word_limits_and_provenance(inv):
         assert c["generated_by"] and c["citation"]
         for k in ("objective", "what_varied", "key_result", "fire_safety_implication"):
             assert word_count(c[k]) <= MAX_CARD_WORDS, (c["card_id"], k)
+        assert all(str(v).lower() not in ("nan", "none", "") for v in c.values()), c["card_id"]
+    by_id = {c["card_id"]: c for c in cards}
+    assert by_id["inv_saffire2"]["key_result"].startswith("Micro-g spread 2.1 mm/s")
+    assert by_id["inv_lsp"]["key_result"] == "Not stated in the available sources."
     misc = next(c for c in cards if c["card_id"] == "three_misconceptions")
     assert all(m in misc["key_result"] for m in MISCONCEPTIONS) and "p. 35" in misc["citation"]
 
@@ -137,6 +145,19 @@ def test_ranking_deterministic_and_order_independent(inv):
     b = rank_investigations(inv.sample(frac=1, random_state=3))
     pd.testing.assert_frame_equal(a, b)
     assert a["score"].is_monotonic_decreasing and a["score"].between(0, 100).all()
+
+
+def test_o2p_uses_nearest_measured_test_not_box(inv, points):
+    r = rank_investigations(inv, points=points).set_index("key")
+    assert r.loc["flame_design", "o2p_method"] == "nearest measured test"
+    assert r.loc["sofie", "o2p_method"] == "stated range"
+    box = rank_investigations(inv).set_index("key")   # without points: box (bound)
+    assert r.loc["flame_design", "o2_pressure_score"] < box.loc["flame_design", "o2_pressure_score"]
+
+
+def test_recommender_rejects_bad_top_n(points):
+    with pytest.raises(ValueError):
+        recommend_experiments(points, top_n=0)
 
 
 def test_breakdown_sums_to_score(inv):

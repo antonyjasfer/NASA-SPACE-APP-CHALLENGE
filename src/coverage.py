@@ -14,6 +14,7 @@ import json
 import numpy as np
 import pandas as pd
 
+from src.catalog_data import O2_SCALE, P_SCALE  # one unit = 5 O2 points or 0.2 atm
 from src.ingest import PROCESSED_DIR, load_clean
 
 COVERAGE_PATH = PROCESSED_DIR / "flex_coverage.csv"
@@ -73,7 +74,7 @@ def coverage_points() -> pd.DataFrame:
     flex = load_clean()
     frames = [pd.DataFrame({
         "source": "PSI-69", "investigation": "FLEX", "test_id": flex["flex_id"], "fuel_type": "droplet",
-        "fuel": flex["fuel"], "x_o2": flex["x_o2"], "p_atm": flex["p_atm"], "flow_cms": 0.0,
+        "fuel": flex["fuel"], "x_o2": flex["x_o2"], "p_atm": flex["p_atm"], "flow_cms": np.nan,
         "flow_raw": "quiescent (Guide p.33)", "outcome": flex["test_end"],
         "approx_note": np.where(flex["burn_time_approx"], "burn time approximate", "")})]
     b2 = t["PSI-25"].data
@@ -104,7 +105,6 @@ def coverage_points() -> pd.DataFrame:
 
 
 # --------------------------------------------------------------------------- recommender
-O2_SCALE, P_SCALE = 0.05, 0.2      # one "unit" = 5 O2 percentage points or 0.2 atm
 GAP_CAP = 3.0                      # gaps beyond 3 units count the same (nothing nearby)
 O2_GRID = np.round(np.arange(0.15, 0.4001, 0.01), 3)
 P_GRID = np.round(np.arange(0.30, 1.2001, 0.02), 3)
@@ -123,6 +123,8 @@ def recommend_experiments(points: pd.DataFrame, top_n: int = 5,
                           fuel_types: tuple[str, ...] = FUEL_TYPES) -> pd.DataFrame:
     """Rank candidate (fuel type, O2, pressure) points by gap to the nearest real test x closeness
     to an exploration target. Only tests with MEASURED O2 and pressure count as evidence."""
+    if top_n < 1:
+        raise ValueError("top_n must be >= 1")
     targets = _targets()
     o2, p = np.meshgrid(O2_GRID, P_GRID, indexing="ij")
     o2, p = o2.ravel(), p.ravel()

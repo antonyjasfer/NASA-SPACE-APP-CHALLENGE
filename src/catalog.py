@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+import numpy as np
 import pandas as pd
 
 from src.catalog_data import GUIDE, INVESTIGATIONS, LITERATURE_POINTS, MISCONCEPTIONS
@@ -92,8 +93,16 @@ def build_literature() -> pd.DataFrame:
 
 
 # --------------------------------------------------------------------------- cards
+def _txt(value: Any) -> str | None:
+    """Text cell or None. NaN/blank cells are falsy here (plain `or` treats NaN as true)."""
+    if value is None or (isinstance(value, float) and np.isnan(value)):
+        return None
+    text = str(value).strip()
+    return text or None
+
+
 def _cite(row: pd.Series) -> str:
-    page = f", p. {row['source_page']}" if isinstance(row["source_page"], str) else ""
+    page = f", p. {row['source_page']}" if _txt(row["source_page"]) else ""
     return f"{row['source']}{page}"
 
 
@@ -111,12 +120,13 @@ def _psi_key_results() -> dict[str, str]:
                  f"{int((cf['outcome'] == 'Self-extinguished').sum())} self-extinguished, "
                  f"{int(cf['cool_flame'].sum())} flagged as cool flames, at O2 {cf['x_o2'].min():.3f} to "
                  f"{cf['x_o2'].max():.3f} and {cf['p_atm'].min():.2f} to {cf['p_atm'].max():.2f} atm."),
-        "saffire1": "SIBAL fabric at 20 cm/s: concurrent-flow sample burned " +
-                    f"{s1.iloc[0]['Burn Time (s)']} s, opposed-flow sample {s1.iloc[1]['Burn Time (s)']} s.",
+        "saffire1": (f"SIBAL fabric at {t['PSI-98'].data['flow_cms'].iloc[0]:g} cm/s: concurrent-flow sample "
+                     f"burned {s1.iloc[0]['Burn Time (s)']} s, opposed-flow sample {s1.iloc[1]['Burn Time (s)']} s."),
         "saffire2": (f"Micro-g spread {s2.loc[s2['test_id'] == '2-5', 'ug_spread_raw'].iloc[0]} (sample 2-5, SIBAL) "
                      f"and {s2.loc[s2['test_id'] == '2-6', 'ug_spread_raw'].iloc[0]} (sample 2-6, material cell "
                      "blank); silicone samples burned insignificantly."),
-        "saffire3": "Two SIBAL fabric samples at 30 cm/s air flow (concurrent and opposed); no O2 column.",
+        "saffire3": (f"{len(t['PSI-100'].data)} SIBAL fabric samples at "
+                     f"{t['PSI-100'].data['flow_cms'].iloc[0]:g} cm/s air flow (concurrent and opposed); no O2 column."),
         "flame_design": (f"{len(t['PSI-10'].data)} inverse ethylene flames at O2 up to "
                          f"{t['PSI-10'].data['x_o2'].max():.2f} and {t['PSI-10'].data['p_atm'].min():.2f} to "
                          f"{t['PSI-10'].data['p_atm'].max():.2f} atm (PSI-10)."),
@@ -127,12 +137,13 @@ def investigation_cards(inv: pd.DataFrame) -> list[dict]:
     psi_results = _psi_key_results()
     cards = []
     for _, r in inv.iterrows():
-        key_result = r["key_result"] or psi_results.get(r["key"])
+        key_result = _txt(r["key_result"]) or psi_results.get(r["key"])
         cards.append({
             "card_id": f"inv_{r['key']}", "investigation_key": r["key"], "title": r["name"],
-            "objective": r["objective"] or NOT_STATED, "what_varied": r["what_varied"] or NOT_STATED,
+            "objective": _txt(r["objective"]) or NOT_STATED,
+            "what_varied": _txt(r["what_varied"]) or NOT_STATED,
             "key_result": key_result or NOT_STATED,
-            "fire_safety_implication": r["implication"] or NOT_STATED,
+            "fire_safety_implication": _txt(r["implication"]) or NOT_STATED,
             "citation": _cite(r), "generated_by": GENERATED_BY,
         })
     return cards
@@ -147,8 +158,14 @@ def special_cards() -> list[dict]:
     metrics = json.loads(METRICS_PATH.read_text())["d2law_consistency"]
     comp = metrics["completion_only"]
     allt = metrics["all_tests"]
-    cf = load_all()["PSI-159"].data
-    near = cf[(cf["x_o2"] >= 0.33) & (cf["p_atm"] < 0.55)]
+    from src.catalog_data import O2_SCALE, P_SCALE
+
+    tables = load_all()
+    cf, b2 = tables["PSI-159"].data, tables["PSI-25"].data
+    moon = next(p for p in LITERATURE_POINTS if p["point_id"] == "target_moon_34_8_2")
+    t_o2, t_p = moon["x_o2"], moon["p_atm"]
+    d = np.hypot((cf["x_o2"] - t_o2) / O2_SCALE, (cf["p_atm"] - t_p) / P_SCALE)
+    near = cf[d <= 1.0]   # within one distance unit of the Moon-base point
     flex_cite = "Fire-Margin analysis of PSI-69 FLEX table (DOI 10.60555/mbq8-0451)"
     return [
         {"card_id": "flex_disruption_by_o2", "title": "High oxygen turns droplet burns into bursts",
@@ -162,11 +179,14 @@ def special_cards() -> list[dict]:
                                      "coverage is uneven, so treat this as a strong signal, not a law."),
          "citation": flex_cite, "generated_by": "Claude Code from PSI-69 data"},
         {"card_id": "pressure_gap", "title": "No droplet or solid test at Moon-base pressure",
-         "objective": "Check whether real tests reach the 34% O2 / 8.2 psia (0.558 atm) habitat atmosphere.",
+         "objective": (f"Check whether real tests reach the {t_o2:.0%} O2 / 8.2 psia ({t_p:.3f} atm) "
+                       "habitat atmosphere."),
          "what_varied": "Pressure coverage per fuel type.",
-         "key_result": (f"Lowest FLEX pressure is {flex['p_atm'].min():.2f} atm, above the 0.558 atm target. "
-                        "PSI solid-material tables give no measured pressure and stop at 22.2% O2. Gas flames "
-                        f"do reach it: CFI-G ran {len(near)} tests at O2 >= 0.33 and about 0.50 atm."),
+         "key_result": (f"Lowest FLEX pressure is {flex['p_atm'].min():.2f} atm, above the {t_p:.3f} atm target. "
+                        f"PSI solid-material tables give no measured pressure and stop at {b2['x_o2'].max():.1%} O2. "
+                        f"Gas flames do reach it: CFI-G ran {len(near)} tests within one distance unit, at O2 "
+                        f"{near['x_o2'].min():.3f}-{near['x_o2'].max():.3f} and {near['p_atm'].min():.2f}-"
+                        f"{near['p_atm'].max():.2f} atm."),
          "fire_safety_implication": ("Droplet and cabin-solid behaviour at the planned habitat atmosphere is "
                                      "untested in PSI data: the next experiments should target that corner."),
          "citation": f"{flex_cite}; PSI-25; PSI-159", "generated_by": "Claude Code from PSI data"},

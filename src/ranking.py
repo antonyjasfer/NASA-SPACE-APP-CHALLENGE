@@ -3,9 +3,11 @@
 Run: python -m src.ranking
 score = 100 * sum(w_f * s_f) / sum(w_f), each factor s_f in [0, 1]:
   habitat       solid 1.0 > droplet 0.6 > gas 0.3 (cabin materials matter most)
-  o2_pressure   closeness of the tested O2 x pressure box to the exploration targets,
-                exp(-d^2/2) with d in units of 5 O2 points and 0.2 atm; x0.5 if the range is only
-                planned or a facility capability (no evidence yet)
+  o2_pressure   closeness of real evidence to the exploration targets, exp(-d^2/2), d in units of
+                5 O2 points and 0.2 atm. If the investigation has a PSI table with measured O2 AND
+                pressure, d = distance to the NEAREST MEASURED TEST (a min-max box would claim
+                coverage where no test exists). Otherwise d = distance to the stated range box,
+                x0.5 if that range is only planned or a facility capability (no evidence yet).
   flow          share of the 0-30 cm/s ventilation range covered by the tested flow range
                 (each end widened by 2.5 cm/s so a single tested speed counts)
   data          table 1.0, telemetry 0.8, video 0.5, none 0.0
@@ -18,16 +20,16 @@ import math
 from collections.abc import Mapping
 from typing import Any
 
+import numpy as np
 import pandas as pd
 
-from src.catalog_data import LITERATURE_POINTS
+from src.catalog_data import LITERATURE_POINTS, O2_SCALE, P_SCALE
 
 FACTORS = ("habitat", "o2_pressure", "flow", "data", "suppression")
 DEFAULT_WEIGHTS: dict[str, float] = {"habitat": 0.25, "o2_pressure": 0.30, "flow": 0.15,
                                      "data": 0.15, "suppression": 0.15}
 HABITAT = {"solid": 1.0, "droplet": 0.6, "gas": 0.3}
 DATA = {"table": 1.0, "telemetry": 0.8, "video": 0.5, "none": 0.0}
-O2_SCALE, P_SCALE = 0.05, 0.2
 UNTESTED_FACTOR = 0.5
 VENT_MIN, VENT_MAX, FLOW_PAD = 0.0, 30.0, 2.5
 TARGETS: tuple[tuple[float, float], ...] = tuple(
@@ -47,7 +49,14 @@ def habitat_score(row: Mapping) -> tuple[float, bool]:
     return (s, False) if s is not None else (0.0, True)
 
 
-def o2_pressure_score(row: Mapping) -> tuple[float, bool]:
+def o2_pressure_score(row: Mapping, measured: np.ndarray | None = None) -> tuple[float, bool]:
+    """`measured`: (n, 2) array of real (O2, p_atm) tests for this investigation, if any."""
+    if measured is not None and len(measured):
+        best = 0.0
+        for o2_t, p_t in TARGETS:
+            d = np.hypot((measured[:, 0] - o2_t) / O2_SCALE, (measured[:, 1] - p_t) / P_SCALE).min()
+            best = max(best, math.exp(-0.5 * float(d) ** 2))
+        return best, False
     vals = [_num(row.get(k)) for k in ("o2_min", "o2_max", "p_min_atm", "p_max_atm")]
     o2_lo, o2_hi, p_lo, p_hi = vals
     if o2_lo is None or o2_hi is None or p_lo is None or p_hi is None:
@@ -58,6 +67,14 @@ def o2_pressure_score(row: Mapping) -> tuple[float, bool]:
         best = max(best, math.exp(-0.5 * d * d))
     basis = str(row.get("range_basis") or "")
     return (best if basis == "tested" else best * UNTESTED_FACTOR), False
+
+
+def measured_by_psi(points: pd.DataFrame | None) -> dict[str, np.ndarray]:
+    """psi_id -> array of measured (O2, p) tests, from coverage_points (assumed pressure excluded)."""
+    if points is None:
+        return {}
+    ok = points[points["x_o2"].notna() & points["p_atm"].notna()]
+    return {psi: g[["x_o2", "p_atm"]].to_numpy(dtype=float) for psi, g in ok.groupby("source")}
 
 
 def flow_score(row: Mapping) -> tuple[float, bool]:
@@ -96,27 +113,33 @@ def normalise_weights(weights: Mapping[str, float] | None) -> dict[str, float]:
     return {k: (v / total if total else 0.0) for k, v in w.items()}
 
 
-def score_row(row: Mapping, weights: Mapping[str, float] | None = None) -> dict[str, Any]:
+def score_row(row: Mapping, weights: Mapping[str, float] | None = None,
+              measured: np.ndarray | None = None) -> dict[str, Any]:
     """Score one investigation; returns per-factor score, contribution and missing flags."""
     w = normalise_weights(weights)
     out: dict[str, Any] = {"missing": []}
     total = 0.0
     for f in FACTORS:
-        s, missing = SCORERS[f](row)
+        s, missing = o2_pressure_score(row, measured) if f == "o2_pressure" else SCORERS[f](row)
         out[f"{f}_score"] = round(s, 4)
         out[f"{f}_points"] = round(100 * w[f] * s, 2)
         total += 100 * w[f] * s
         if missing:
             out["missing"].append(f)
+    out["o2p_method"] = ("nearest measured test" if measured is not None and len(measured)
+                         else "stated range" if "o2_pressure" not in out["missing"] else "missing")
     out["score"] = round(total, 2)
     return out
 
 
-def rank_investigations(inv: pd.DataFrame, weights: Mapping[str, float] | None = None) -> pd.DataFrame:
-    """Deterministic ranking: score desc, then name asc. Never mutates `inv`."""
+def rank_investigations(inv: pd.DataFrame, weights: Mapping[str, float] | None = None,
+                        points: pd.DataFrame | None = None) -> pd.DataFrame:
+    """Deterministic ranking: score desc, then name asc. Never mutates `inv`.
+    Pass `points` (src.coverage.coverage_points()) so PSI-backed rows are scored on real tests."""
+    measured = measured_by_psi(points)
     rows = []
     for rec in inv.to_dict("records"):
-        s = score_row(rec, weights)
+        s = score_row(rec, weights, measured.get(str(rec.get("psi_id"))))
         rows.append({"key": rec["key"], "name": rec["name"], "fuel_type": rec["fuel_type"], **s,
                      "data_missing": ", ".join(s.pop("missing")) or ""})
     out = pd.DataFrame(rows).sort_values(["score", "name"], ascending=[False, True], kind="mergesort")
@@ -128,8 +151,10 @@ def main() -> pd.DataFrame:
     from src.catalog import INVESTIGATIONS_PATH, build_investigations
 
     inv = build_investigations() if not INVESTIGATIONS_PATH.exists() else pd.read_csv(INVESTIGATIONS_PATH)
-    ranked = rank_investigations(inv)
-    cols = ["rank", "name", "score"] + [f"{f}_points" for f in FACTORS] + ["data_missing"]
+    from src.coverage import coverage_points
+
+    ranked = rank_investigations(inv, points=coverage_points())
+    cols = ["rank", "name", "score"] + [f"{f}_points" for f in FACTORS] + ["o2p_method", "data_missing"]
     print(ranked[cols].to_string(index=False))
     return ranked
 
