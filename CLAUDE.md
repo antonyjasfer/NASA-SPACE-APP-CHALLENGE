@@ -52,6 +52,24 @@ tests/             pytest
 - Outcomes: Extinction 186 / Disruption 61 / Completion 27. Fuels: Methanol 157 / Heptane 117.
   O2 range 0.12-0.34, pressure up to ~3 atm. DON'T drop Disruption: almost every test at O2 >= 0.25
   ends in Disruption (droplet bursting) — that is a key safety finding, not noise.
+- Extra PSI tables in data/raw/ (all utf-8, verified). Strip whitespace from headers. Drop rows that are
+  not tests (e.g., "Pre-test flow visulation data...", all-NaN rows) and log how many were dropped.
+  * PSI-25 BASS-II (129 rows, solids, 51 material labels): O2 = "Calibrated  initial O2 % by vol " (%, 13.6-22.2,
+    divide by 100). NO pressure column -> p_atm NaN plus `p_assumed_atm=1.0, p_assumed=True` (ISS cabin) only for
+    plotting, clearly labelled. Flow is "Fan display"/"Air display" SETTINGS (free text like "5 down to ext"),
+    NOT cm/s — never convert to cm/s; keep the raw text. CO/CO2 ppm/% columns are gas readings.
+  * PSI-26 BASS (122 rows): only date, test #, sample #, material. No O2/pressure/flow -> catalog only, not coverage.
+  * PSI-10 "Flame Design_Inverse Flame" (120 rows, ethylene inverse gas flames): XO2 0.21-0.85,
+    pmean 0.43-3.02 atm. Gas-jet flames, not cabin materials.
+  * PSI-159 "CFI-G_Normal Flames" (179 rows, ethane/propane/butane blends): " XO2 before test" 0.18-0.40,
+    "approx p (bar)" 0.51-3.04 (convert bar -> atm). Cool flame? 7 yes; Hot ignition Yes 132/No 47;
+    end: SE (self-extinguished) 102 / FT (flow terminated) 31 / '-' 46.
+  * PSI-98/99/100 Saffire-I/II/III (tiny): values are strings with units/tildes ("~ 21.5", "20 cm/s",
+    "22.1 to 22.0", "0.27 mm") -> parse numbers, keep raw text, flag approx. "?-g" in headers = micro-g.
+    Saffire-II micro-g spread for SIBAL 2.1 and 2.6 mm/s. Saffire-III has no O2 column (flow 30 cm/s).
+- Verified coverage insight: SOLID materials in PSI (BASS-II, Saffire) span only 13.6-22.2% O2 at cabin
+  pressure. Gas flames reach 0.40 (normal) / 0.85 (inverse) O2 and down to 0.43 atm; FLEX droplets 0.34 O2,
+  min 0.69 atm. So: gas and droplet data touch Moon-base O2; cabin solids do not.
 - BASS/BASS-II tables have NO spread-rate column. Don't invent one; use them for the coverage map only.
 - Literature values (e.g., Saffire-VI SIBAL at 30% O2, 0.54 atm; BASS-II steady spread at 13.6% O2 vs
   1-g blowoff 16%) are plotted as clearly labelled "literature points", with citation, never mixed into training data.
@@ -65,6 +83,14 @@ tests/             pytest
   O2 margin = X_O2 - LOI(fuel) with microgravity LOI 0.12 methanol / 0.15 heptane.
 - d^2-law consistency: burn_time ~ d0^2 / K. Monotonic constraint: higher O2 -> higher K.
 - Uncertainty: quantile or conformal intervals; show "distance to nearest real test" for every prediction.
+- P1 decisions (from honest GroupKFold metrics, see models/metrics.json):
+  * The app uses the logistic models (outcome / Disruption / Extinction) and the Ridge K model; they beat
+    gradient boosting on unseen days. The O2-monotonic HGB K model is only a physics sanity check.
+  * Completion is shown as LOW CONFIDENCE (only 27 tests; out-of-fold recall ~0.26-0.37).
+  * d0^2/K is the full-burnout time: it matches measured burn time only for Completion (r = 0.92). For tests
+    that ended early (Extinction/Disruption) show it as an upper limit, never as a prediction.
+  * K intervals = split-conformal-corrected 10-90% quantiles (raw quantiles under-covered: 55% vs 80%).
+  * 50 FLEX dates are written M/D/YY; parsed explicitly (2009-2011 guard).
 
 ## App tabs
 1. Catalog & Ranking — ~20-24 PSI combustion investigations; AI insight cards (objective, what varied,
