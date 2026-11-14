@@ -84,7 +84,7 @@ Stretch (all planned): next-experiment recommender (max uncertainty x distance t
 Saffire-III telemetry replay; cool-flame risk flag from ACME CFI-G.
 
 ## Phases (tick as done)
-- [ ] P1 Data ingest + cleaning + FLEX models + metrics
+- [x] P1 Data ingest + cleaning + FLEX models + metrics
 - [ ] P2 Investigation catalog + ranking engine + coverage analysis
 - [ ] P3 Knowledge base + RAG chatbot + insight cards
 - [ ] P4 Streamlit app (all tabs) + deploy
