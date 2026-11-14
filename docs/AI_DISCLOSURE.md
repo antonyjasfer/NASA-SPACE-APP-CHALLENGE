@@ -28,3 +28,28 @@ What the AI did:
   the Ridge baseline; d0^2/K only matches measured burn time for Completion tests.
 
 No model output, synthetic row or interpolated value was added to the NASA data.
+
+## 2026-11-14 — Phase P2 (Claude Code, Anthropic)
+Tool: Claude Code with a Python-review sub-agent and a graphify extraction sub-agent; graphify (pip
+`graphifyy`, installed with the team's approval) built the code/doc knowledge graph in `graphify-out/`.
+Human: chose the investigations to cover, the ranking factors, the targets and the literature points.
+
+What the AI did:
+- Merged the verified extra-PSI data rules from CLAUDE_new.md into CLAUDE.md; recorded P1 decisions.
+- Read the full ISS Researcher's Guide (56 pages) and wrote `src/catalog_data.py`: 24 investigations
+  where every text field and typed range cites a page (or a PSI ID). Fields the sources do not state
+  are left blank; ranges are labelled tested / planned / facility capability.
+- Wrote `src/psi_tables.py` to load PSI-25/26/10/159/98/99/100 (non-test rows dropped and counted;
+  raw text kept next to parsed numbers; 11 PSI-10 rows with XO2 'RAMP'/'LOW O2' kept with O2 = NaN).
+- Wrote `src/catalog.py` (investigations.csv, literature_points.csv, insight_cards.json: 24
+  investigation cards + 4 analysis cards), `src/ranking.py` (transparent 0-100 score with a per-factor
+  breakdown and "data missing" flags) and extended `src/coverage.py` (coverage_points.csv and a
+  next-experiment recommender saved to next_experiments.csv).
+- Literature values (BASS-II 13.6% vs 16%, Saffire-VI 30% O2 / 0.54 atm) could not be checked against
+  the primary papers from this session (NTRS and the TTU repository were blocked by the network
+  policy); they are stored with `value_verified = False` and their candidate sources.
+- Wrote 19 new pytest tests (provenance of every range, parser edge cases, ranking determinism and
+  slider effects, recommender behaviour) and fixed issues raised by the automated review.
+
+Insight cards are written by the AI from the PDF text and PSI tables only (`generated_by` field);
+no LLM API was called and no number was produced by a model.

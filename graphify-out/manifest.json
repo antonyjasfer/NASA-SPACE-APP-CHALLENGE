@@ -1,0 +1,128 @@
+{
+  "app/app.py": {
+    "mtime": 1794688657.2993429,
+    "seen": 1794691498.0471284,
+    "ast_hash": "6b35910eb90486ef8a367db68140f1a9",
+    "semantic_hash": "6b35910eb90486ef8a367db68140f1a9"
+  },
+  "data/processed/flex_coverage_summary.json": {
+    "mtime": 1794688831.5105321,
+    "seen": 1794691498.0471356,
+    "ast_hash": "8ad2f8fed058b1f6163b7253ee7d577f",
+    "semantic_hash": "8ad2f8fed058b1f6163b7253ee7d577f"
+  },
+  "models/metrics.json": {
+    "mtime": 1794688830.859532,
+    "seen": 1794691498.0471382,
+    "ast_hash": "5f82b60c8eb67228e2b534334a7c0e40",
+    "semantic_hash": "5f82b60c8eb67228e2b534334a7c0e40"
+  },
+  "src/__init__.py": {
+    "mtime": 1794688365.869672,
+    "seen": 1794691498.0471401,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/coverage.py": {
+    "mtime": 1794688592.1113405,
+    "seen": 1794691498.0471413,
+    "ast_hash": "4aef5220ede65cd6eaee0bba18dd946c",
+    "semantic_hash": "4aef5220ede65cd6eaee0bba18dd946c"
+  },
+  "src/features.py": {
+    "mtime": 1794688566.8910398,
+    "seen": 1794691498.047143,
+    "ast_hash": "9f0b6d7614f209246007239637df01fe",
+    "semantic_hash": "9f0b6d7614f209246007239637df01fe"
+  },
+  "src/ingest.py": {
+    "mtime": 1794688804.837246,
+    "seen": 1794691498.047144,
+    "ast_hash": "ad687fc81d4fba512e2ca5ba3999a912",
+    "semantic_hash": "ad687fc81d4fba512e2ca5ba3999a912"
+  },
+  "src/llm_config.py": {
+    "mtime": 1794688823.2393486,
+    "seen": 1794691498.0471451,
+    "ast_hash": "02c8c74046a1e0900133795967da59fc",
+    "semantic_hash": "02c8c74046a1e0900133795967da59fc"
+  },
+  "src/models.py": {
+    "mtime": 1794688823.2433488,
+    "seen": 1794691498.0471463,
+    "ast_hash": "3552959d65b790ba365ffe2d66afdc2d",
+    "semantic_hash": "3552959d65b790ba365ffe2d66afdc2d"
+  },
+  "tests/__init__.py": {
+    "mtime": 1794688365.869672,
+    "seen": 1794691498.0471478,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "tests/conftest.py": {
+    "mtime": 1794688651.7313426,
+    "seen": 1794691498.0471487,
+    "ast_hash": "dbaf30529542e132c1f91fb4bf89de63",
+    "semantic_hash": "dbaf30529542e132c1f91fb4bf89de63"
+  },
+  "tests/test_features.py": {
+    "mtime": 1794688624.1433415,
+    "seen": 1794691498.0471501,
+    "ast_hash": "42449b1cc906055a548b6b728484aac1",
+    "semantic_hash": "42449b1cc906055a548b6b728484aac1"
+  },
+  "tests/test_ingest.py": {
+    "mtime": 1794688823.2433488,
+    "seen": 1794691498.0471513,
+    "ast_hash": "da06018031839ac5d9712642a56180ba",
+    "semantic_hash": "da06018031839ac5d9712642a56180ba"
+  },
+  "tests/test_llm_config.py": {
+    "mtime": 1794688838.8518734,
+    "seen": 1794691498.0471528,
+    "ast_hash": "5fe160af700702bccb00b98e10d0031d",
+    "semantic_hash": "5fe160af700702bccb00b98e10d0031d"
+  },
+  "tests/test_models.py": {
+    "mtime": 1794688823.2473488,
+    "seen": 1794691498.0471535,
+    "ast_hash": "f54dcedfc683d23d29aa5d5deafa4b85",
+    "semantic_hash": "f54dcedfc683d23d29aa5d5deafa4b85"
+  },
+  "CLAUDE.md": {
+    "mtime": 1794691261.152254,
+    "seen": 1794691498.047155,
+    "ast_hash": "b7a20f3fe39b78c4583c1448bd9352b5",
+    "semantic_hash": "b7a20f3fe39b78c4583c1448bd9352b5"
+  },
+  "README.md": {
+    "mtime": 1794674028.7856765,
+    "seen": 1794691498.0471559,
+    "ast_hash": "648e619d60dbb7d7e647235baed4be16",
+    "semantic_hash": "648e619d60dbb7d7e647235baed4be16"
+  },
+  "data/processed/flex_data_dictionary.md": {
+    "mtime": 1794688823.5301561,
+    "seen": 1794691498.047157,
+    "ast_hash": "3777851ffc0a0675260c8f25060a62d3",
+    "semantic_hash": "3777851ffc0a0675260c8f25060a62d3"
+  },
+  "docs/AI_DISCLOSURE.md": {
+    "mtime": 1794688864.0814896,
+    "seen": 1794691498.047158,
+    "ast_hash": "431b22622cac1030a17892bc69e64083",
+    "semantic_hash": "431b22622cac1030a17892bc69e64083"
+  },
+  "requirements.txt": {
+    "mtime": 1794691261.152854,
+    "seen": 1794691498.047159,
+    "ast_hash": "6d535546d8a0c1761ec32378be5d1171",
+    "semantic_hash": "6d535546d8a0c1761ec32378be5d1171"
+  },
+  "data/raw/np-2015-10-034-jsc_combustion_in_reduced_gravity-iss-mini-book-011116-508.pdf": {
+    "mtime": 1794688284.5233295,
+    "seen": 1794691498.04716,
+    "ast_hash": "4fc021b946b791f7564a8e1ab81ae81f",
+    "semantic_hash": "4fc021b946b791f7564a8e1ab81ae81f"
+  }
+}

@@ -11,8 +11,8 @@ import hashlib
 import json
 import os
 import time
-from dataclasses import dataclass
 from collections.abc import Callable, Mapping, Sequence
+from dataclasses import dataclass
 
 UNAVAILABLE_MESSAGE = "AI temporarily unavailable. Showing the retrieved source passages instead."
 

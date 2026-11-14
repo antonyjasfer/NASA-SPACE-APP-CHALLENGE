@@ -11,10 +11,10 @@ Writes models/*.joblib and models/metrics.json.
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any
-from collections.abc import Callable
 
 import joblib
 import numpy as np

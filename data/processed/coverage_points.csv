@@ -1,0 +1,716 @@
+source,investigation,test_id,fuel_type,fuel,x_o2,p_atm,p_assumed_atm,p_assumed,flow_cms,flow_raw,outcome,approx_note
+PSI-69,FLEX,20CAL08,droplet,Methanol,0.21,0.9969736842105263,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,20CAL10,droplet,Methanol,0.21,1.0026315789473683,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,20CAL12,droplet,Methanol,0.21,1.0055263157894738,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,30CAL02,droplet,Methanol,0.21,1.0,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,30CAL03,droplet,Methanol,0.21,1.0,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,40CAL01,droplet,Methanol,0.21,1.0,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,20CAL13,droplet,Heptane,0.21,1.0017105263157895,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,30CAL06,droplet,Heptane,0.21,1.003157894736842,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,30CAL07,droplet,Heptane,0.21,1.0,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,256F002,droplet,Methanol,0.21,3.052236842105263,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,256R001,droplet,Methanol,0.21,3.051052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,264F003,droplet,Heptane,0.21,3.0525,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,256R002,droplet,Methanol,0.21,2.7292105263157893,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,256F007,droplet,Methanol,0.21,2.704736842105263,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,256F008,droplet,Methanol,0.21,2.719210526315789,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,256F009,droplet,Methanol,0.21,2.7264473684210526,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,240R003,droplet,Methanol,0.21,2.0338157894736844,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,248F001,droplet,Heptane,0.21,2.0444736842105264,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,196F001,droplet,Heptane,0.34,0.7093421052631579,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,192F001,droplet,Methanol,0.34,0.7098684210526316,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,192F002,droplet,Methanol,0.34,0.7113157894736842,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,192F003,droplet,Methanol,0.34,0.7111842105263158,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,196F002,droplet,Heptane,0.34,0.7128947368421052,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,196F003,droplet,Heptane,0.34,0.7142105263157894,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,191R001,droplet,Methanol,0.3,0.7069736842105263,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,191F001,droplet,Methanol,0.3,0.708421052631579,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,195F001,droplet,Heptane,0.3,0.7114473684210527,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,195F002,droplet,Heptane,0.3,0.7101315789473684,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,178R001,droplet,Methanol,0.3,1.009078947368421,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,178F001,droplet,Methanol,0.3,1.0121052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,182F001,droplet,Heptane,0.3,1.013815789473684,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,182F002,droplet,Heptane,0.3,1.0144736842105264,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,177R002,droplet,Methanol,0.21,1.005921052631579,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,177F001,droplet,Methanol,0.21,1.0101315789473684,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,181F001,droplet,Heptane,0.21,1.010657894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,190R002,droplet,Methanol,0.2,0.7092105263157895,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,220R001,droplet,Methanol,0.34,0.7030263157894736,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,220R002,droplet,Methanol,0.34,0.7031578947368421,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,224F001,droplet,Heptane,0.34,0.7038157894736842,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,219R001,droplet,Methanol,0.3,0.7040789473684211,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,219F001,droplet,Methanol,0.3,0.7030263157894736,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,223F001,droplet,Heptane,0.3,0.7039473684210527,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,223F002,droplet,Heptane,0.3,0.7038157894736842,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,206F001,droplet,Methanol,0.3,1.0089473684210526,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,206R001,droplet,Methanol,0.3,1.0109210526315788,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,205R001,droplet,Methanol,0.21,1.0125,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,209F001,droplet,Heptane,0.21,1.0132894736842106,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,205F001,droplet,Methanol,0.21,1.0114473684210528,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,209F003,droplet,Heptane,0.21,1.0064473684210526,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,209F004,droplet,Heptane,0.21,1.0132894736842106,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,209F005,droplet,Heptane,0.21,1.015,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,210F002,droplet,Heptane,0.3,1.0146052631578948,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,209F002,droplet,Heptane,0.21,1.013421052631579,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,190F003,droplet,Methanol,0.2,0.7123684210526315,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,218F001,droplet,Methanol,0.2,0.7139473684210527,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,194F001,droplet,Heptane,0.2,0.715921052631579,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,303F001,droplet,Heptane,0.2,0.7163157894736841,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,176F001,droplet,Methanol,0.18,1.0174999999999998,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,176R001,droplet,Methanol,0.18,1.0121052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,204F001,droplet,Methanol,0.18,1.0180263157894738,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,204R001,droplet,Methanol,0.18,1.0185526315789477,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,301F001,droplet,Heptane,0.18,1.0023684210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,301F002,droplet,Heptane,0.18,1.01,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,302F001,droplet,Heptane,0.18,1.0060526315789473,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,189R001,droplet,Methanol,0.15,1.0077631578947368,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,189F001,droplet,Methanol,0.15,1.0089473684210526,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,189F002,droplet,Methanol,0.15,1.0101315789473684,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,189R003,droplet,Methanol,0.15,1.011578947368421,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,193R002,droplet,Heptane,0.14,1.009342105263158,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,193F001,droplet,Heptane,0.15,1.0013157894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,189R002,droplet,Methanol,0.15,1.0109210526315788,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,193R001,droplet,Heptane,0.15,1.006842105263158,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,193F001,droplet,Heptane,0.15,1.0013157894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,221F001,droplet,Heptane,0.15,1.0077631578947368,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,203R002,droplet,Methanol,0.13,1.0142105263157897,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,203F001,droplet,Methanol,0.13,1.0125,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,175R001,droplet,Methanol,0.14,1.0110526315789474,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,175F001,droplet,Methanol,0.14,1.0078947368421052,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,179F001,droplet,Heptane,0.13,1.010657894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,207F001,droplet,Heptane,0.13,1.013157894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,207F002,droplet,Heptane,0.13,1.013421052631579,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,304F001,droplet,Methanol,0.13,1.0060526315789473,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,304F002,droplet,Methanol,0.12,1.0157894736842106,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,304R001,droplet,Methanol,0.12,1.0094736842105263,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,304R002,droplet,Methanol,0.12,1.0147368421052632,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,305F002,droplet,Methanol,0.12,1.013157894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,305F003,droplet,Methanol,0.12,1.0147368421052632,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,053R001,droplet,Methanol,0.25,0.7072368421052632,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,053F001,droplet,Methanol,0.25,0.7071052631578947,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,141R001,droplet,Methanol,0.25,0.7094736842105264,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,141F001,droplet,Methanol,0.25,0.7082894736842105,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,061F002,droplet,Heptane,0.25,0.705657894736842,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,149F001,droplet,Heptane,0.25,0.7069736842105263,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C08H101,droplet,Heptane,0.24,0.7021052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C08H201,droplet,Heptane,0.24,0.7031578947368421,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C08H301,droplet,Heptane,0.24,0.7031578947368421,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C08M101,droplet,Methanol,0.23,0.7028947368421053,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,C09M201,droplet,Methanol,0.23,0.7067105263157895,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C09M101,droplet,Methanol,0.23,0.7039473684210527,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C09H101,droplet,Heptane,0.23,0.7061842105263159,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C09H201,droplet,Heptane,0.23,0.7088157894736843,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C10H101,droplet,Heptane,0.21,0.7028947368421053,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C10H201,droplet,Heptane,0.21,0.7030263157894736,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C08M201,droplet,Methanol,0.23,0.7027631578947369,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C08M301,droplet,Methanol,0.23,0.703421052631579,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C09M401,droplet,Methanol,0.23,0.7082894736842105,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C08M401,droplet,Methanol,0.23,0.7039473684210527,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C09M301,droplet,Methanol,0.23,0.7082894736842105,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,C10M102,droplet,Methanol,0.21,0.7059210526315789,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C10M201,droplet,Methanol,0.21,0.7065789473684211,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C10M303,droplet,Methanol,0.21,0.7064473684210526,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,C10M401,droplet,Methanol,0.21,0.6982894736842106,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,C11M101,droplet,Methanol,0.2,0.703421052631579,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C11M201,droplet,Methanol,0.2,,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C11M301,droplet,Methanol,0.2,0.705,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C11M401,droplet,Methanol,0.2,0.705657894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C11H101,droplet,Heptane,0.2,0.6988157894736843,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C11H201,droplet,Heptane,0.2,0.7010526315789473,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C12H103,droplet,Heptane,0.18,0.7007894736842105,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C12H201,droplet,Heptane,0.18,0.7006578947368421,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C12M101,droplet,Methanol,0.18,0.6924999999999999,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C12M201,droplet,Methanol,0.18,0.6989473684210527,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C12M301,droplet,Methanol,0.18,0.7,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C12M401,droplet,Methanol,0.18,0.7005263157894737,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C13M103,droplet,Methanol,0.17,0.7068421052631579,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C13M201,droplet,Methanol,0.17,0.7053947368421053,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C13M301,droplet,Methanol,0.17,0.7061842105263159,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C13M401,droplet,Methanol,0.17,0.7069736842105263,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C13H102,droplet,Heptane,0.17,0.7055263157894738,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C13H201,droplet,Heptane,0.17,0.7068421052631579,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C21H101,droplet,Heptane,0.24,1.0051315789473685,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C21H201,droplet,Heptane,0.24,1.006842105263158,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C21H301,droplet,Heptane,0.24,1.0088157894736842,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C21H401,droplet,Heptane,0.24,1.0094736842105263,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C21H501,droplet,Heptane,0.24,1.010789473684211,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,C21H302,droplet,Heptane,0.24,1.010657894736842,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,C21H303,droplet,Heptane,0.24,1.010789473684211,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C21H304,droplet,Heptane,0.24,1.0113157894736842,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C21H305,droplet,Heptane,0.24,1.0105263157894735,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C14M101,droplet,Methanol,0.15,0.7019736842105263,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C14M201,droplet,Methanol,0.15,0.7027631578947369,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C14M301,droplet,Methanol,0.15,0.7032894736842106,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C14M302,droplet,Methanol,0.15,0.7035526315789474,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C01M101,droplet,Methanol,0.2,1.0025,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C01M201,droplet,Methanol,0.2,1.0046052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C01M301,droplet,Methanol,0.2,1.007236842105263,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C13M102,droplet,Methanol,0.17,0.7048684210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C01H101,droplet,Heptane,0.2,1.0057894736842106,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C01H201,droplet,Heptane,0.2,1.008157894736842,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C01H302,droplet,Heptane,0.2,1.01,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03M101,droplet,Methanol,0.18,1.0032894736842106,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,C03M201,droplet,Methanol,0.18,1.006578947368421,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03M301,droplet,Methanol,0.18,1.0073684210526317,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03H101,droplet,Heptane,0.18,1.0030263157894737,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03H201,droplet,Heptane,0.18,1.0064473684210526,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03H401,droplet,Heptane,0.18,1.0075,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,C05M101,droplet,Methanol,0.16,1.002763157894737,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C05M201,droplet,Methanol,0.16,1.0057894736842106,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C05M301,droplet,Methanol,0.16,1.007236842105263,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C05M401,droplet,Methanol,0.16,1.01,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C06M101,droplet,Methanol,0.15,1.0043421052631578,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C06M201,droplet,Methanol,0.15,1.0057894736842106,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C06M301,droplet,Methanol,0.15,1.0077631578947368,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C06M401,droplet,Methanol,0.15,1.0080263157894738,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03H302,droplet,Heptane,0.18,1.0071052631578947,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C07M101,droplet,Methanol,0.14,1.0010526315789474,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C07M201,droplet,Methanol,0.14,1.0021052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C15M101,droplet,Methanol,0.21,1.0044736842105262,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C15M201,droplet,Methanol,0.21,1.0080263157894738,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C15M301,droplet,Methanol,0.21,1.0088157894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03H501,droplet,Heptane,0.18,0.9998684210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03H601,droplet,Heptane,0.18,1.0026315789473683,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03H701,droplet,Heptane,0.18,1.002763157894737,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C08H502,droplet,Heptane,0.24,0.6996052631578948,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C08H601,droplet,Heptane,0.24,0.7001315789473684,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C08M501,droplet,Methanol,0.24,0.7064473684210526,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C08M601,droplet,Methanol,0.24,0.7065789473684211,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C09H501,droplet,Heptane,0.23,0.7021052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C09H601,droplet,Heptane,0.23,0.7031578947368421,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C02H101,droplet,Heptane,0.19,0.9978947368421052,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C02H201,droplet,Heptane,0.19,0.9988157894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C02H202,droplet,Heptane,0.19,0.9986842105263158,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C09M501,droplet,Methanol,0.23,0.7031578947368421,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C09M502,droplet,Methanol,0.23,0.7040789473684211,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C09M601,droplet,Methanol,0.23,0.7042105263157895,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C09M701,droplet,Methanol,0.23,0.7055263157894738,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C02M101,droplet,Methanol,0.19,0.9973684210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C02M201,droplet,Methanol,0.19,0.9975,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03M501,droplet,Methanol,0.18,1.0015789473684211,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03M601,droplet,Methanol,0.18,1.0060526315789473,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C03M701,droplet,Methanol,0.18,1.0069736842105264,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C04M101,droplet,Methanol,0.17,0.999342105263158,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C04M201,droplet,Methanol,0.17,0.9988157894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C04H101,droplet,Heptane,0.17,0.9894736842105264,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C04H201,droplet,Heptane,0.17,0.9901315789473684,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C01H501,droplet,Heptane,0.2,0.9978947368421052,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C01H601,droplet,Heptane,0.2,0.9997368421052631,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C01H701,droplet,Heptane,0.2,1.0001315789473684,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,C01M501,droplet,Methanol,0.2,0.9921052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C01M602,droplet,Methanol,0.2,0.9948684210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,C01M603,droplet,Methanol,0.2,0.9959210526315788,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N01M101,droplet,Methanol,0.21,1.000263157894737,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N01M201,droplet,Methanol,0.21,1.0021052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N01H101,droplet,Heptane,0.21,0.9953947368421052,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,N01H102,droplet,Heptane,0.21,0.9964473684210524,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,N01H201,droplet,Heptane,0.21,1.000263157894737,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,N01H202,droplet,Heptane,0.21,1.0035526315789474,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,N01H301,droplet,Heptane,0.21,1.003815789473684,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,N02H101,droplet,Heptane,0.16,0.9997368421052631,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N02H201,droplet,Heptane,0.16,0.9997368421052631,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N02H203,droplet,Heptane,0.16,0.9998684210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N03H101,droplet,Heptane,0.15,1.0052631578947369,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N04H101,droplet,Heptane,0.14,0.9997368421052631,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N04H201,droplet,Heptane,0.14,0.9998684210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N04M101,droplet,Methanol,0.14,0.996842105263158,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N04M201,droplet,Methanol,0.14,0.9977631578947368,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N05M101,droplet,Methanol,0.13,0.9992105263157894,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N05M201,droplet,Methanol,0.13,1.0007894736842105,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N06M101,droplet,Methanol,0.12,1.0021052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N06M201,droplet,Methanol,0.12,1.0025,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N06M202,droplet,Methanol,0.12,1.0048684210526315,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H01M102,droplet,Methanol,0.2,0.9989473684210528,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H01M104,droplet,Methanol,0.2,0.9994736842105264,,False,0.0,quiescent (Guide p.33),Extinction,burn time approximate
+PSI-69,FLEX,H01H102,droplet,Heptane,0.2,0.993815789473684,,False,0.0,quiescent (Guide p.33),Completion,burn time approximate
+PSI-69,FLEX,H02M101,droplet,Methanol,0.19,0.9913157894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H03M101,droplet,Methanol,0.18,0.9989473684210528,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H03M201,droplet,Methanol,0.18,1.0003947368421051,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N01H401,droplet,Heptane,0.21,1.009736842105263,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,N01H502,droplet,Heptane,0.21,1.010657894736842,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,N01H601,droplet,Heptane,0.21,1.0121052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H02H101,droplet,Heptane,0.19,0.9984210526315788,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,H03H101,droplet,Heptane,0.18,1.0048684210526315,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H03H201,droplet,Heptane,0.18,1.0077631578947368,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,H03H202,droplet,Heptane,0.18,1.0085526315789477,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,H04H101,droplet,Heptane,0.17,0.999078947368421,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H04H201,droplet,Heptane,0.17,0.999078947368421,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H04H302,droplet,Heptane,0.17,0.9994736842105264,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,H04H303,droplet,Heptane,0.17,0.9997368421052631,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,H04M101,droplet,Methanol,0.17,0.9923684210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H04M202,droplet,Methanol,0.17,0.9960526315789474,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H05M102,droplet,Methanol,0.16,0.9998684210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H05M202,droplet,Methanol,0.16,1.0013157894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H05H103,droplet,Heptane,0.16,0.9972368421052632,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H06M102,droplet,Methanol,0.15,0.9942105263157895,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H06M201,droplet,Methanol,0.15,0.9956578947368422,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H07M101,droplet,Methanol,0.14,0.9989473684210528,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H07M202,droplet,Methanol,0.14,0.9997368421052631,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H08M101,droplet,Methanol,0.13,1.0046052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H10H101,droplet,Heptane,0.24,0.7026315789473684,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H11H101,droplet,Heptane,0.23,0.7002631578947369,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,H10M101,droplet,Methanol,0.24,0.7030263157894736,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H10M102,droplet,Methanol,0.24,0.703421052631579,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,H11M101,droplet,Methanol,0.23,0.6996052631578948,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H11M102,droplet,Methanol,0.23,0.6997368421052631,,False,0.0,quiescent (Guide p.33),Disruption,
+PSI-69,FLEX,H12M101,droplet,Methanol,0.21,0.6998684210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H12M102,droplet,Methanol,0.21,0.6989473684210527,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H12M201,droplet,Methanol,0.21,0.6989473684210527,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H12H101,droplet,Heptane,0.21,0.6968421052631579,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H12H201,droplet,Heptane,0.21,0.6960526315789474,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H13H101,droplet,Heptane,0.2,0.7006578947368421,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H13H201,droplet,Heptane,0.2,0.7,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H13M102,droplet,Methanol,0.2,0.6942105263157895,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H13M201,droplet,Methanol,0.2,0.6946052631578947,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H14M101,droplet,Methanol,0.18,0.7005263157894737,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H14M201,droplet,Methanol,0.18,0.7011842105263157,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H14M202,droplet,Methanol,0.18,0.7015789473684211,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H14H101,droplet,Heptane,0.18,0.6947368421052632,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H14H201,droplet,Heptane,0.18,0.6977631578947368,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H15H101,droplet,Heptane,0.17,0.7002631578947369,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H15H201,droplet,Heptane,0.17,0.7006578947368421,,False,0.0,quiescent (Guide p.33),Completion,
+PSI-69,FLEX,H15M102,droplet,Methanol,0.17,0.6978947368421052,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H15M201,droplet,Methanol,0.17,0.6993421052631579,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H19H101,droplet,Heptane,0.21,1.006184210526316,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-69,FLEX,H19H201,droplet,Heptane,0.21,1.008157894736842,,False,0.0,quiescent (Guide p.33),Extinction,
+PSI-25,BASS-II,B1,solid,100 micron PMMA film   2 cm wide,0.222,,1.0,True,,fan 62 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B2,solid,200 micron PMMA film   2 cm wide,0.222,,1.0,True,,fan 62 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B3,solid,100 micron film   2 cm wide,0.222,,1.0,True,,fan 47 | air 2,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B4,solid,300 micron PMMA film   2 cm wide,0.222,,1.0,True,,fan 61 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B5,solid,200 micron  2 cm wide,0.222,,1.0,True,,fan 59 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B6,solid,2 cm 0.1 mm PMMA film,0.21,,1.0,True,,fan 0.9   1.3   2.75 | air 3   5   approaching 10,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B7,solid,400 micron film   2 cm wide,0.222,,1.0,True,,fan 47 | air 2,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B8,solid,2 cm   0.2 mm PMMA film,0.21,,1.0,True,,fan 1.4    incr to 10.0 | air 10   max,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B9,solid,2 cm   0.1 mm PMMA film,0.21,,1.0,True,,fan 0.6   0.35 | air 2   <1,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B10,solid,1 cm   0.2 mm PMMA film,0.21,,1.0,True,,fan 1.7 (52)   1.25   0.9   0.6   0.4   0.35 | air 5  4  3  2  1,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B11,solid,2 cm   0.2 mm PMMA film,0.21,,1.0,True,,fan 2.5 (59)   1.3   0.7   0.5   0.35 | air 5   3   1   <1,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B12,solid,300 micron film   2 cm wide,0.222,,1.0,True,,fan 46.5 | air 2,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B13,solid,2 cm   0.4 mm thick film,0.21,,1.0,True,,fan 3.5 (68)    1.7   1.25   0.9   0.6   0.4   0.35 | air 10   5  4  3  2  1,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B14,solid,1 cm wide 200 micron thick PMMA,0.15,,1.0,True,,fan pot 0.9   0.5 and down | air 5  3  2   ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B15,solid,2 cm   0.1 mm PMMA film,0.21,,1.0,True,,fan 1.4 (50) incr to 10.0 pot | air 10   max,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B16,solid,2 cm 100 micron thick PMMA,0.17300000000000001,,1.0,True,,fan 44 (pot 0.68) | air 3  0.5 pot   0.4 pot,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B17,solid,1 cm wide 200 micron thick PMMA,0.175,,1.0,True,,fan pot 1.2 (48)    0.9   0.4 | air 5   3    pot 0.4,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B18,solid,1 cm wide 200 micron thick PMMA,0.174,,1.0,True,,fan pot 1.02 (47)   incr to 7.0 | air 10   blowoff,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B19,solid,2 cm 100 micron thick PMMA,0.17300000000000001,,1.0,True,,fan 47 (pot 1.05)   incr to pot 6.0 | air 10   blowoff,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B20,solid,2 cm 100 micron thick PMMA,0.174,,1.0,True,,fan 48   pot 0.9   0.5 | air 5   3      pot 0.5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B21,solid,1 cm wide 200 micron thick PMMA,0.20800000000000002,,1.0,True,,fan 53   and down | air 5 down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,B22,solid,1 cm wide 200 micron thick PMMA,0.207,,1.0,True,,fan 53   42   41   40.5 | air 5   2   0,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,F1,solid,Nomex natural (nomex III),0.222,,1.0,True,,fan 82 | air 9.5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,F2,solid,Nomex natural (nomex III),0.21,,1.0,True,,fan 92 | air 15,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,F3,solid,Nomex natural (nomex III),0.217,,1.0,True,,fan 61 | air 8,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,F4,solid,Japan Wax candle,0.174,,1.0,True,,fan see notes | air 3 ign,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M1,solid,1 mm thick PMMA   1 sided   2 cm,0.222,,1.0,True,,fan 58   54 | air 10  8,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M2,solid,3 mm thick PMMA 1 sided    2 cm wide,0.222,,1.0,True,,fan 116 (pot 9.3)    89   80   84 | air 20  15  13   14,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M3,solid,2 cm wide   5 mm thick 1 sided PMMA,0.20800000000000002,,1.0,True,,fan 3.0  3.1  3.2  6.4  5.5  5.4 | air 10   20  18,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M4,solid,5 mm thick PMMA   2 cm wide,0.218,,1.0,True,,fan 52   47   43 | air 5   4   3,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M5,solid,3 mm thick PMMA   2 sided   2 cm thick,0.222,,1.0,True,,fan  | air 20  13  10  8  5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M6,solid,1 mm thick PMMA   2 cm wide,0.218,,1.0,True,,fan 68   52   47   43   42   41 | air 10   5   3   0,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M7,solid,1 cm wide PMMA 1 mm thick,0.18899999999999997,,1.0,True,,fan 2.6   1.3   0.8  0.7  0.6  0.5; 60   49  45  44  43  42 | air 10   6  5  4.5  4  3,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M8,solid,1 cm wide PMMA 2 mm thick,0.191,,1.0,True,,fan 3.3   1.6  1.0   decr | air 10   5>7  5 decr,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M9,solid,1 cm wide PMMA 3 mm thick,0.18,,1.0,True,,fan 3.3   4.8;66  79 | air 10   14,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M10,solid,4 mm thick   1 cm wide PMMA slab,0.201,,1.0,True,,fan 75   105   94/91   72/69   63/61  (4.4   8.0   6.6/6.3   4.0/3.7   3/0/2.7) | air 10  17  14  10  8,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M11,solid,1 cm wide PMMA 5 mm thick,0.2,,1.0,True,,fan 3.9  6.5  4.6  3.3  2.9  2.8; 62.5  93  77  66  63  62 | air 10   20   15  12,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M12,solid,2 mm thick PMMA   2 cm wide,0.217,,1.0,True,,fan 41   42   41 | air <1,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M13,solid,4 mm thick PMMA   2 cm wide,0.20800000000000002,,1.0,True,,fan 52   47   43 | air 6   5   4,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M14,solid,2mm thick PMMA   1 sided   2 cm wide,0.222,,1.0,True,,fan pot 2.4   1.87  (54) | air 10   ~8,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M15,solid,2 cm   4 mm 1 sided PMMA slab,0.21,,1.0,True,,fan ignited 10   adjusted down then up to 20   down in incrments to 15 | air 10   8  7  8  10  20  18  16  15,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M16,solid,1 mm thick PMMA   2 cm wide,0.192,,1.0,True,,fan 73  57  59  48  45  43  75 (4.2  2.2  2.4  1.2  0.8  0.5  4.4) | air 10  6  3  2  1  10,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M17,solid,2 cm wide PMMA 2 mm thick,0.188,,1.0,True,,fan Fan pot 3.7   1.7   1.5   1.3   0.8   0.6   0.5   0.3ext | air 10   5   3   0ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M18,solid,2 cm wide PMMA 3 mm thick,0.179,,1.0,True,,fan Fan pot 3.5   5 (brief)   3  5   2.2 | air 10   15 (brief)   10   8,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M19,solid,4 mm thick   2 cm 2ide PMMA slab,0.19,,1.0,True,,fan 75  105  94  75  77  79  59  61  57  55  53 (4.4  8.0  6.6  4.4  4.6  4.8  2.5  2.7  2.2  2.0  1.8) | air 10  17  14  10  7  5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,M20,solid,5 mm thick PMMA   2 cm wide,0.18,,1.0,True,,fan 67   58 | air 10  8,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O1,solid,"1/4"" clear rod",0.222,,1.0,True,,fan 89  62  50  41 | air 20  10  5  2  1,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O2,solid,"1/4"" clear rod",0.222,,1.0,True,,fan .54 pot   0.45 pot | air 0,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O3a,solid,"1/4"" clear rod",0.18,,1.0,True,,fan  | air 5  3,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O3b,solid,"1/4"" clear rod",0.18,,1.0,True,,fan  | air 5  3  2  1  low,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O4,solid,"3/8""clear rod",0.14800000000000002,,1.0,True,,fan 5   0.7   0.5   0.4   0.36 ext | air 5   down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O5a,solid,"1/2"" clear PMMA rod",0.151,,1.0,True,,fan 1.3   2.7   1.3   0.7   0.45. 4.0 | air 5  10  5   2   0 (49   62   49   44   42),,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O5b,solid,"1/2"" clear PMMA rod",0.142,,1.0,True,,fan 1.3 | air 49   5 cm/s,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O6,solid,"1/4"" clear rod",0.16699999999999998,,1.0,True,,fan 5   .36  .32  .31  .305   out .275 | air see fan,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O7,solid,"1/4"" clear rod",0.16,,1.0,True,,fan 5   .36  .32  ..305   blowoff fan max 10 | air ,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O8a,solid,"1/4"" clear rod",0.157,,1.0,True,,fan 5   .36  .32  .31   extinguished | air ,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O8b,solid,"1/4"" clear rod",0.155,,1.0,True,,fan 5  .36  .32  .31 blowoff fan pot 6.0 | air ,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O9,solid,"1/4"" clear rod",0.15,,1.0,True,,fan 5   .36  .32 blowoff pt 4.0 | air ,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O10,solid,"1/4"" clear rod",0.16699999999999998,,1.0,True,,fan 49  44  41   122 (1.3   0.7   0.4   0.36   0.32   10) | air 5  2   0   max,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O11,solid,"1/4"" black rod",0.154,,1.0,True,,fan ign 5   0.36   0.32   0.31   0.305   blowoff 6.0 | air 5   down then blowoff,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O12,solid,"3/8"" clear rod",0.136,,1.0,True,,fan pots 1.4   3   0.9   0.7 | air no ign at any flow,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O13a,solid,"1/2"" clear PMMA rod",0.159,,1.0,True,,fan 1.3   0.7   0.45   0.36   0.32   0.31 | air 49  44  42  41  41  40.5 (5   2   0),,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O13b,solid,"1/2"" clear PMMA rod",0.146,,1.0,True,,fan 1.3   0.9 | air 7   4? (49   ?),,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O14,solid,"1/4"" black rod",0.163,,1.0,True,,fan 52   and down | air 5 down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O15a,solid,"3/8"" clear rod",0.171,,1.0,True,,fan 57.5   47   42   41 (2.3   1.0   0.5   0.35   0.32) | air 5  0,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O15b,solid,"3/8"" clear rod",0.16699999999999998,,1.0,True,,fan 57.5   42   41   40 (2.3   0.5   0.35   0.34   0.33   0.32   0.31   0.30   0.29   0.28   0.27) | air 5   0,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O16,solid,"3/8""clear rod",0.145,,1.0,True,,fan 60 (2.6) | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O17,solid,"1/4"" clear rod",0.151,,1.0,True,,fan 49   46.5   44   42  41  72   decr (1.3   1.0   0.7   0.5   0.4   4.0   decr ) | air 3   0   11,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O18,solid,"1/4"" clear rod",0.152,,1.0,True,,fan 57  51  47  72  51  72  51  47 (2.3   1.5   1.0   4.0   1.5   4.0   1.5   1.0) | air 5  2  0  11  2  11  2  0,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O19,solid,"1/4"" clear rod",0.153,,1.0,True,,fan 52   and down | air 5 down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O20,solid,"1/4"" clear rod",0.165,,1.0,True,,fan 49 (1.3 pot)   pots 7   8  9   10 | air 5   8    incr to max 38.5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O21,solid,"3/8"" clear rod",0.159,,1.0,True,,fan 46 (pot 0.8)    pot 7   10 | air incr to 28,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,O22,solid,"1/2"" clear rod",0.154,,1.0,True,,fan 49 (pot 1.1)   blowoff pot 5   out at fan 87 | air 4 incr to 26.5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P1,solid,"1/4"" black rod",0.177,,1.0,True,,fan  | air 5  2   slow decr to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P2,solid,"1/4"" black rod",0.174,,1.0,True,,fan  | air 5   2.5   2 (pot .9   .5   .35.  .33),,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P3a,solid,"1/4"" clear rod",0.177,,1.0,True,,fan  | air 5   2.5 (1.15   .5   .35   .33. .32   .315   .31   .3),,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P3b,solid,1/4 clear rod,0.174,,1.0,True,,fan  | air 5   very low (0.85   0.32   0.31   0.305   0.30   0.295),,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P4,solid,"3/8"" black rod",0.185,,1.0,True,,fan 48   41 | air 5   pots 0.4   0.36   0.32   0.308   .3   off,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P5,solid,"0.5"" black rod",0.193,,1.0,True,,fan Fan pot 1.5 (5cm/s)   0.9   0.4   0.36   0.32   0.308   0.3   0.29   0.28   0 ext | air 5 down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P6,solid,"1/4"" black rod",0.18899999999999997,,1.0,True,,fan 48   41 | air 5   pots 0.4   0.36   0.32   0.31   off,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P8,solid,"3/8"" black rod",0.16399999999999998,,1.0,True,,fan 48   62   75 | air 5   would not stay lit   10   15 ibid,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P9,solid,"0.5"" black rod",0.17600000000000002,,1.0,True,,fan Fan pot 1.5 (5cm/s)   0.9   0.4   0.36   0.32   0.3   0.28 ext | air 5 down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P10,solid,"1/4"" black rod",0.17,,1.0,True,,fan 48   41 | air 5   pots 0.4   0.36   0.32   0.31   0.30 extinguished,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P12,solid,"3/8"" black rod",0.175,,1.0,True,,fan 60  52  48  44.5  42  41.5  41 (2.6  1.6  1.2  .75  .5  .4  .36  0.34) | air 5   3  2  1   0.5   lower,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P13a,solid,"0.5"" black rod",0.207,,1.0,True,,fan Fan pot 1.1 (5cm/s)   0.4   0.36   0.32   0.3   0.28   0.26   0 ext | air 5 down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P13b,solid,"0.5"" black rod",0.20600000000000002,,1.0,True,,fan Fan pot 1.3 (5cm/s)   0.4   0.36   0.32 ext | air 5 down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P14,solid,1/4 blac rod,0.184,,1.0,True,,fan 46   41 | air 5   low (.85   .4   .32),,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P15,solid,1/4 black rod,0.18,,1.0,True,,fan 46   41 | air 5   (0.36),,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P16,solid,"1/4"" black rod",0.182,,1.0,True,,fan 49  62  44  41.5  41 (pots 1.3   2.8   0.7   0.4   0.36   0.32) | air 5  8  2  low,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P17,solid,"1/4""  black rod",0.168,,1.0,True,,fan 60  52  48  233  48  41 (2.6   1.6   1.2   10   1.2   0.36   0.34) | air 5   3   2   22   2   low,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P18,solid,"1/4"" black rod",0.2,,1.0,True,,fan 55  47  etc (pot 1  2  1  2   etc) | air 2  0  2  0  etc,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P19,solid,"1/4"" black rod",0.175,,1.0,True,,fan 49  62  44  41.5  122   41 (pots 1.3   2.8   0.7   0.4   0.36   10.   0.32) | air 5  8  2  max   0,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P20,solid,"1/4"" black rod",0.19,,1.0,True,,fan 55  47  etc (pot 1  2  1  2   etc) | air 2  0  2  0  etc,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P21a,solid,1/4 black rod,0.163,,1.0,True,,fan 46 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P21b,solid,"1/4"" black rod",0.163,,1.0,True,,fan 46 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P22a,solid,"3/8"" black rod",0.20800000000000002,,1.0,True,,fan 5   0.36   0.32 ext after some time | air 5   down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P22b,solid,"3/8"" black rod",0.2,,1.0,True,,fan 5   p.36   0.34   0.33   0.32   0.31 ext | air 5 down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P23,solid,"3/8"" black rod",0.182,,1.0,True,,fan 55  47  etc (pot 1  2  1  2   etc) | air 2  0  2  0  etc,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P24,solid,"3/8"" black rod",0.19,,1.0,True,,fan 55  47  etc (pot 1  2  1  2   etc) | air 2  0  2  0  etc,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,P25,solid,"3/8"" clear rod",0.209,,1.0,True,,fan 5   p.36   0.34   0.33   0.32   0.31 ext | air 5 down to ext,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T1,solid,2 cm SIBAL,0.185,,1.0,True,,fan 80 | air 10,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T2,solid,2 cm SIBAL,0.185,,1.0,True,,fan 80   59   55 | air 9   5   4,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T3,solid,4 cm spherical section,0.172,,1.0,True,,fan 63 | air 10,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T4,solid,2 cm SIBAL,0.187,,1.0,True,,fan 80   46 | air 9  1,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T5,solid,2 cm SIBAL,0.188,,1.0,True,,fan 2.72   0.50   0.42 | air 10   2   1,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T6,solid,2 cm SIBAL,0.188,,1.0,True,,fan  | air 5  2  1   <1,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T7,solid,4 cm spherical section,0.17300000000000001,,1.0,True,,fan 3.4   67 | air 10   5  3  1   decr,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T9,solid,2 cm SIBAL,0.16399999999999998,,1.0,True,,fan pot 2.5 | air 10,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T10,solid,2 cm SIBAL,0.16399999999999998,,1.0,True,,fan pot 1.1 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T11,solid,2 cm SIBAL,0.171,,1.0,True,,fan 48 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T12,solid,2 cm SIBAL,0.168,,1.0,True,,fan pot 1.1 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T13,solid,2 cm SIBAL,0.175,,1.0,True,,fan  | air 5  1,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T14,solid,2 cm SIBAL,0.16899999999999998,,1.0,True,,fan  | air 5  3,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T15,solid,2 cm SIBAL,0.187,,1.0,True,,fan 80122 | air 9   29,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T16,solid,2 cm SIBAL,0.17600000000000002,,1.0,True,,fan  | air 5  3,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T17,solid,2 cm SIBAL,0.16899999999999998,,1.0,True,,fan  | air 6   53,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T18,solid,2 cm SIBAL,0.174,,1.0,True,,fan  | air 5  2,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T19,solid,1 cm SIBAL,0.172,,1.0,True,,fan 68.5   pot 3.6 | air 11,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T20,solid,1 cm SIBAL,0.172,,1.0,True,,fan 3.6   0.9 | air 11   3,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T21,solid,1 cm SIBAL,0.172,,1.0,True,,fan 1.6 pot   52 | air 11   max(47),,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T22,solid,1 cm SIBAL,0.171,,1.0,True,,fan 3.4   1.7 | air 10   5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T23,solid,2 cm Sibal   moved igniter,0.172,,1.0,True,,fan 3.3   66 | air 10,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T24,solid,1 cm SIBAL   top side ign,0.182,,1.0,True,,fan 3.3 66 | air 10,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T25,solid,2 cm SIBAL,0.20800000000000002,,1.0,True,,fan 53   45 | air 5   2.5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T26,solid,2 cm SIBAL,0.20800000000000002,,1.0,True,,fan 53   45 | air 5   2.5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T27,solid,1 cm SIBAL,0.207,,1.0,True,,fan 53   45 | air 5   2,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T28a,solid,1 cm SIBAL,0.207,,1.0,True,,fan 53 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T28b,solid,1 cm SIBAL,0.207,,1.0,True,,fan 53 | air 5,,pressure not measured; 1 atm assumed for plotting only
+PSI-25,BASS-II,T29,solid,1 cm SIBAL,0.207,,1.0,True,,fan 53   43 | air 5   2(?),,pressure not measured; 1 atm assumed for plotting only
+PSI-10,Flame Design (inverse),21328A1,gas,ethylene,0.37082819,1.00401873,,False,,,,
+PSI-10,Flame Design (inverse),21328A2,gas,ethylene,0.371286026,1.00776126,,False,,,,
+PSI-10,Flame Design (inverse),21328D1,gas,ethylene,0.212319452,1.04824863,,False,,,,
+PSI-10,Flame Design (inverse),21328N1,gas,ethylene,0.849977932,0.95502561,,False,,,,
+PSI-10,Flame Design (inverse),21328N2,gas,ethylene,0.849977932,0.95502561,,False,,,,
+PSI-10,Flame Design (inverse),21328N3,gas,ethylene,0.849977932,0.9560463,,False,,,,
+PSI-10,Flame Design (inverse),21328N4,gas,ethylene,0.849977932,0.9560463,,False,,,,
+PSI-10,Flame Design (inverse),21328N5,gas,ethylene,0.849977932,0.95638653,,False,,,,
+PSI-10,Flame Design (inverse),21328P1,gas,ethylene,0.40193315,0.95638653,,False,,,,
+PSI-10,Flame Design (inverse),21340A1,gas,ethylene,0.849977932,1.00435896,,False,,,,
+PSI-10,Flame Design (inverse),21340A2,gas,ethylene,0.849977932,1.00606011,,False,,,,
+PSI-10,Flame Design (inverse),21340B1,gas,ethylene,0.564864309,1.00912218,,False,,,,
+PSI-10,Flame Design (inverse),21340B2,gas,ethylene,0.565263488,1.01082333,,False,,,,
+PSI-10,Flame Design (inverse),21340C1,gas,ethylene,0.355416217,1.01218425,,False,,,,
+PSI-10,Flame Design (inverse),21340C2,gas,ethylene,0.355855949,1.01286471,,False,,,,
+PSI-10,Flame Design (inverse),21340C3,gas,ethylene,0.289768222,1.01592678,,False,,,,
+PSI-10,Flame Design (inverse),21340C4,gas,ethylene,0.291369888,1.01626701,,False,,,,
+PSI-10,Flame Design (inverse),21340C5,gas,ethylene,0.293991022,1.01694747,,False,,,,
+PSI-10,Flame Design (inverse),21340C6,gas,ethylene,0.291244031,1.01898885,,False,,,,
+PSI-10,Flame Design (inverse),21340C7,gas,ethylene,0.294875805,1.01932908,,False,,,,
+PSI-10,Flame Design (inverse),21340M1,gas,ethylene,0.849977932,1.00878195,,False,,,,
+PSI-10,Flame Design (inverse),21340M2,gas,ethylene,0.469396187,1.01660724,,False,,,,
+PSI-10,Flame Design (inverse),21349A1,gas,ethylene,0.849977932,0.42596796,,False,,,,
+PSI-10,Flame Design (inverse),21349B1,gas,ethylene,0.849977932,0.42800934,,False,,,,
+PSI-10,Flame Design (inverse),21349D2,gas,ethylene,0.212288808,0.4286898,,False,,,,
+PSI-10,Flame Design (inverse),21349D3,gas,ethylene,0.252907672,0.43039095,,False,,,,
+PSI-10,Flame Design (inverse),21349M1,gas,ethylene,0.345371087,1.00571988,,False,,,,
+PSI-10,Flame Design (inverse),21349M2,gas,ethylene,0.262286322,1.00640034,,False,,,,
+PSI-10,Flame Design (inverse),21349M3,gas,ethylene,0.212467161,1.01422563,,False,,,,
+PSI-10,Flame Design (inverse),21349M4,gas,ethylene,,1.02375207,,False,,,,XO2 = RAMP
+PSI-10,Flame Design (inverse),21349M5,gas,ethylene,,1.03055667,,False,,,,XO2 = RAMP
+PSI-10,Flame Design (inverse),21349M6,gas,ethylene,,1.03940265,,False,,,,XO2 = RAMP
+PSI-10,Flame Design (inverse),21349M7,gas,ethylene,0.500492181,1.04416587,,False,,,,
+PSI-10,Flame Design (inverse),21349N1,gas,ethylene,0.502028139,0.50660247,,False,,,,
+PSI-10,Flame Design (inverse),21349N2,gas,ethylene,0.319651909,0.50898408,,False,,,,
+PSI-10,Flame Design (inverse),21349N3,gas,ethylene,0.212378902,0.51510822,,False,,,,
+PSI-10,Flame Design (inverse),21349N4,gas,ethylene,0.212017175,0.5205519,,False,,,,
+PSI-10,Flame Design (inverse),21361A1,gas,ethylene,0.849977932,1.00640034,,False,,,,
+PSI-10,Flame Design (inverse),21361B1,gas,ethylene,0.849977932,1.00878195,,False,,,,
+PSI-10,Flame Design (inverse),21361C1,gas,ethylene,0.433408794,1.01116356,,False,,,,
+PSI-10,Flame Design (inverse),21361C2,gas,ethylene,0.433829814,1.01456586,,False,,,,
+PSI-10,Flame Design (inverse),21361D1,gas,ethylene,0.269972431,1.01694747,,False,,,,
+PSI-10,Flame Design (inverse),21361D2,gas,ethylene,0.270380954,1.01898885,,False,,,,
+PSI-10,Flame Design (inverse),21361F1,gas,ethylene,0.849977932,1.00571988,,False,,,,
+PSI-10,Flame Design (inverse),21361F2,gas,ethylene,0.849977932,1.00606011,,False,,,,
+PSI-10,Flame Design (inverse),21361F3,gas,ethylene,0.849977932,1.0070808,,False,,,,
+PSI-10,Flame Design (inverse),21361F4,gas,ethylene,0.849977932,1.00640034,,False,,,,
+PSI-10,Flame Design (inverse),21361F5,gas,ethylene,0.849977932,1.00844172,,False,,,,
+PSI-10,Flame Design (inverse),21361F6,gas,ethylene,0.849977932,1.0070808,,False,,,,
+PSI-10,Flame Design (inverse),21361G1,gas,ethylene,0.569603349,1.00946241,,False,,,,
+PSI-10,Flame Design (inverse),21361G2,gas,ethylene,0.571963123,1.0104831,,False,,,,
+PSI-10,Flame Design (inverse),21361G3,gas,ethylene,0.572032341,1.01150379,,False,,,,
+PSI-10,Flame Design (inverse),21361G4,gas,ethylene,0.364248407,1.01320494,,False,,,,
+PSI-10,Flame Design (inverse),21361G5,gas,ethylene,0.366162786,1.01252448,,False,,,,
+PSI-10,Flame Design (inverse),21361M1,gas,ethylene,0.434718543,1.00537965,,False,,,,
+PSI-10,Flame Design (inverse),21361M2,gas,ethylene,0.271103057,1.00640034,,False,,,,
+PSI-10,Flame Design (inverse),21361M3,gas,ethylene,0.849977932,1.01320494,,False,,,,
+PSI-10,Flame Design (inverse),22018A1,gas,ethylene,0.849977932,1.00333827,,False,,,,
+PSI-10,Flame Design (inverse),22018B1,gas,ethylene,0.849977932,1.00435896,,False,,,,
+PSI-10,Flame Design (inverse),22018C1,gas,ethylene,0.568658025,1.00571988,,False,,,,
+PSI-10,Flame Design (inverse),22018D1,gas,ethylene,0.455719081,1.00606011,,False,,,,
+PSI-10,Flame Design (inverse),22018F1,gas,ethylene,0.365417242,1.0070808,,False,,,,
+PSI-10,Flame Design (inverse),22018G1,gas,ethylene,0.849977932,1.00469919,,False,,,,
+PSI-10,Flame Design (inverse),22018G2,gas,ethylene,0.849977932,1.00674057,,False,,,,
+PSI-10,Flame Design (inverse),22018G3,gas,ethylene,0.849977932,1.00742103,,False,,,,
+PSI-10,Flame Design (inverse),22018H2,gas,ethylene,0.497148646,1.00912218,,False,,,,
+PSI-10,Flame Design (inverse),22018J1,gas,ethylene,0.318171716,1.0138854,,False,,,,
+PSI-10,Flame Design (inverse),22018J2,gas,ethylene,0.849977932,1.01592678,,False,,,,
+PSI-10,Flame Design (inverse),22018J4,gas,ethylene,0.460992465,1.02375207,,False,,,,
+PSI-10,Flame Design (inverse),22024A1,gas,ethylene,0.849977932,1.00571988,,False,,,,
+PSI-10,Flame Design (inverse),22024A2,gas,ethylene,0.849977932,1.00776126,,False,,,,
+PSI-10,Flame Design (inverse),22024B1,gas,ethylene,0.849977932,1.00810149,,False,,,,
+PSI-10,Flame Design (inverse),22024C1,gas,ethylene,0.644458404,1.01014287,,False,,,,
+PSI-10,Flame Design (inverse),22024D1,gas,ethylene,0.411995618,1.01014287,,False,,,,
+PSI-10,Flame Design (inverse),22024F1,gas,ethylene,0.256270373,1.01218425,,False,,,,
+PSI-10,Flame Design (inverse),22024B2,gas,ethylene,,1.01796816,,False,,,,XO2 = RAMP
+PSI-10,Flame Design (inverse),22024B3,gas,ethylene,,1.02171069,,False,,,,XO2 = RAMP
+PSI-10,Flame Design (inverse),22024G1,gas,ethylene,0.849977932,0.50251971,,False,,,,
+PSI-10,Flame Design (inverse),22024H1,gas,ethylene,0.849977932,0.50388063,,False,,,,
+PSI-10,Flame Design (inverse),22024J1,gas,ethylene,0.643889549,0.50422086,,False,,,,
+PSI-10,Flame Design (inverse),22024K1,gas,ethylene,0.411583511,0.50524155,,False,,,,
+PSI-10,Flame Design (inverse),22024L1,gas,ethylene,0.256080232,0.50728293,,False,,,,
+PSI-10,Flame Design (inverse),22024L2,gas,ethylene,0.327364706,0.50830362,,False,,,,
+PSI-10,Flame Design (inverse),22024L3,gas,ethylene,0.413276012,0.50966454,,False,,,,
+PSI-10,Flame Design (inverse),22024H2,gas,ethylene,0.849977932,0.51102546,,False,,,,
+PSI-10,Flame Design (inverse),22042M1,gas,ethylene,,0.51272661,,False,,,,XO2 = RAMP
+PSI-10,Flame Design (inverse),22024M2,gas,ethylene,,0.51612891,,False,,,,XO2 = RAMP
+PSI-10,Flame Design (inverse),22024K2,gas,ethylene,,0.51885075,,False,,,,XO2 = LOW O2
+PSI-10,Flame Design (inverse),22024K3,gas,ethylene,,0.52497489,,False,,,,XO2 = LOW O2
+PSI-10,Flame Design (inverse),22027B1,gas,ethylene,0.849977932,3.00491136,,False,,,,
+PSI-10,Flame Design (inverse),22027B2,gas,ethylene,0.849977932,3.00593205,,False,,,,
+PSI-10,Flame Design (inverse),22027B3,gas,ethylene,0.849977932,3.00729297,,False,,,,
+PSI-10,Flame Design (inverse),22027B4,gas,ethylene,,3.00457113,,False,,,,XO2 = RAMP
+PSI-10,Flame Design (inverse),22027B5,gas,ethylene,0.849977932,3.00797343,,False,,,,
+PSI-10,Flame Design (inverse),22027B6,gas,ethylene,0.849977932,3.00933435,,False,,,,
+PSI-10,Flame Design (inverse),22027B7,gas,ethylene,0.849977932,3.01001481,,False,,,,
+PSI-10,Flame Design (inverse),22027D1,gas,ethylene,0.491262479,3.01477803,,False,,,,
+PSI-10,Flame Design (inverse),22027D2,gas,ethylene,0.849977932,3.01818033,,False,,,,
+PSI-10,Flame Design (inverse),22027D3,gas,ethylene,0.849977932,3.00593205,,False,,,,
+PSI-10,Flame Design (inverse),22027D4,gas,ethylene,0.849977932,3.00593205,,False,,,,
+PSI-10,Flame Design (inverse),22027D5,gas,ethylene,0.849977932,3.00593205,,False,,,,
+PSI-10,Flame Design (inverse),22027D6,gas,ethylene,0.849977932,3.00661251,,False,,,,
+PSI-10,Flame Design (inverse),22027B8,gas,ethylene,,3.00525159,,False,,,,XO2 = RAMP
+PSI-10,Flame Design (inverse),22027C1,gas,ethylene,0.498054913,3.00797343,,False,,,,
+PSI-10,Flame Design (inverse),22027C2,gas,ethylene,0.318569512,3.00831366,,False,,,,
+PSI-10,Flame Design (inverse),22035A1,gas,ethylene,0.849977932,1.97741676,,False,,,,
+PSI-10,Flame Design (inverse),22035B1,gas,ethylene,0.849977932,1.97945814,,False,,,,
+PSI-10,Flame Design (inverse),22035C1,gas,ethylene,0.569103938,1.9801386,,False,,,,
+PSI-10,Flame Design (inverse),22035D1,gas,ethylene,0.455889821,1.98081906,,False,,,,
+PSI-10,Flame Design (inverse),22035D3,gas,ethylene,0.455328049,1.9801386,,False,,,,
+PSI-10,Flame Design (inverse),22035F1,gas,ethylene,0.36478772,1.98286044,,False,,,,
+PSI-10,Flame Design (inverse),22035G1,gas,ethylene,0.290628255,1.9835409,,False,,,,
+PSI-10,Flame Design (inverse),22035G2,gas,ethylene,0.849977932,1.99885125,,False,,,,
+PSI-10,Flame Design (inverse),22035J1,gas,ethylene,0.849977932,0.50456109,,False,,,,
+PSI-10,Flame Design (inverse),22035J2,gas,ethylene,0.849977932,0.50796339,,False,,,,
+PSI-10,Flame Design (inverse),22035J3,gas,ethylene,0.849977932,0.510345,,False,,,,
+PSI-10,Flame Design (inverse),22035J4,gas,ethylene,0.849977932,0.51170592,,False,,,,
+PSI-10,Flame Design (inverse),22035J5,gas,ethylene,0.849977932,0.51272661,,False,,,,
+PSI-10,Flame Design (inverse),22035J6,gas,ethylene,0.849977932,0.51476799,,False,,,,
+PSI-10,Flame Design (inverse),22035J7,gas,ethylene,0.849977932,0.51510822,,False,,,,
+PSI-159,CFI-G,21088A1,gas,ethane,0.3939,0.932045990624229,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21088 B1,gas,ethane,0.389822946,0.932045990624229,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21088 C1,gas,ethane,0.386321188,0.932045990624229,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21088 D1,gas,ethane,0.382905163,0.932045990624229,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21088 F1,gas,ethane,0.380426741,0.932045990624229,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21088 G1,gas,ethane,0.379858042,0.932045990624229,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21088 H1,gas,ethane,0.376135171,0.932045990624229,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21088 J1,gas,ethane,0.373391583,0.932045990624229,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21088 K1,gas,ethane,0.369578072,0.932045990624229,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21088 H2,gas,ethane,0.364549879,0.932045990624229,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21088 M4,gas,ethane,0.2101,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21088 L1,gas,ethane,0.209638709,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21088 N1,gas,ethane,0.1802,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21088 P1,gas,ethane,0.179685675,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21102A1,gas,50% butane,0.3957,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21102 C1,gas,50% butane,0.393031985,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21102 B1,gas,50% butane,0.390548195,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21102 C2,gas,50% butane,0.388126117,1.000049346163336,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21102 C3,gas,50% butane,0.386221513,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21102 C4,gas,50% butane,0.382509153,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21102 C5,gas,50% butane,0.382509153,1.000049346163336,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21102 C6,gas,50% butane,0.381212087,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21102 C7,gas,50% butane,0.381212087,1.000049346163336,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21102 C8,gas,50% butane,0.380669262,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21102 M1,gas,50% butane,0.2341,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21102 M2,gas,50% butane,0.233649188,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21102 M3,gas,50% butane,0.233254802,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21102 M4,gas,50% butane,0.233254802,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21102 M5,gas,50% butane,0.233254802,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21102 M6,gas,50% butane,0.233254802,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21106A4,gas,50% butane,0.3926,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21106 B1,gas,50% butane,0.384638613,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21106 C1,gas,50% butane,0.377171369,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21106 D1,gas,50% butane,0.369281404,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21106 F1,gas,50% butane,0.358532281,0.500024673081668,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21106 F2,gas,50% butane,0.35424096,0.500024673081668,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21106 F3,gas,50% butane,0.35424096,0.500024673081668,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21106 F4,gas,50% butane,0.353756802,0.500024673081668,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21106 F5,gas,50% butane,0.352937762,0.500024673081668,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21106 G6,gas,50% butane,0.2097,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21106 G7,gas,50% butane,0.208586481,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21106 G9,gas,50% butane,0.207473561,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21106 H1,gas,50% butane,0.206694811,0.500024673081668,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21106 H2,gas,50% butane,0.206694811,0.500024673081668,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21112A1,gas,propane,0.3954,0.932045990624229,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21112 A2,gas,propane,0.3940449,0.932045990624229,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21112 A3,gas,propane,0.391274328,0.932045990624229,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21112 A4,gas,propane,0.386794842,0.932045990624229,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21112 A5,gas,propane,0.379543758,0.932045990624229,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21112 C1,gas,propane,0.377663625,0.932045990624229,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21112 C2,gas,propane,0.37709578,0.932045990624229,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21112 A6,gas,propane,0.376528047,0.932045990624229,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21112 C3,gas,propane,0.366422787,0.932045990624229,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21112 C4,gas,propane,0.366422787,0.932045990624229,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21112 C5,gas,propane,0.366422787,0.932045990624229,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21112 C6,gas,propane,0.366422787,0.932045990624229,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21112 F1,gas,propane,0.2125,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21112 F2,gas,propane,0.2125,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21112 F3,gas,propane,0.212224743,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21112 F4,gas,propane,0.212004554,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21112 F5,gas,propane,0.211798144,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21112 H1,gas,propane,0.211798144,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21112 H2,gas,propane,0.211591749,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21112 H3,gas,propane,0.211402567,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125A1,gas,30% butane,0.3945,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 A2,gas,30% butane,0.3945,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21125 A3,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 A4,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 A5,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 A6,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 A7,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 A8,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 A9,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 H1,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 H2,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 H3,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 H4,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 J1,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 H5,gas,30% butane,0.394118729,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 K1,gas,30% butane,0.394118729,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21125 K2,gas,30% butane,0.389156864,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21125 K3,gas,30% butane,0.38437638,1.000049346163336,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21125 D1,gas,30% butane,0.2111,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21125 D2,gas,30% butane,0.211072309,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21125 D3,gas,30% butane,0.211044619,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 D4,gas,30% butane,0.211044619,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 D5,gas,30% butane,0.211044619,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21125 D6,gas,30% butane,0.211044619,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21130A1,gas,30% propane,0.2107,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 A2,gas,30% propane,0.210684692,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 A3,gas,30% propane,0.210654078,2.000098692326672,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21130 A4,gas,30% propane,0.210654078,2.000098692326672,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21130 A5,gas,30% propane,0.210654078,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 A6,gas,30% propane,0.210623465,2.000098692326672,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21130 A7,gas,30% propane,0.210623465,2.000098692326672,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21130 A8,gas,30% propane,0.210623465,2.000098692326672,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21130 A9,gas,30% propane,0.210623465,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 M1,gas,30% propane,0.210615813,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 M2,gas,30% propane,0.21050331,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 M3,gas,30% propane,0.210240854,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 G1,gas,30% propane,0.2167,3.000148038490007,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21130 G2,gas,30% propane,0.2167,3.000148038490007,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 G3,gas,30% propane,0.216689654,3.000148038490007,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 G4,gas,30% propane,0.216668964,3.000148038490007,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21130 G5,gas,30% propane,0.216668964,3.000148038490007,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21130 G6,gas,30% propane,0.216668964,3.000148038490007,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 G7,gas,30% propane,0.216663791,3.000148038490007,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 N1,gas,30% propane,0.216661205,3.000148038490007,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 N2,gas,30% propane,0.216585869,3.000148038490007,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 N3,gas,30% propane,0.216435213,3.000148038490007,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 N4,gas,30% propane,0.216403828,3.000148038490007,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21130 N5,gas,30% propane,0.216372442,3.000148038490007,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21137A1,gas,30% propane,0.3996,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21137 A2,gas,30% propane,0.397258964,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21137 A3,gas,30% propane,0.394768875,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21137 B1,gas,30% propane,0.389508666,1.000049346163336,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21137 B2,gas,30% propane,0.371242231,1.000049346163336,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21137 A4,gas,30% propane,0.357498988,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21137 A5,gas,30% propane,0.355683743,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21137 A6,gas,30% propane,0.353678232,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21137 A7,gas,30% propane,0.352403076,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21137 D1,gas,30% propane,0.21,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21137 D2,gas,30% propane,0.209133851,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21137 C1,gas,30% propane,0.208927834,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21153A1,gas,30% ethane,0.3887,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21153 A2,gas,30% ethane,0.375900202,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21153 A3,gas,30% ethane,0.363879118,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21153 F1,gas,30% ethane,0.34080788,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21153 A4,gas,30% ethane,0.334933586,0.500024673081668,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21153 A5,gas,30% ethane,0.332446428,0.500024673081668,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21153 C1,gas,30% ethane,0.3985,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21153 C2,gas,30% ethane,0.396626309,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21153 C3,gas,30% ethane,0.394842385,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21153 G1,gas,30% ethane,0.391980391,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21153 C4,gas,30% ethane,0.388939354,2.000098692326672,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21153 C5,gas,30% ethane,0.384151721,2.000098692326672,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21153 C6,gas,30% ethane,0.383585316,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21153 C7,gas,30% ethane,0.382061285,2.000098692326672,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21162A1,gas,30% ethane,0.3997,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 A2,gas,30% ethane,0.394966671,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 A3,gas,30% ethane,0.390017987,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 B1,gas,30% ethane,0.37932621,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 A4,gas,30% ethane,0.372085537,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 C1,gas,30% ethane,0.21,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 C2,gas,30% ethane,0.209619681,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 C3,gas,30% ethane,0.209289501,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 C4,gas,30% ethane,0.20892942,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 C5,gas,30% ethane,0.208389559,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 D1,gas,30% ethane,0.207540819,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21162 F1,gas,30% ethane,0.207221235,1.000049346163336,,False,,,No hot ignition,pressure approximate (bar column)
+PSI-159,CFI-G,21162 F2,gas,30% ethane,0.207221235,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 A1,gas,30% butane,0.3886,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 A2,gas,30% butane,0.38317216,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 A3,gas,30% butane,0.378521822,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 A4,gas,30% butane,0.372051768,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 B1,gas,30% butane,0.355439854,0.500024673081668,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 C1,gas,30% butane,0.3985,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 C2,gas,30% butane,0.396546482,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 C3,gas,30% butane,0.39537253,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 C4,gas,30% butane,0.394310549,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 D1,gas,30% butane,0.392491915,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 F1,gas,30% butane,0.390816348,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 C5,gas,30% butane,0.389605939,2.000098692326672,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21174 C6,gas,30% butane,0.389263058,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21174 F2,gas,30% butane,0.385474447,2.000098692326672,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21174 F3,gas,30% butane,0.384750235,2.000098692326672,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21174 F4,gas,30% butane,0.384056477,2.000098692326672,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21291 A1,gas,30% butane,0.3993,2.000098692326672,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21291 C1,gas,30% butane,0.394233062,2.000098692326672,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21291 C2,gas,30% butane,0.389271344,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21291 B1,gas,30% butane,0.388318854,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21291 H1,gas,30% butane,0.387190712,2.000098692326672,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21291 H2,gas,30% butane,0.386174345,2.000098692326672,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21291 D1,gas,30% butane,0.3978,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21291 G1,gas,30% butane,0.394946781,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21291 G2,gas,30% butane,0.38845523,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21291 J1,gas,30% butane,0.385436483,1.000049346163336,,False,,,Flow terminated,pressure approximate (bar column)
+PSI-159,CFI-G,21291 J2,gas,30% butane,0.382657026,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-159,CFI-G,21291 J3,gas,30% butane,0.380783875,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
+PSI-98,Saffire-I,S1,solid,SIBAL Fabric,0.215,,,False,20.0,20,,
+PSI-98,Saffire-I,S2,solid,SIBAL Fabric,0.215,,,False,20.0,20,,O2 approximate (~)
+PSI-99,Saffire-II,2-1,solid,Silicone,0.215,,,False,20.0,20 cm/s,,O2 approximate (~)
+PSI-99,Saffire-II,2-2,solid,Silicone,0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
+PSI-99,Saffire-II,2-3,solid,Silicone,0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
+PSI-99,Saffire-II,2-4,solid,Silicone,0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
+PSI-99,Saffire-II,2-5,solid,Cotton-Fiberglass (SIBAL),0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
+PSI-99,Saffire-II,2-6,solid,,0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
+PSI-99,Saffire-II,2-7,solid,PMMA & Nomex,0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
+PSI-99,Saffire-II,2-8,solid,PMMA,0.221,,,False,20.0,20 cm/s,,
+PSI-99,Saffire-II,2-9,solid,,0.22,,,False,20.0,20 cm/s,,
+PSI-100,Saffire-III,S1,solid,SIBAL Fabric,,,,False,30.0,30 cm/s,,
+PSI-100,Saffire-III,S2,solid,SIBAL Fabric,,,,False,30.0,30 cm/s,,
