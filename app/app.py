@@ -25,7 +25,7 @@ from src.catalog_data import LITERATURE_POINTS  # noqa: E402
 from src.features import MODEL_FEATURES, build_features  # noqa: E402
 from src.knowledge import Retriever, load_chunks  # noqa: E402
 from src.lessons import LESSONS  # noqa: E402
-from src.llm_config import load_providers  # noqa: E402
+from src.llm_config import connection_report, load_providers  # noqa: E402
 from src.models import NEAREST_FEATURES, predict_interval  # noqa: E402
 from src.rag import STARTER_QUESTIONS, answer  # noqa: E402
 from src.ranking import DEFAULT_WEIGHTS, FACTORS, rank_investigations  # noqa: E402
@@ -464,10 +464,33 @@ def tab_lessons() -> None:
             st.markdown(f'<p class="fm-src">{html.escape(x["source"])}{link}</p>', unsafe_allow_html=True)
 
 
+def sidebar_ai_check() -> None:
+    with st.sidebar.expander("AI connection check"):
+        st.caption("Runs one tiny live request per provider. Keys are never shown, only whether one was found.")
+        if st.button("Test connection", key="ai_check"):
+            with st.spinner("Contacting providers..."):
+                rows = connection_report()
+            for r in rows:
+                status = "OK" if r.get("ok") else "FAILED"
+                st.markdown(f"**{r['provider']}** — {status}")
+                st.text(f"base_url: {r['base_url']}\nmodel: {r['model']}\napi_style: {r['api_style']}\n"
+                        f"key found: {r['key_found']}")
+                if r.get("error_class"):
+                    st.text(f"error: {r['error_class']} (HTTP {r.get('status_code')})")
+                st.code(r["result"], language=None)
+                if r.get("hint"):
+                    st.warning(r["hint"])
+                if r.get("available_models"):
+                    st.text("Available models:\n" + "\n".join(r["available_models"]))
+                if r.get("available_models_error"):
+                    st.text("Model listing failed: " + r["available_models_error"])
+
+
 def main() -> None:
     st.set_page_config(page_title="Fire-Margin", page_icon="🔥", layout="wide")
     st.markdown(CSS, unsafe_allow_html=True)
     t = load_tables()
+    sidebar_ai_check()
     header(t)
     tabs = st.tabs(["Catalog & Ranking", "Flame Predictor", "Oxygen-Margin Map", "Ask Fire-Margin",
                     "Lessons & Earth Impact"])

@@ -1,3 +1,4 @@
+import json
 from types import SimpleNamespace
 
 from src.llm_config import UNAVAILABLE_MESSAGE, Provider, chat, load_providers
@@ -163,3 +164,72 @@ def test_old_llama_endpoint_keeps_chat_style(monkeypatch):
     assert p.api_style == "chat"
     typo = load_providers(secrets={"MODEL_API_KEY": "k", "META_API_STYLE": "respones"})[0]
     assert typo.api_style == "responses"
+
+
+# ----------------------------------------------------------------- robustness + diagnostics
+SECRET = "sk-live-THISISASECRETKEY1234567890abcdef"
+
+
+def test_key_whitespace_and_quotes_are_stripped(monkeypatch):
+    for v in ALL_KEYS:
+        monkeypatch.delenv(v, raising=False)
+    p = load_providers(secrets={"MODEL_API_KEY": '  "abc123"  \n'})[0]
+    assert p.api_key == "abc123"
+    q = load_providers(secrets={"meta": {"api_key": "'k-sec'", "base_url": " https://x/v1 ", "model": "m9"}})[0]
+    assert (q.api_key, q.base_url, q.model) == ("k-sec", "https://x/v1", "m9")
+    assert load_providers(secrets={"MODEL_API_KEY": '""'}) == []
+
+
+class FakeStatusError(Exception):
+    def __init__(self, status, msg="bad"):
+        super().__init__(msg)
+        self.status_code = status
+
+
+def test_instructions_fallback_on_400():
+    calls = []
+
+    def factory(provider):
+        def create(**kw):
+            calls.append(kw)
+            if "instructions" in kw:
+                raise FakeStatusError(400, "instructions not supported")
+            return SimpleNamespace(output_text="Fine [1].", output=[])
+        return SimpleNamespace(responses=SimpleNamespace(create=create))
+    msgs = [{"role": "system", "content": "SYS"}, {"role": "user", "content": "Q"}]
+    res = chat(msgs, providers=[META_R], client_factory=factory, use_cache=False)
+    assert res.ok and res.text == "Fine [1]."
+    assert calls[1]["input"] == "SYS\n\nQ"
+    assert "instructions" in calls[0] and "instructions" not in calls[1] and len(calls) == 2
+
+
+def test_connection_report_never_leaks_key_and_lists_models_on_404():
+    from src.llm_config import connection_report
+
+    def factory(provider):
+        def create(**kw):
+            raise FakeStatusError(404, f"model not found; key={provider.api_key} Bearer {provider.api_key}")
+        return SimpleNamespace(responses=SimpleNamespace(create=create),
+                               models=SimpleNamespace(list=lambda: [SimpleNamespace(id="muse-a"), SimpleNamespace(id="muse-b")]))
+    rows = connection_report(secrets={"MODEL_API_KEY": SECRET}, client_factory=factory)
+    meta = rows[0]
+    assert meta["key_found"] is True and meta["ok"] is False and meta["status_code"] == 404
+    assert meta["available_models"] == ["muse-a", "muse-b"] and "META_MODEL" in meta["hint"]
+    assert SECRET not in json.dumps(rows) and SECRET[:12] not in json.dumps(rows)
+    assert rows[1]["provider"] == "nvidia" and rows[1]["key_found"] is False
+
+
+def test_redact_and_logs_hide_key(caplog):
+    from src.llm_config import redact
+
+    assert SECRET not in redact(f"Incorrect API key provided: {SECRET}")
+    factory, _ = fake_factory({"meta": [FakeError(401)]})
+    leaky = Provider("meta", SECRET, "u", "m")
+
+    def boom_factory(provider):
+        def create(**kw):
+            raise RuntimeError(f"auth failed for {provider.api_key}")
+        return SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+    with caplog.at_level("WARNING", logger="fire_margin.llm"):
+        chat(MSG, providers=[leaky], client_factory=boom_factory, use_cache=False, sleep=lambda s: None)
+    assert caplog.records and SECRET not in caplog.text
