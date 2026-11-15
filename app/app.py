@@ -5,6 +5,7 @@ startup. The app starts with no secrets: the chatbot then shows retrieved NASA p
 """
 from __future__ import annotations
 
+import html
 import json
 import sys
 from pathlib import Path
@@ -34,6 +35,7 @@ FLEX_DOI = "https://doi.org/10.60555/mbq8-0451"
 # ------------------------------------------------------------------ design tokens
 NIGHT, PANEL, TEXT, MUTED = "#0F1A2B", "#17243A", "#E6E1D6", "#9AA6B8"
 FLAME, OXYGEN, PLASMA, DANGER, CALM, PALE = "#FFB03B", "#5EC8E5", "#B79CFF", "#FF5A5F", "#7FB3D5", "#E8D27A"
+MAX_HISTORY = 8
 FUEL_COLOR = {"solid": FLAME, "droplet": OXYGEN, "gas": PLASMA}
 OUTCOME_COLOR = {"Disruption": DANGER, "Extinction": CALM, "Completion": PALE}
 FACTOR_LABEL = {"habitat": "Habitat relevance", "o2_pressure": "O2 / pressure near targets",
@@ -82,9 +84,31 @@ def load_retriever() -> Retriever:
     return Retriever(load_chunks())
 
 
+class _NotCacheable(Exception):
+    def __init__(self, payload: dict):
+        super().__init__("not cacheable")
+        self.payload = payload
+
+
 @st.cache_data(show_spinner=False, ttl=24 * 3600, max_entries=500)
-def cached_answer(question: str) -> dict:
-    return answer(question, load_retriever()).to_dict()
+def _cached_answer(question: str) -> dict:
+    result = answer(question, load_retriever()).to_dict()
+    if result["status"] not in ("answered", "refused"):   # never pin a temporary outage for 24 h
+        raise _NotCacheable(result)
+    return result
+
+
+def get_answer(question: str) -> dict:
+    try:
+        return _cached_answer(question)
+    except _NotCacheable as exc:
+        return exc.payload
+
+
+def a_link(text: str, url: str) -> str:
+    """HTML anchor with escaped text and URL (markdown links do not render inside raw HTML)."""
+    return (f'<a href="{html.escape(url, quote=True)}" target="_blank" rel="noopener">'
+            f"{html.escape(text)}</a>")
 
 
 def fmt_range(lo, hi, pct: bool = False) -> str:
@@ -103,7 +127,8 @@ def header(t: dict) -> None:
         "Mars habitats at about 34% oxygen and 8.2 psia, far richer in oxygen than the ISS. Fire-Margin "
         "maps every NASA microgravity combustion test we could trace, shows where the evidence stops, and "
         "recommends the experiment that would close the gap.</p>", unsafe_allow_html=True)
-    st.markdown(f'<div class="fm-finding">{t["cards"]["pressure_gap"]["key_result"]}</div>', unsafe_allow_html=True)
+    finding = html.escape(t["cards"]["pressure_gap"]["key_result"])
+    st.markdown(f'<div class="fm-finding">{finding}</div>', unsafe_allow_html=True)
     with st.expander("Data & AI disclosure"):
         st.markdown(
             "- **Data**: NASA Physical Sciences Informatics (PSI) tables, the ISS Researcher's Guide to "
@@ -119,10 +144,10 @@ def header(t: dict) -> None:
 def footer(t: dict) -> None:
     st.divider()
     psi = t["inv"].dropna(subset=["psi_id"])[["psi_id", "name"]]
-    items = [f"PSI-69 FLEX — DOI [10.60555/mbq8-0451]({FLEX_DOI})"]
-    items += [f"{r.psi_id} {r.name}" for r in psi.itertuples() if r.psi_id != "PSI-69"]
+    items = ["PSI-69 FLEX — DOI " + a_link("10.60555/mbq8-0451", FLEX_DOI)]
+    items += [html.escape(f"{r.psi_id} {r.name}") for r in psi.itertuples() if r.psi_id != "PSI-69"]
     lit = t["lit"][t["lit"]["kind"] == "literature"].drop_duplicates("citation")
-    items += [f"[{r.citation}]({r.url})" for r in lit.itertuples() if isinstance(r.url, str)]
+    items += [a_link(str(r.citation), r.url) for r in lit.itertuples() if isinstance(r.url, str)]
     st.markdown('<p class="fm-src">Sources: ' + " · ".join(items) + "</p>", unsafe_allow_html=True)
 
 
@@ -154,8 +179,8 @@ def tab_catalog(t: dict) -> None:
                 for label, k in (("Objective", "objective"), ("What varied", "what_varied"),
                                  ("Key result", "key_result"), ("Fire-safety implication", "fire_safety_implication")):
                     st.markdown(f"**{label}.** {card.get(k, 'Not stated in the available sources.')}")
-                st.markdown(f'<p class="fm-src">{card.get("citation", "")} · written by '
-                            f'{card.get("generated_by", "")}</p>', unsafe_allow_html=True)
+                st.markdown(f'<p class="fm-src">{html.escape(card.get("citation", ""))} · written by '
+                            f'{html.escape(card.get("generated_by", ""))}</p>', unsafe_allow_html=True)
             with right:
                 st.markdown("**Score breakdown**")
                 for f in FACTORS:
@@ -175,7 +200,7 @@ def tab_catalog(t: dict) -> None:
 def predict(fuel: str, x_o2: float, p_atm: float, x_co2: float, x_he: float, d0: float) -> dict:
     m = load_models()
     row = pd.DataFrame([{"fuel": fuel, "x_o2": x_o2, "p_atm": p_atm, "x_co2": x_co2, "x_he": x_he,
-                         "x_n2": 1 - x_o2 - x_co2 - x_he, "d0_mm": d0, "K_mm2_s": np.nan}])
+                         "x_n2": max(0.0, 1 - x_o2 - x_co2 - x_he), "d0_mm": d0, "K_mm2_s": np.nan}])
     feats = build_features(row)
     clf = m["outcome_logistic_multinomial"]
     probs = dict(zip(clf.classes_, clf.predict_proba(feats[MODEL_FEATURES])[0]))
@@ -184,6 +209,13 @@ def predict(fuel: str, x_o2: float, p_atm: float, x_co2: float, x_he: float, d0:
     near = m["nearest_test"].query(feats[NEAREST_FEATURES]).iloc[0]
     return {"probs": probs, "k": k, "k_lo": float(lo[0]), "k_hi": float(hi[0]),
             "distance": float(near["nearest_distance"]), "nearest_id": near["nearest_flex_id"]}
+
+
+def completion_note(t: dict) -> str:
+    n = t["metrics"]["data"]["outcome_counts"]["Completion"]
+    recalls = [t["metrics"]["outcome_3class"][m]["pooled_oof"]["per_class_recall"]["Completion"]
+               for m in ("hist_gradient_boosting", "logistic_multinomial")]
+    return f"{n} tests, out-of-fold recall {min(recalls):.2f}-{max(recalls):.2f}"
 
 
 def tab_predictor(t: dict) -> None:
@@ -214,10 +246,14 @@ def tab_predictor(t: dict) -> None:
         st.markdown("**Outcome probabilities** (logistic model)")
         for cls in ("Extinction", "Disruption", "Completion"):
             p = res["probs"].get(cls, 0.0)
-            note = " — low confidence (27 tests, out-of-fold recall 0.26-0.37)" if cls == "Completion" else ""
+            note = f" — low confidence ({completion_note(t)})" if cls == "Completion" else ""
             st.progress(float(p), text=f"{cls}: {p:.0%}{note}")
-        st.markdown(f"**Burning-rate constant K**: {res['k']:.3f} mm²/s  \n"
-                    f"10-90% conformal interval: {res['k_lo']:.3f} to {res['k_hi']:.3f} mm²/s")
+        if res["k"] > 0:
+            st.markdown(f"**Burning-rate constant K**: {res['k']:.3f} mm²/s  \n"
+                        f"10-90% conformal interval: {res['k_lo']:.3f} to {res['k_hi']:.3f} mm²/s")
+        else:
+            st.warning("The K model gives no positive burning rate here: these conditions are far outside "
+                       "the FLEX data, so no burn time is shown.")
         comp_r = t["metrics"]["d2law_consistency"]["completion_only"]["pearson_r"]
         if res["k"] > 0:
             st.markdown(f"**Burn-time upper limit d0²/K**: {d0 ** 2 / res['k']:.1f} s")
@@ -255,8 +291,8 @@ def oxygen_margin_map(t: dict, show: set[str]) -> go.Figure:
     if "droplet" in show:
         for outcome, g in flex.groupby("outcome"):
             fig.add_scatter(x=g["p_atm"], y=g["x_o2"] * 100, mode="markers", name=f"FLEX droplet: {outcome}",
-                            marker={"color": OUTCOME_COLOR[outcome], "size": 7, "opacity": 0.8},
-                            hovertext=g["test_id"] + " (PSI-69)", hoverinfo="text+x+y")
+                            marker={"color": OUTCOME_COLOR.get(str(outcome), MUTED), "size": 7, "opacity": 0.8},
+                            hovertext=g["test_id"].astype(str) + " (PSI-69)", hoverinfo="text+x+y")
     for ft in ("gas", "solid"):
         if ft not in show:
             continue
@@ -273,16 +309,21 @@ def oxygen_margin_map(t: dict, show: set[str]) -> go.Figure:
                             hovertext=a["source"] + " " + a["test_id"].astype(str) + " (pressure not measured)",
                             hoverinfo="text+y")
     if "literature" in show:
-        L = lit[(lit["kind"] == "literature")]
-        x = L["p_atm"].fillna(L["p_assumed_atm"])
-        fig.add_scatter(x=x, y=L["x_o2"] * 100, mode="markers", name="Verified literature (not PSI)",
-                        marker={"color": FLAME, "size": 12, "symbol": "diamond", "line": {"color": TEXT, "width": 1}},
-                        hovertext=L["label"] + " — " + L["citation"], hoverinfo="text+y")
+        L = lit[lit["kind"] == "literature"]
+        for measured, g in ((True, L[L["p_atm"].notna()]), (False, L[L["p_atm"].isna() & L["p_assumed_atm"].notna()])):
+            if not len(g):
+                continue
+            x = g["p_atm"] if measured else g["p_assumed_atm"]
+            suffix = "" if measured else ", pressure assumed 1 atm"
+            fig.add_scatter(x=x, y=g["x_o2"] * 100, mode="markers", name=f"Verified literature (not PSI){suffix}",
+                            marker={"color": FLAME, "size": 12, "symbol": "diamond" if measured else "diamond-open",
+                                    "line": {"color": TEXT if measured else FLAME, "width": 1.5}},
+                            hovertext=g["label"] + " — " + g["citation"] + ("" if measured else " (pressure not stated)"),
+                            hoverinfo="text+y")
     tg = lit[lit["kind"] == "exploration_target"]
     fig.add_scatter(x=tg["p_atm"], y=tg["x_o2"] * 100, mode="markers+text", name="Exploration targets",
                     marker={"color": TEXT, "size": 16, "symbol": "x-thin", "line": {"width": 3, "color": TEXT}},
-                    text=["Moon base 34% / 8.2 psia", "Challenge 30% / 10.2 psi"],
-                    textposition=["middle right", "bottom center"],
+                    text=tg["label"].tolist(), textposition="middle right",
                     textfont={"color": TEXT}, hovertext=tg["label"], hoverinfo="text")
     fig.add_scatter(x=nxt["p_atm"], y=nxt["x_o2"] * 100, mode="markers+text", name="Recommended next tests",
                     marker={"color": "#FFFFFF", "size": 15, "symbol": "star", "line": {"color": FLAME, "width": 1.5}},
@@ -330,10 +371,11 @@ def tab_ask() -> None:
         for q, c in zip(row, st.columns(3)):
             if c.button(q, width="stretch"):
                 picked = q
-    question = st.chat_input("Ask about fire in space habitats") or picked
+    question = st.chat_input("Ask about fire in space habitats", max_chars=300) or picked
     if question:
-        history.append((question, cached_answer(question)))
-    for q, a in reversed(history[-8:]):
+        history.append((question, get_answer(question)))
+        del history[:-MAX_HISTORY]
+    for q, a in reversed(history):
         with st.chat_message("user"):
             st.write(q)
         with st.chat_message("assistant"):
@@ -353,8 +395,8 @@ def tab_lessons() -> None:
         for x in [x for x in LESSONS if x["kind"] == kind]:
             year = f" ({x['year']})" if x["year"] else ""
             st.markdown(f"**{x['title']}{year}.** {x['what_happened']}  \n*{x['lesson']}*")
-            link = f" — [NASA source]({x['url']})" if x["url"] else ""
-            st.markdown(f'<p class="fm-src">{x["source"]}{link}</p>', unsafe_allow_html=True)
+            link = " — " + a_link("NASA source", x["url"]) if x["url"] else ""
+            st.markdown(f'<p class="fm-src">{html.escape(x["source"])}{link}</p>', unsafe_allow_html=True)
 
 
 def main() -> None:

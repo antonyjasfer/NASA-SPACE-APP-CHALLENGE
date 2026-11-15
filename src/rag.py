@@ -6,6 +6,7 @@ Never raises for normal input; the app caches answers with st.cache_data.
 """
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import Callable, Sequence
 
@@ -13,6 +14,10 @@ from src.knowledge import Hit, Retriever
 from src.llm_config import UNAVAILABLE_MESSAGE, LLMResult, chat
 
 REFUSAL = "I don't have NASA evidence for that."
+UNVERIFIED_NOTE = ("The AI answer cited sources outside the retrieved NASA evidence, so only the source "
+                   "passages are shown.")
+MAX_QUESTION_CHARS = 500
+_CITATION = re.compile(r"\[([^\[\]]+)\]")
 STARTER_QUESTIONS = (
     "Is a Moon base at 34% O2 safe from fire?",
     "Why do droplets burst at high oxygen?",
@@ -23,7 +28,8 @@ STARTER_QUESTIONS = (
 SYSTEM_PROMPT = f"""You are Fire-Margin, a fire-safety assistant for NASA exploration habitats.
 Rules (follow all of them):
 1. Use ONLY the numbered source passages provided. Do not use outside knowledge.
-2. Every factual sentence must end with its citation exactly as given, e.g. [source, p. 12].
+2. Every factual sentence must end with its citation copied exactly as given in square brackets
+   (e.g. [source, p. 12]) or as the passage number in brackets, e.g. [2].
 3. If the passages do not answer the question, reply exactly: "{REFUSAL}"
 4. Distinguish PSI data, literature points (not in PSI) and Fire-Margin analysis when it matters.
 5. Be concise (at most 150 words). Never invent numbers, dates or experiments."""
@@ -31,7 +37,7 @@ Rules (follow all of them):
 
 @dataclass
 class RagAnswer:
-    status: str                      # "answered" | "refused" | "unavailable"
+    status: str                      # "answered" | "refused" | "unavailable" | "unverified"
     text: str
     hits: list[Hit] = field(default_factory=list)
     provider: str | None = None
@@ -59,10 +65,26 @@ def fallback_text(hits: Sequence[Hit]) -> str:
     return "\n".join(lines)
 
 
+def verify_citations(text: str, hits: Sequence[Hit]) -> tuple[str, bool]:
+    """Expand [n] passage numbers to their citation; True only if the answer cites at least one
+    passage and every bracketed citation is one of the retrieved passages."""
+    allowed = {h.chunk.cite() for h in hits}
+
+    def expand(m: re.Match) -> str:
+        n = m.group(1).strip()
+        if n.isdigit() and 1 <= int(n) <= len(hits):
+            return hits[int(n) - 1].chunk.cite()
+        return m.group(0)
+
+    text = _CITATION.sub(expand, text)
+    cited = {f"[{c}]" for c in _CITATION.findall(text)}
+    return text, bool(cited) and cited <= allowed
+
+
 def answer(question: str, retriever: Retriever,
            chat_fn: Callable[..., LLMResult] = chat) -> RagAnswer:
-    """Grounded answer, refusal, or retrieved passages when the AI is unavailable."""
-    question = (question or "").strip()
+    """Grounded answer, refusal, or retrieved passages when the AI is unavailable or unverifiable."""
+    question = (question or "").strip()[:MAX_QUESTION_CHARS]
     hits = retriever.search(question) if question else []
     if not hits:
         return RagAnswer("refused", REFUSAL)
@@ -73,10 +95,12 @@ def answer(question: str, retriever: Retriever,
     if not result.ok:
         return RagAnswer("unavailable", fallback_text(hits), hits)
     text = result.text.strip()
-    if text.startswith(REFUSAL[:25]):
+    text, verified = verify_citations(text, hits)
+    if REFUSAL.lower().rstrip(".") in text.lower() and not _CITATION.search(text):
         return RagAnswer("refused", REFUSAL, hits, result.provider, result.model)
-    if "[" not in text:   # model ignored the citation rule: attach the sources it was given
-        text += "\n\nSources: " + "; ".join(dict.fromkeys(h.chunk.cite() for h in hits))
+    if not verified:
+        body = fallback_text(hits).replace(UNAVAILABLE_MESSAGE, UNVERIFIED_NOTE, 1)
+        return RagAnswer("unverified", body, hits, result.provider, result.model)
     return RagAnswer("answered", text, hits, result.provider, result.model)
 
 

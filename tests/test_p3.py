@@ -17,7 +17,8 @@ from src.llm_config import UNAVAILABLE_MESSAGE, LLMResult
 from src.rag import REFUSAL, STARTER_QUESTIONS, answer, build_messages
 
 OFF_TOPIC = ["best pizza recipe in Naples", "who won the football world cup", "recommend a good movie",
-             "explain blockchain", "what is the capital of France", "stock price of Tesla tomorrow"]
+             "explain blockchain", "what is the capital of France", "stock price of Tesla tomorrow",
+             "what is the weather in Moon base", "fire safety at my house"]
 
 
 @pytest.fixture(scope="module")
@@ -80,10 +81,39 @@ def test_fallback_when_chat_raises(retriever):
     assert answer("What are cool flames?", retriever, chat_fn=boom).status == "unavailable"
 
 
-def test_answer_gets_sources_if_model_forgets_citations(retriever):
+def test_uncited_answer_is_not_shown_as_grounded(retriever):
     a = answer("What are cool flames?", retriever,
                chat_fn=lambda *a, **k: LLMResult(True, "Cool flames burn at low temperature.", "meta", "m"))
-    assert a.status == "answered" and "Sources: [" in a.text
+    assert a.status == "unverified" and "only the source passages are shown" in a.text
+
+
+def test_foreign_citation_is_rejected(retriever):
+    a = answer("What are cool flames?", retriever,
+               chat_fn=lambda *a, **k: LLMResult(True, "They are hot. [Wikipedia, p. 1]", "meta", "m"))
+    assert a.status == "unverified"
+
+
+def test_numbered_citations_are_expanded_and_accepted(retriever):
+    hits = retriever.search("What are cool flames?")
+    a = answer("What are cool flames?", retriever,
+               chat_fn=lambda *a, **k: LLMResult(True, "Cool flames form after hot-flame extinction [1].", "meta", "m"))
+    assert a.status == "answered" and hits[0].chunk.cite() in a.text
+
+
+def test_model_refusal_detected(retriever):
+    a = answer("What are cool flames?", retriever,
+               chat_fn=lambda *a, **k: LLMResult(True, '"I don\'t have NASA evidence for that."', "meta", "m"))
+    assert a.status == "refused" and a.text == REFUSAL
+
+
+def test_long_question_is_truncated(retriever):
+    seen = {}
+
+    def spy(messages, **k):
+        seen["q"] = messages[1]["content"]
+        return LLMResult(False, UNAVAILABLE_MESSAGE)
+    answer("What are cool flames? " + "cool flames " * 600, retriever, chat_fn=spy)
+    assert len(seen["q"]) < 6000
 
 
 def test_no_secrets_means_unavailable_not_crash(retriever, monkeypatch):

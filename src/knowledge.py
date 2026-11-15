@@ -26,6 +26,8 @@ CHUNK_CHARS, OVERLAP_CHARS = 800, 120
 TOP_K = 5
 MIN_SIMILARITY = 0.08   # below this the question is "not grounded" (tuned on off-topic probes, see tests)
 MIN_TERM_OVERLAP = 2    # a hit must share >= 2 distinct content words with the question (1-word questions: 1)
+MIN_VOCAB_SHARE = 0.7   # >= 70% of the question's content words must occur somewhere in the knowledge base
+MAX_QUERY_CHARS = 500
 TOKEN_RE = re.compile(r"[a-z][a-z0-9]*|\d+(?:\.\d+)?")   # 'Moon-base' -> moon, base; keeps o2, 34
 STEM_CHARS = 6          # crude stemming: extinguish/extinguishment -> exting, droplet(s) -> drople
 
@@ -121,10 +123,12 @@ def literature_chunks() -> list[Chunk]:
 def lesson_chunks() -> list[Chunk]:
     from src.lessons import LESSONS
 
-    return [Chunk(f"lesson_{x['key']}", x["source"], x["key"],
-                  clean_text(f"{x['title']}{f' ({x["year"]})' if x['year'] else ''}. "
-                             f"{x['what_happened']} Lesson: {x['lesson']}"), x["url"])
-            for x in LESSONS]
+    out = []
+    for x in LESSONS:
+        year = f" ({x['year']})" if x["year"] else ""
+        text = clean_text(f"{x['title']}{year}. {x['what_happened']} Lesson: {x['lesson']}")
+        out.append(Chunk(f"lesson_{x['key']}", x["source"], x["key"], text, x["url"]))
+    return out
 
 
 def recommendation_chunks(path: Path = ROOT / "data" / "processed" / "next_experiments.csv") -> list[Chunk]:
@@ -173,6 +177,7 @@ class Retriever:
                                           ngram_range=(1, 2), sublinear_tf=True)
         self.matrix = self.vectorizer.fit_transform([c.text for c in chunks])
         self._chunk_terms = [set(tokenize(c.text)) for c in chunks]
+        self._vocab = set().union(*self._chunk_terms)
 
     @staticmethod
     def query_terms(query: str) -> set[str]:
@@ -182,9 +187,12 @@ class Retriever:
         """Top-k chunks with similarity >= min_similarity (possibly empty = not grounded)."""
         if not query or not query.strip():
             return []
+        query = query[:MAX_QUERY_CHARS]
         sims = cosine_similarity(self.vectorizer.transform([query]), self.matrix).ravel()
         terms = self.query_terms(query)
-        need = 1 if len(terms) <= 2 else MIN_TERM_OVERLAP
+        if terms and len(terms & self._vocab) / len(terms) < MIN_VOCAB_SHARE:
+            return []   # mostly about things the NASA sources never mention
+        need = 1 if len(terms) <= 1 else MIN_TERM_OVERLAP
         hits: list[Hit] = []
         for i in np.argsort(-sims, kind="stable"):
             if sims[i] < min_similarity or len(hits) == k:

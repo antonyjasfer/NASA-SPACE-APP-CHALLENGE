@@ -75,3 +75,9 @@ What the AI did:
   `.streamlit/config.toml`. Found and fixed a pickling bug (nearest-test index saved under `__main__`).
 - 21 new tests (79 total). The chatbot could not be exercised against a live LLM here: no API key is
   available in the build environment, so only the refusal and fallback paths were run end to end.
+- Fixed the automated review's findings: a Python-3.12-only f-string, 24-hour caching of "AI
+  unavailable" fallbacks, unverified model citations (answers must now cite only retrieved passages,
+  otherwise the passages are shown), a looser short-question gate (now needs 70% of question words in
+  the corpus), unbounded input/history, unlabelled assumed pressure for the PMMA-rod points, fragile
+  plotting, unescaped HTML. A browser click-through also caught markdown links not rendering inside
+  HTML; fixed with real anchors. 85 tests pass.
