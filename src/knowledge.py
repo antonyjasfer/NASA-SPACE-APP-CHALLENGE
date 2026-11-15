@@ -139,7 +139,10 @@ def recommendation_chunks(path: Path = ROOT / "data" / "processed" / "next_exper
     recs = pd.read_csv(path)
     return [Chunk(f"next_{int(r['rank'])}", "Fire-Margin next-experiment recommender (PSI + verified literature)",
                   f"next_experiments rank {int(r['rank'])}",
-                  f"Recommended next experiment rank {int(r['rank'])} for NASA to run: {r['explanation']}")
+                  (f"Recommended next experiment rank {int(r['rank'])} for NASA to run: {r['explanation']}"
+                   if r.get("kind", "recommended (evidence gap)") == "recommended (evidence gap)" else
+                   f"Heuristic ground-test analogue (not an evidence-based recommendation, not a validated "
+                   f"prediction): {r['explanation']}"))
             for _, r in recs.iterrows()]
 
 
