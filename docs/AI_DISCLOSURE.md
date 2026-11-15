@@ -107,3 +107,18 @@ What the AI did:
   unchanged. Review fixes: reasoning items never returned as answers, thread-safe cache writes,
   base URL in the cache key, llama.com URLs keep the chat style.
 - Mocked-client tests only: no live call was made (no key in the build environment).
+
+## 2026-11-15 — AI connection check + mission-grade UI (Claude Code, Anthropic)
+- `src/llm_config.py`: sidebar connection report (provider, base_url, model, api_style, key found
+  True/False only, result or redacted error class/status/message, model list on 404); secrets parsing
+  strips whitespace/quotes and accepts MODEL_API_KEY, META_API_KEY or a [meta] section; Responses call
+  retries once without `instructions` on 400/422; redacted logging.warning on failures.
+- `app/theme.py` + `.streamlit/config.toml`: navy theme, one flame accent, cyan for data, Inter + IBM
+  Plex Mono, 8 px grid, hidden menu/footer, WCAG contrast >= 4.5:1 (computed). Header KPI tiles computed
+  from the data files with source tooltips; map first and larger with target-zone boxes, outcome
+  marker shapes (not colour alone) and a click/box-select detail panel; Evidence Console with
+  suggested-question pills, status line, citation chips that open the exact passage, spinner, clear
+  button and a calm fallback layout; predictor with an input panel, risk band label and banners.
+  No NASA logos or emoji. Presentation only: data, models, citations and tests unchanged.
+- Browser check at 1400 px and 375 px (no errors, no horizontal overflow); a review found one
+  plausible crash (stale map selection after a layer change), fixed.

@@ -57,7 +57,7 @@ def test_app_starts_without_secrets_and_shows_heptane_note(monkeypatch):
         monkeypatch.delenv(v, raising=False)
     at = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app" / "app.py"), default_timeout=120).run()
     assert not at.exception, [e.value for e in at.exception]
-    assert any("Cool-flame note" in i.value for i in at.info)       # default fuel is Heptane
+    assert any("Cool-flame note" in m.value for m in at.markdown)   # default fuel is Heptane
     at.toggle[0].set_value(True).run()
     assert not at.exception and any("Heuristic" in c.value for c in at.caption)
 

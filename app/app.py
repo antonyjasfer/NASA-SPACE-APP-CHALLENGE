@@ -19,6 +19,8 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:  # Streamlit Cloud runs app/app.py; make `src` importable
     sys.path.insert(0, str(ROOT))
+if str(ROOT / "app") not in sys.path:
+    sys.path.insert(0, str(ROOT / "app"))
 
 from src import coolflame, partial_gravity, telemetry  # noqa: E402
 from src.catalog_data import LITERATURE_POINTS  # noqa: E402
@@ -33,30 +35,44 @@ from src.ranking import DEFAULT_WEIGHTS, FACTORS, rank_investigations  # noqa: E
 PROC, MODELS = ROOT / "data" / "processed", ROOT / "models"
 FLEX_DOI = "https://doi.org/10.60555/mbq8-0451"
 
-# ------------------------------------------------------------------ design tokens
-NIGHT, PANEL, TEXT, MUTED = "#0F1A2B", "#17243A", "#E6E1D6", "#9AA6B8"
-FLAME, OXYGEN, PLASMA, DANGER, CALM, PALE = "#FFB03B", "#5EC8E5", "#B79CFF", "#FF5A5F", "#7FB3D5", "#E8D27A"
+# ------------------------------------------------------------------ design tokens (app/theme.py)
+from theme import (  # noqa: E402
+    BG,
+    BORDER,
+    CSS,
+    CYAN,
+    FLAME,
+    LILAC,
+    MUTED,
+    PANEL,
+    ROSE,
+    SAND,
+    STEEL,
+    TEXT,
+)
+
+NIGHT, OXYGEN, PLASMA, DANGER, CALM, PALE = BG, CYAN, LILAC, ROSE, STEEL, SAND
 MAX_HISTORY = 8
 TARGET_SHORT = {"target_moon_34_8_2": "Moon base 34% / 8.2 psia", "target_challenge_30_10_2": "30% / 10.2 psi"}
 FUEL_COLOR = {"solid": FLAME, "droplet": OXYGEN, "gas": PLASMA}
 OUTCOME_COLOR = {"Disruption": DANGER, "Extinction": CALM, "Completion": PALE}
+OUTCOME_SYMBOL = {"Disruption": "x", "Extinction": "circle", "Completion": "square"}   # never colour alone
 FACTOR_LABEL = {"habitat": "Habitat relevance", "o2_pressure": "O2 / pressure near targets",
                 "flow": "Flow overlap 0-30 cm/s", "data": "Data available", "suppression": "Suppression / detection"}
+GRID = "#22324D"
 
-CSS = f"""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
-html, body, [class*="css"], .stMarkdown, p, li, label {{ font-family: 'IBM Plex Sans', sans-serif; }}
-h1, h2, h3, h4 {{ font-family: 'Barlow Condensed', sans-serif !important; letter-spacing: .01em; }}
-h1 {{ font-size: 3.1rem !important; font-weight: 700 !important; line-height: 1.0 !important; margin-bottom: .2rem; }}
-.fm-finding {{ font-size: 1.12rem; line-height: 1.55; max-width: 62rem; border-left: 3px solid {FLAME};
-              padding: .2rem 0 .2rem 1rem; margin: .6rem 0 1rem 0; }}
-.fm-muted {{ color: {MUTED}; font-size: .92rem; max-width: 62rem; }}
-.fm-src {{ color: {MUTED}; font-size: .82rem; }}
-[data-testid="stExpander"] {{ border-color: #2A3B57 !important; }}
-@media (prefers-reduced-motion: reduce) {{ * {{ transition: none !important; animation: none !important; }} }}
-</style>
-"""
+
+def plot_layout(fig: go.Figure, height: int) -> go.Figure:
+    fig.update_layout(template="plotly_dark", paper_bgcolor=PANEL, plot_bgcolor=PANEL, height=height,
+                      font={"family": "Inter, sans-serif", "color": TEXT, "size": 12},
+                      hoverlabel={"font": {"family": "IBM Plex Mono, monospace"}})
+    fig.update_xaxes(gridcolor=GRID, zerolinecolor=BORDER, linecolor=BORDER)
+    fig.update_yaxes(gridcolor=GRID, zerolinecolor=BORDER, linecolor=BORDER)
+    return fig
+
+
+def lede(text: str) -> None:
+    st.markdown(f'<p class="fm-lede">{html.escape(text)}</p>', unsafe_allow_html=True)
 
 
 # ------------------------------------------------------------------ cached data
@@ -126,15 +142,34 @@ def fmt_range(lo, hi, pct: bool = False) -> str:
 
 
 # ------------------------------------------------------------------ header / footer
+def kpis(t: dict) -> list[tuple[str, str, str]]:
+    """(value, label, source) computed from the data files, never typed in."""
+    hi = t["summary"]["high_o2"]
+    pts, lit = t["points"], t["lit"]
+    solid_max = pts.loc[pts["fuel_type"] == "solid", "x_o2"].max()
+    vi = lit[lit["point_id"].astype(str).str.startswith("saffire_vi_")]
+    flex_min_p = t["flex"]["p_atm"].min()
+    moon_p = float(lit.loc[lit["point_id"] == "target_moon_34_8_2", "p_atm"].iloc[0])
+    return [
+        (f"{hi['disruption_share']:.0%}", f"Disruption at >= 25% O2 ({hi['n_disruption']}/{hi['n_tests']} FLEX tests)",
+         "PSI-69 FLEX table, DOI 10.60555/mbq8-0451 (data/processed/flex_coverage_summary.json)"),
+        (f"{solid_max:.1%}", "Max O2 for solid materials in PSI",
+         "PSI-25 BASS-II and PSI-98/99 Saffire I-II tables (data/processed/coverage_points.csv)"),
+        (f"{len(vi)}", f"Solid samples near Moon-base conditions (Saffire-VI, {vi['x_o2'].min():.0%}-{vi['x_o2'].max():.0%} O2)",
+         "Urban et al., ICES-2024-365; NTRS 20240007488 test matrix (verified literature, not PSI)"),
+        (f"{flex_min_p:.2f} atm", f"Lowest FLEX pressure vs {moon_p:.2f} atm Moon base",
+         "PSI-69 FLEX table; target from NASA/TM-2013-217377 (34% O2 / 8.2 psia)"),
+    ]
+
+
 def header(t: dict) -> None:
     st.title("Fire-Margin")
     st.markdown(
-        '<p class="fm-muted">Evidence-graded fire safety for Moon-base atmospheres. NASA plans lunar and '
-        "Mars habitats at about 34% oxygen and 8.2 psia, far richer in oxygen than the ISS. Fire-Margin "
-        "maps every NASA microgravity combustion test we could trace, shows where the evidence stops, and "
-        "recommends the experiment that would close the gap.</p>", unsafe_allow_html=True)
-    finding = html.escape(t["cards"]["pressure_gap"]["key_result"])
-    st.markdown(f'<div class="fm-finding">{finding}</div>', unsafe_allow_html=True)
+        '<p class="fm-mission">Evidence-graded fire safety for Moon-base atmospheres: every NASA microgravity '
+        "combustion test we could trace, mapped against the 34% oxygen / 8.2 psia habitat NASA plans, with "
+        "the gaps and the next experiment to close them.</p>", unsafe_allow_html=True)
+    for col, (value, label, source) in zip(st.columns(4), kpis(t)):
+        col.metric(label, value, help=f"Source: {source}")
     with st.expander("Data & AI disclosure"):
         st.markdown(
             "- **Data**: NASA Physical Sciences Informatics (PSI) tables, the ISS Researcher's Guide to "
@@ -143,8 +178,9 @@ def header(t: dict) -> None:
             "- **Models**: logistic regression (outcome) and ridge regression (burning rate K), validated with "
             "GroupKFold by test date; metrics in `models/metrics.json`.\n"
             "- **AI**: Claude Code (Anthropic) wrote the code and the insight cards from NASA text; the "
-            "chatbot uses Meta Llama (NVIDIA NIM as fallback) and may only quote the retrieved passages. "
-            "Full log: `docs/AI_DISCLOSURE.md`.")
+            "Evidence Console uses Meta (NVIDIA NIM as fallback) and may only quote the retrieved passages. "
+            "Full log: `docs/AI_DISCLOSURE.md`.\n"
+            "- No NASA logos or insignia are used; NASA is credited as the data source only.")
 
 
 def footer(t: dict) -> None:
@@ -154,14 +190,16 @@ def footer(t: dict) -> None:
     items += [html.escape(f"{r.psi_id} {r.name}") for r in psi.itertuples() if r.psi_id != "PSI-69"]
     lit = t["lit"][t["lit"]["kind"] == "literature"].drop_duplicates("citation")
     items += [a_link(str(r.citation), r.url) for r in lit.itertuples() if isinstance(r.url, str)]
-    st.markdown('<p class="fm-src">Sources: ' + " · ".join(items) + "</p>", unsafe_allow_html=True)
+    st.markdown('<p class="fm-src">Sources: ' + " | ".join(items) + ". NASA is credited as the data source "
+                "only; no NASA logos or insignia are used.</p>", unsafe_allow_html=True)
 
 
 # ------------------------------------------------------------------ tab 1: catalog
 def tab_catalog(t: dict) -> None:
     st.subheader("Which NASA investigations tell us most about a Moon-base fire?")
-    st.caption("Move the weights to see how the ranking changes. Ranges that are only planned or a facility "
-               "capability are not evidence and score zero on the O2 and flow factors.")
+    lede(f"{len(t['inv'])} investigations ranked by a transparent score. Move the weights to re-rank; open any row for its "
+         "insight card, score breakdown and the source of every range. Planned or facility-capability ranges "
+         "are not evidence and score zero.")
     cols = st.columns(len(FACTORS))
     weights = {f: c.slider(FACTOR_LABEL[f], 0.0, 1.0, float(DEFAULT_WEIGHTS[f]), 0.05, key=f"w_{f}")
                for f, c in zip(FACTORS, cols)}
@@ -224,52 +262,74 @@ def completion_note(t: dict) -> str:
     return f"{n} tests, out-of-fold recall {min(recalls):.2f}-{max(recalls):.2f}"
 
 
+def risk_band(p: float) -> tuple[str, str]:
+    """Display band for disruption probability (presentation thresholds, not validated limits)."""
+    if p >= 0.5:
+        return "High", "high"
+    if p >= 0.25:
+        return "Elevated", "elevated"
+    return "Low", "low"
+
+
 def tab_predictor(t: dict) -> None:
     st.subheader("What would a burning droplet do in this atmosphere?")
-    st.caption("Trained on 274 FLEX droplet tests (PSI-69). Outside the tested envelope these are extrapolations.")
-    a, b, c = st.columns(3)
-    fuel = a.selectbox("Fuel", ["Heptane", "Methanol"])
-    x_o2 = a.slider("Oxygen (mole fraction)", 0.10, 0.40, 0.21, 0.01)
-    p_atm = b.slider("Pressure (atm)", 0.30, 3.10, 1.00, 0.01)
-    d0 = b.slider("Initial droplet diameter d0 (mm)", 1.0, 5.0, 3.0, 0.1)
-    x_co2 = c.slider("CO2 diluent (mole fraction)", 0.0, 0.70, 0.0, 0.01)
-    x_he = c.slider("Helium diluent (mole fraction)", 0.0, 0.45, 0.0, 0.01)
-    if x_o2 + x_co2 + x_he > 1.0:
-        st.error("O2 + CO2 + He add up to more than 1. Lower one of them; the rest is nitrogen.")
-        return
-    res = predict(fuel, x_o2, p_atm, x_co2, x_he, d0)
-    if fuel == "Heptane":
-        st.info(f"Cool-flame note: {coolflame.GUIDE_COOL_FLAME} ({coolflame.GUIDE_COOL_FLAME_CITE}). "
-                "The outcome model does not predict cool flames.")
-    flex = t["flex"][t["flex"]["fuel"] == fuel]
-    outside = [name for name, v, s in (("O2", x_o2, flex["x_o2"]), ("pressure", p_atm, flex["p_atm"]),
-                                       ("d0", d0, flex["d0_mm"])) if not (s.min() <= v <= s.max())]
-    if outside or res["distance"] > 1.5:
-        why = f"{', '.join(outside)} outside the tested {fuel} range" if outside else "far from every test"
-        st.warning(f"Outside the tested envelope ({why}). Nearest real test {res['nearest_id']} is "
+    lede("Set the atmosphere in the input panel. The models were trained on 274 FLEX droplet tests (PSI-69) and "
+         "validated on unseen test days; outside the tested envelope the numbers are extrapolations.")
+    inputs, results = st.columns([1, 2], gap="large")
+    with inputs, st.container(border=True):
+        fuel = st.selectbox("Fuel", ["Heptane", "Methanol"])
+        x_o2 = st.slider("Oxygen (mole fraction)", 0.10, 0.40, 0.21, 0.01)
+        p_atm = st.slider("Pressure (atm)", 0.30, 3.10, 1.00, 0.01)
+        d0 = st.slider("Initial droplet diameter d0 (mm)", 1.0, 5.0, 3.0, 0.1)
+        x_co2 = st.slider("CO2 diluent (mole fraction)", 0.0, 0.70, 0.0, 0.01)
+        x_he = st.slider("Helium diluent (mole fraction)", 0.0, 0.45, 0.0, 0.01)
+    with results:
+        if x_o2 + x_co2 + x_he > 1.0:
+            st.error("O2 + CO2 + He add up to more than 1. Lower one of them; the rest is nitrogen.")
+            return
+        res = predict(fuel, x_o2, p_atm, x_co2, x_he, d0)
+        flex = t["flex"][t["flex"]["fuel"] == fuel]
+        outside = [name for name, v, s in (("O2", x_o2, flex["x_o2"]), ("pressure", p_atm, flex["p_atm"]),
+                                           ("d0", d0, flex["d0_mm"])) if not (s.min() <= v <= s.max())]
+        if outside or res["distance"] > 1.5:
+            why = f"{', '.join(outside)} outside the tested {fuel} range" if outside else "far from every test"
+            banner(f"Outside the tested envelope ({why}). Nearest real test {res['nearest_id']} is "
                    f"{res['distance']:.2f} standard units away: treat these numbers as extrapolation.")
-    else:
-        st.info(f"Nearest real FLEX test: {res['nearest_id']}, {res['distance']:.2f} standard units away.")
-    left, right = st.columns([2, 3])
-    with left:
-        st.markdown("**Outcome probabilities** (logistic model)")
-        for cls in ("Extinction", "Disruption", "Completion"):
-            p = res["probs"].get(cls, 0.0)
-            note = f" — low confidence ({completion_note(t)})" if cls == "Completion" else ""
-            st.progress(float(p), text=f"{cls}: {p:.0%}{note}")
-        if res["k"] > 0:
-            st.markdown(f"**Burning-rate constant K**: {res['k']:.3f} mm²/s  \n"
-                        f"10-90% conformal interval: {res['k_lo']:.3f} to {res['k_hi']:.3f} mm²/s")
         else:
-            st.warning("The K model gives no positive burning rate here: these conditions are far outside "
-                       "the FLEX data, so no burn time is shown.")
+            banner(f"Inside the tested envelope. Nearest real FLEX test: {res['nearest_id']}, "
+                   f"{res['distance']:.2f} standard units away.", calm=True)
+        p_dis = float(res["probs"].get("Disruption", 0.0))
+        label, cls = risk_band(p_dis)
+        dis = t["metrics"]["disruption_binary"]["logistic"]["mean"]
+        st.markdown(f'<span class="fm-risk {cls}">Disruption risk: {label} ({p_dis:.0%})</span>',
+                    unsafe_allow_html=True)
+        st.caption(f"Bands: Low < 25%, Elevated 25-50%, High >= 50% (display bands, not validated limits). "
+                   f"Disruption model on unseen days: ROC-AUC {dis['roc_auc']['mean']:.2f}, "
+                   f"balanced accuracy {dis['balanced_accuracy']['mean']:.2f}.")
+        for c in ("Extinction", "Disruption", "Completion"):
+            p = res["probs"].get(c, 0.0)
+            note = f" (low confidence: {completion_note(t)})" if c == "Completion" else ""
+            st.progress(float(p), text=f"{c}: {p:.0%}{note}")
+        if fuel == "Heptane":
+            banner(f"Cool-flame note: {coolflame.GUIDE_COOL_FLAME} ({coolflame.GUIDE_COOL_FLAME_CITE}). "
+                   "The outcome model does not predict cool flames.", calm=True)
         comp_r = t["metrics"]["d2law_consistency"]["completion_only"]["pearson_r"]
         if res["k"] > 0:
-            st.markdown(f"**Burn-time upper limit d0²/K**: {d0 ** 2 / res['k']:.1f} s")
-            st.caption(f"Full burn-out time. It matches measured burn time only for droplets that burn to "
-                       f"completion (r = {comp_r:.2f}); extinction or disruption ends a burn earlier.")
-    with right:
-        st.plotly_chart(d2_curve(d0, res), width="stretch")
+            m1, m2 = st.columns(2)
+            m1.metric("Burning-rate constant K (mm²/s)", f"{res['k']:.3f}",
+                      help=f"10-90% conformal interval {res['k_lo']:.3f} to {res['k_hi']:.3f} mm²/s (ridge model)")
+            m2.metric("Burn-time upper limit d0²/K (s)", f"{d0 ** 2 / res['k']:.1f}",
+                      help=f"Full burn-out time; matches measured burn time only for Completion (r = {comp_r:.2f}).")
+            st.caption(f"K 10-90% interval: {res['k_lo']:.3f} to {res['k_hi']:.3f} mm²/s. d0²/K is an upper limit: "
+                       f"extinction or disruption ends a burn earlier (r = {comp_r:.2f} for Completion only).")
+            st.plotly_chart(d2_curve(d0, res), width="stretch")
+        else:
+            banner("The K model gives no positive burning rate here: these conditions are far outside the FLEX "
+                   "data, so no burn time is shown.")
+
+
+def banner(text: str, calm: bool = False) -> None:
+    st.markdown(f'<div class="fm-banner{" calm" if calm else ""}">{html.escape(text)}</div>', unsafe_allow_html=True)
 
 
 def d2_curve(d0: float, res: dict) -> go.Figure:
@@ -282,9 +342,10 @@ def d2_curve(d0: float, res: dict) -> go.Figure:
         tt = np.linspace(0, t_end, 60)
         fig.add_scatter(x=tt, y=d0 ** 2 - k * tt, name=name, mode="lines",
                         line={"color": FLAME if dash == "solid" else MUTED, "dash": dash, "width": 2})
-    fig.update_layout(title="d² law: d(t)² = d0² − K·t (upper limit on burn time)", template="plotly_dark",
-                      paper_bgcolor=PANEL, plot_bgcolor=PANEL, height=340, margin={"l": 50, "r": 10, "t": 50, "b": 40},
-                      xaxis_title="time (s)", yaxis_title="d² (mm²)", legend={"orientation": "h", "y": -0.25})
+    plot_layout(fig, 320)
+    fig.update_layout(title="d² law: d(t)² = d0² − K·t (upper limit on burn time)",
+                      margin={"l": 50, "r": 16, "t": 48, "b": 40}, xaxis_title="time (s)", yaxis_title="d² (mm²)",
+                      legend={"orientation": "h", "y": -0.3})
     return fig
 
 
@@ -293,15 +354,16 @@ def oxygen_margin_map(t: dict, show: set[str], show_pg: bool = False) -> go.Figu
     pts, lit = t["points"], t["lit"]
     nxt = t["next"][t["next"]["kind"] == "recommended (evidence gap)"]
     fig = go.Figure()
-    fig.add_shape(type="rect", x0=0.2, x1=3.2, y0=22.2, y1=42, fillcolor=FLAME, opacity=0.07, line_width=0,
-                  layer="below")
+    fig.add_shape(type="rect", x0=0.2, x1=3.2, y0=22.2, y1=42, fillcolor=FLAME, opacity=0.06,
+                  line_width=0, layer="below")
     fig.add_annotation(x=np.log10(2.2), y=23.2, text="Above 22.2% O2: no PSI solid-material test",
                        showarrow=False, font={"color": FLAME, "size": 12})
     flex = pts[(pts["source"] == "PSI-69") & pts["p_atm"].notna()]
     if "droplet" in show:
         for outcome, g in flex.groupby("outcome"):
             fig.add_scatter(x=g["p_atm"], y=g["x_o2"] * 100, mode="markers", name=f"FLEX droplet: {outcome}",
-                            marker={"color": OUTCOME_COLOR.get(str(outcome), MUTED), "size": 7, "opacity": 0.8},
+                            marker={"color": OUTCOME_COLOR.get(str(outcome), MUTED), "size": 7, "opacity": 0.85,
+                                    "symbol": OUTCOME_SYMBOL.get(str(outcome), "circle")},
                             hovertext=g["test_id"].astype(str) + " (PSI-69)", hoverinfo="text+x+y")
     for ft in ("gas", "solid"):
         if ft not in show:
@@ -347,44 +409,88 @@ def oxygen_margin_map(t: dict, show: set[str], show_pg: bool = False) -> go.Figu
                         hovertext=pg["label"] + " — 1-g equivalent " + pg["p_1g_equiv_atm"].astype(str)
                         + " atm (heuristic)", hoverinfo="text")
     tg = lit[lit["kind"] == "exploration_target"]
+    for r in tg.itertuples():   # target zones: +/- 2 O2 points, +/- 10% pressure (display band only)
+        fig.add_shape(type="rect", x0=r.p_atm * 0.9, x1=r.p_atm * 1.1, y0=r.x_o2 * 100 - 2,
+                      y1=r.x_o2 * 100 + 2, xref="x", yref="y", line={"color": TEXT, "width": 1, "dash": "dot"},
+                      fillcolor=TEXT, opacity=0.08, layer="below")
     fig.add_scatter(x=tg["p_atm"], y=tg["x_o2"] * 100, mode="markers+text", name="Exploration targets",
                     marker={"color": TEXT, "size": 16, "symbol": "x-thin", "line": {"width": 3, "color": TEXT}},
-                    text=tg["point_id"].map(TARGET_SHORT).fillna(tg["label"]).tolist(), textposition="middle right",
+                    text=tg["point_id"].map(TARGET_SHORT).fillna(tg["label"]).tolist(),
+                    textposition=["bottom left" if "challenge" in str(i) else "middle right" for i in tg["point_id"]],
                     textfont={"color": TEXT}, hovertext=tg["label"], hoverinfo="text")
     fig.add_scatter(x=nxt["p_atm"], y=nxt["x_o2"] * 100, mode="markers+text", name="Recommended next tests",
                     marker={"color": "#FFFFFF", "size": 15, "symbol": "star", "line": {"color": FLAME, "width": 1.5}},
                     text=[f"#{r}" for r in nxt["rank"]], textposition="top center", textfont={"color": TEXT},
                     hovertext=nxt["explanation"], hoverinfo="text")
     share = t["summary"]["high_o2"]
-    fig.add_annotation(x=np.log10(0.71), y=33.8, ax=np.log10(1.9), ay=31, xref="x", yref="y", axref="x", ayref="y",
+    fig.add_annotation(x=np.log10(0.72), y=34.6, ax=np.log10(1.1), ay=33.2, xref="x", yref="y", axref="x", ayref="y",
+                       xanchor="left",
                        text=f"At O2 ≥ 25%: {share['n_disruption']} of {share['n_tests']} FLEX droplets "
                             f"burst ({share['disruption_share']:.0%})", showarrow=True, arrowcolor=DANGER,
                        font={"color": DANGER, "size": 13}, arrowwidth=1.5)
-    fig.update_layout(template="plotly_dark", paper_bgcolor=NIGHT, plot_bgcolor=PANEL, height=620,
-                      margin={"l": 60, "r": 20, "t": 30, "b": 60},
+    plot_layout(fig, 680)
+    fig.update_layout(margin={"l": 60, "r": 16, "t": 24, "b": 48}, clickmode="event+select",
                       xaxis={"title": "Ambient pressure (atm, log scale)", "type": "log",
                              "range": [np.log10(0.2 if show_pg else 0.3), np.log10(3.2)], "gridcolor": "#22324D",
                              "tickvals": [0.2, 0.3, 0.4, 0.5, 0.7, 1, 1.5, 2, 3]},
                       yaxis={"title": "Oxygen (% by volume)", "range": [10, 42], "gridcolor": "#22324D"},
-                      legend={"orientation": "h", "y": -0.16, "font": {"size": 11}})
+                      legend={"orientation": "h", "y": -0.14, "font": {"size": 11}, "bgcolor": PANEL,
+                              "bordercolor": BORDER, "borderwidth": 1})
     return fig
 
 
 def tab_map(t: dict) -> None:
     st.subheader("Where does NASA have fire evidence near a Moon-base atmosphere?")
+    lede("Every real tested condition in oxygen x pressure, the two exploration-atmosphere targets (dotted "
+         "boxes) and the recommended next experiments (stars). Click or box-select points to see their details "
+         "below; marker shape, not only colour, tells categories apart.")
+    c1, c2 = st.columns([2, 1])
     opts = {"droplet": "Droplets (FLEX)", "gas": "Gas flames", "solid": "Solid materials", "literature": "Literature"}
-    chosen = st.multiselect("Show", list(opts), default=list(opts), format_func=opts.get)
-    show_pg = st.toggle("Show partial-gravity equivalents")
-    st.plotly_chart(oxygen_margin_map(t, set(chosen), show_pg), width="stretch")
+    chosen = c1.multiselect("Show", list(opts), default=list(opts), format_func=opts.get)
+    show_pg = c2.toggle("Show partial-gravity equivalents")
+    fig = oxygen_margin_map(t, set(chosen), show_pg)
+    event = st.plotly_chart(fig, width="stretch", on_select="rerun", selection_mode=("points", "box"),
+                            key=f"omap_{'-'.join(sorted(chosen))}_{int(show_pg)}")
     if show_pg:
         st.caption(partial_gravity.CAPTION)
-    st.markdown("**Recommended next experiments** (gap to the nearest evidence × closeness to a target; "
+    point_details(fig, event)
+    st.markdown("**Recommended next experiments** (gap to the nearest evidence x closeness to a target; "
                 "PSI tests count fully, verified literature counts half)")
     st.dataframe(t["next"][["rank", "kind", "fuel_type", "x_o2", "p_atm", "score", "explanation"]], hide_index=True,
                  width="stretch")
     saffire3_replay(t)
-    st.caption("Open circles: BASS-II and Saffire I-II have no pressure column; they are drawn at an assumed "
+    st.caption("Open markers: BASS-II and Saffire I-II have no pressure column; they are drawn at an assumed "
                "ISS-cabin 1 atm. BASS (PSI-26) and Saffire-III have no O2 value and are not plotted.")
+
+
+def point_details(fig: go.Figure, event) -> None:
+    pts = []
+    try:
+        pts = list(event.selection.points) if event and event.selection else []
+    except AttributeError:
+        pts = []
+    with st.container(border=True):
+        if not pts:
+            st.markdown('<p class="fm-status">Point details: click a marker or drag a box on the map.</p>',
+                        unsafe_allow_html=True)
+            return
+        rows = []
+        for p in pts[:50]:
+            cn = p.get("curve_number")
+            if cn is None or not 0 <= cn < len(fig.data):   # stale selection after a layer change
+                continue
+            trace = fig.data[cn]
+            hover = trace.hovertext if trace is not None else None
+            idx = p.get("point_index", p.get("point_number"))
+            label = hover[idx] if hover is not None and not isinstance(hover, str) and idx is not None else hover
+            rows.append({"layer": trace.name, "detail": label,
+                         "pressure_atm": round(float(p["x"]), 3), "O2_percent": round(float(p["y"]), 2)})
+        if not rows:
+            st.markdown('<p class="fm-status">Selection cleared after a layer change: select again.</p>',
+                        unsafe_allow_html=True)
+            return
+        st.markdown(f'<p class="fm-status">{len(rows)} selected point(s)</p>', unsafe_allow_html=True)
+        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
 
 
 def saffire3_replay(t: dict) -> None:
@@ -410,8 +516,8 @@ def saffire3_replay(t: dict) -> None:
                     fig.add_vline(x=r.t_start_s, line={"color": FLAME, "dash": "dash"},
                                   annotation_text=f"{r.igniter} channel pulse", annotation_font_color=FLAME,
                                   annotation_position="top left" if i % 2 == 0 else "top right")
-        fig.update_layout(template="plotly_dark", paper_bgcolor=PANEL, plot_bgcolor=PANEL, height=420,
-                          margin={"l": 50, "r": 10, "t": 30, "b": 40}, xaxis_title="time since telemetry start (s)",
+        plot_layout(fig, 420)
+        fig.update_layout(margin={"l": 50, "r": 16, "t": 32, "b": 40}, xaxis_title="time since telemetry start (s)",
                           xaxis_range=[0, t_max], legend={"orientation": "h", "y": -0.25})
         st.plotly_chart(fig, width="stretch")
         if len({u for u in sub["unit"]}) > 1:
@@ -423,38 +529,85 @@ def saffire3_replay(t: dict) -> None:
 
 
 # ------------------------------------------------------------------ tab 4: chatbot
+STATUS_LINE = {
+    "answered": "Answered from {n} NASA passages",
+    "refused": "No NASA evidence found",
+    "unavailable": "AI unavailable: showing {n} NASA passages",
+    "unverified": "AI answer not verifiable against the evidence: showing {n} NASA passages",
+}
+
+
+def _queue_starter() -> None:
+    q = st.session_state.get("starter_pill")
+    if q:
+        st.session_state["pending_q"] = q
+    st.session_state["starter_pill"] = None
+
+
+def citation_chips(sources: list[dict]) -> None:
+    for s in sources:
+        label = s["cite"] if len(s["cite"]) <= 70 else s["cite"][:67] + "...]"
+        with st.popover(label, width="stretch"):
+            st.markdown(f"**{s['cite']}**")
+            st.caption(f"Retrieval similarity {s['score']}")
+            st.write(s["text"])
+            if s["url"]:
+                st.markdown(a_link("Open source", s["url"]), unsafe_allow_html=True)
+
+
+def render_answer(a: dict) -> None:
+    n = len(a["sources"])
+    st.markdown(f'<p class="fm-status">{STATUS_LINE.get(a["status"], "{n} passages").format(n=n)}</p>',
+                unsafe_allow_html=True)
+    if a["status"] == "answered":
+        st.markdown(a["text"])
+    elif a["status"] == "refused":
+        st.markdown("I don't have NASA evidence for that. Try asking about oxygen limits, droplets, solid "
+                    "materials, suppression or past spacecraft fires.")
+    else:
+        note = ("The AI service is not reachable right now, so here are the NASA passages that match your "
+                "question." if a["status"] == "unavailable" else
+                "The AI's answer cited sources outside the retrieved NASA evidence, so only the passages are shown.")
+        banner(note, calm=True)
+        for s in a["sources"]:
+            with st.container(border=True):
+                st.markdown(f"**{s['cite']}**")
+                st.write(s["text"][:600] + ("..." if len(s["text"]) > 600 else ""))
+    if a["sources"]:
+        citation_chips(a["sources"])
+
+
 def tab_ask() -> None:
-    st.subheader("Ask Fire-Margin")
+    st.subheader("Evidence Console")
+    lede("Ask a fire-safety question. Answers come only from the ISS Researcher's Guide, the insight cards and "
+         "verified literature, and every claim carries a citation chip you can open to read the exact passage. "
+         "Questions outside that evidence are declined.")
     if not load_providers():
-        st.info("No AI key is configured, so answers show the matching NASA passages with citations instead "
-                "of a written summary. Add MODEL_API_KEY (Meta, Responses API) or NVIDIA_API_KEY in Streamlit secrets to enable it.")
-    st.caption("Answers come only from the Researcher's Guide, the insight cards and verified literature. "
-               "Questions outside that evidence are declined.")
+        banner("No AI key is configured, so the console shows the matching NASA passages with citations instead "
+               "of a written summary. Add MODEL_API_KEY (Meta) or NVIDIA_API_KEY in Streamlit secrets to enable it.",
+               calm=True)
     history = st.session_state.setdefault("chat", [])
-    picked = None
-    for row in (STARTER_QUESTIONS[:3], STARTER_QUESTIONS[3:]):
-        for q, c in zip(row, st.columns(3)):
-            if c.button(q, width="stretch"):
-                picked = q
-    question = st.chat_input("Ask about fire in space habitats", max_chars=300) or picked
+    st.pills("Suggested questions", STARTER_QUESTIONS, key="starter_pill", on_change=_queue_starter)
+    if st.button("Clear conversation", disabled=not history):
+        history.clear()
+        st.rerun()
+    question = st.chat_input("Ask about fire in space habitats", max_chars=300) or st.session_state.pop("pending_q", None)
     if question:
-        history.append((question, get_answer(question)))
+        with st.spinner("Searching NASA evidence..."):
+            history.append((question, get_answer(question)))
         del history[:-MAX_HISTORY]
     for q, a in reversed(history):
-        with st.chat_message("user"):
+        with st.chat_message("user", avatar=":material/person:"):
             st.write(q)
-        with st.chat_message("assistant"):
-            st.markdown(a["text"])
-            if a["sources"]:
-                with st.expander(f"{len(a['sources'])} source passages"):
-                    for s in a["sources"]:
-                        link = f" ([link]({s['url']}))" if s["url"] else ""
-                        st.markdown(f"**{s['cite']}**{link} — similarity {s['score']}  \n{s['text']}")
+        with st.chat_message("assistant", avatar=":material/menu_book:"):
+            render_answer(a)
 
 
 # ------------------------------------------------------------------ tab 5: lessons
 def tab_lessons() -> None:
     st.subheader("What past fires taught, and what it gave back to Earth")
+    lede("Three fires that shaped spacecraft safety, and three technologies that came back to Earth. Each "
+         "entry links its NASA source.")
     for kind, title in (("incident", "Fires that changed spaceflight"), ("spinoff", "On Earth today")):
         st.markdown(f"#### {title}")
         for x in [x for x in LESSONS if x["kind"] == kind]:
@@ -487,21 +640,21 @@ def sidebar_ai_check() -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Fire-Margin", page_icon="🔥", layout="wide")
+    st.set_page_config(page_title="Fire-Margin", page_icon=":material/local_fire_department:", layout="wide")
     st.markdown(CSS, unsafe_allow_html=True)
     t = load_tables()
     sidebar_ai_check()
     header(t)
-    tabs = st.tabs(["Catalog & Ranking", "Flame Predictor", "Oxygen-Margin Map", "Ask Fire-Margin",
+    tabs = st.tabs(["Oxygen-Margin Map", "Ask Fire-Margin", "Flame Predictor", "Catalog & Ranking",
                     "Lessons & Earth Impact"])
     with tabs[0]:
-        tab_catalog(t)
-    with tabs[1]:
-        tab_predictor(t)
-    with tabs[2]:
         tab_map(t)
-    with tabs[3]:
+    with tabs[1]:
         tab_ask()
+    with tabs[2]:
+        tab_predictor(t)
+    with tabs[3]:
+        tab_catalog(t)
     with tabs[4]:
         tab_lessons()
     footer(t)

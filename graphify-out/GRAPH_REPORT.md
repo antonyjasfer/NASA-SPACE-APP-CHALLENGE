@@ -1,18 +1,18 @@
 # Graph Report - NASA-SPACE-APP-CHALLENGE  (2026-11-15)
 
 ## Corpus Check
-- 34 files · ~43,496 words
+- 35 files · ~46,410 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 32 file(s) not represented in the graph (top: .csv 16, .joblib 10, (none) 3)
-- WARNING: 32 of 68 files seen (47%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
+- WARNING: 32 of 69 files seen (46%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
 
 ## Summary
-- 516 nodes · 1219 edges · 23 communities (18 shown, 5 thin omitted)
-- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 70 edges (avg confidence: 0.87)
+- 570 nodes · 1367 edges · 23 communities (17 shown, 6 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 79 edges (avg confidence: 0.86)
 - Token cost: 186,347 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `6458537e`
+- Built from commit: `df8dd2e5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,11 +21,10 @@
 - A Researcher's Guide to ISS Combustion Science (NP-2015-10-034-JSC)
 - flex_clean.csv (274 rows, no rows added/dropped/imputed)
 - FLEX Ingest & Tests
-- LLM Provider Chain
+- llm_config.py
 - test_p3.py
 - test_p2.py
-- pandas
-- coverage.py
+- ranking.py
 - psi_tables.py
 - Solid Fuel Ignition and Extinction (SoFIE): 10-40% O2, 0.2-1.5 atm
 - Coverage insight: gas/droplet data touch Moon-base O2, cabin solids do not
@@ -38,15 +37,15 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `A Researcher's Guide to ISS Combustion Science (NP-2015-10-034-JSC)` - 27 edges
-2. `answer()` - 22 edges
-3. `recommend_experiments()` - 16 edges
-4. `load_clean()` - 15 edges
-5. `rank_investigations()` - 15 edges
-6. `build_features()` - 14 edges
-7. `coverage_points()` - 14 edges
-8. `Retriever` - 13 edges
-9. `LLMResult` - 13 edges
-10. `clean()` - 13 edges
+2. `answer()` - 24 edges
+3. `chat()` - 19 edges
+4. `load_providers()` - 16 edges
+5. `recommend_experiments()` - 16 edges
+6. `Retriever` - 15 edges
+7. `load_clean()` - 15 edges
+8. `rank_investigations()` - 15 edges
+9. `LLMResult` - 14 edges
+10. `build_features()` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `BASS table PSI-26 (catalog only)` --semantically_similar_to--> `Burning and Suppression of Solids (BASS)`  [INFERRED] [semantically similar]
@@ -68,11 +67,11 @@
 - **PSI tables feeding the O2 x pressure coverage map** — claude_flex_psi_69, claude_bass_ii_psi_25, claude_flame_design_psi_10, claude_cfi_g_psi_159, claude_saffire_psi_98_99_100, claude_coverage_insight, claude_tab_oxygen_margin_map [EXTRACTED 1.00]
 - **FLEX cleaning quality flags (no rows dropped)** — data_processed_flex_data_dictionary_flex_clean, data_processed_flex_data_dictionary_burn_time_approx, data_processed_flex_data_dictionary_dup_id, data_processed_flex_data_dictionary_p_was_zero, claude_data_rules [INFERRED 0.85]
 
-## Communities (23 total, 5 thin omitted)
+## Communities (23 total, 6 thin omitted)
 
 ### Community 0 - "Model Training Pipeline"
 Cohesion: 0.09
-Nodes (21): _assert_no_shared_dates(), cv_classifier(), cv_regressor(), CVResult, d2law_check(), _fold_dates(), group_splits(), _linear_pre() (+13 more)
+Nodes (31): _assert_no_shared_dates(), cv_classifier(), cv_quantile_interval(), cv_regressor(), CVResult, d2law_check(), fit_cqr(), _fold_dates() (+23 more)
 
 ### Community 1 - "A Researcher's Guide to ISS Combustion Science (NP-2015-10-034-JSC)"
 Cohesion: 0.11
@@ -83,32 +82,28 @@ Cohesion: 0.19
 Nodes (10): Split-conformal-corrected K quantile intervals, d^2-law burn time ~ d0^2/K, Distance to nearest real test, Next-experiment recommender (stretch), Tab 2: Flame Predictor, K_mm2_s burning-rate constant (mm^2/s), test_date (80 dates, CV group; M/D/YY parsed), Undocumented M/D/YY date format in 50 FLEX rows (+2 more)
 
 ### Community 3 - "FLEX Ingest & Tests"
-Cohesion: 0.09
-Nodes (20): clean(), load_raw(), main(), _parse_burn_time(), parse_test_date(), validate_schema(), write_data_dictionary(), feats() (+12 more)
+Cohesion: 0.06
+Nodes (34): build_features(), d2law_burn_time(), main(), clean(), load_raw(), main(), _parse_burn_time(), parse_test_date() (+26 more)
 
-### Community 4 - "LLM Provider Chain"
-Cohesion: 0.09
-Nodes (20): _NotCacheable, _cache_key(), chat(), _chat(), _default_client_factory(), get_setting(), _is_retryable(), load_providers() (+12 more)
+### Community 4 - "llm_config.py"
+Cohesion: 0.05
+Nodes (48): _cache_key(), _cache_put(), _call(), chat(), _chat(), clean_value(), connection_report(), _default_client_factory() (+40 more)
 
 ### Community 5 - "test_p3.py"
-Cohesion: 0.07
-Nodes (39): _cached_answer(), load_retriever(), build_chunks(), card_chunks(), Chunk, clean_text(), Hit, lesson_chunks() (+31 more)
+Cohesion: 0.08
+Nodes (36): build_chunks(), card_chunks(), Chunk, clean_text(), Hit, lesson_chunks(), literature_chunks(), load_chunks() (+28 more)
 
 ### Community 6 - "test_p2.py"
 Cohesion: 0.06
-Nodes (36): build_investigations(), build_literature(), _cite(), investigation_cards(), main(), _psi_key_results(), psi_overrides(), table_range() (+28 more)
+Nodes (37): build_investigations(), build_literature(), _cite(), investigation_cards(), main(), _psi_key_results(), psi_overrides(), table_range() (+29 more)
 
-### Community 7 - "pandas"
-Cohesion: 0.09
-Nodes (25): load_tables(), card(), cool_flame_tests(), counts(), main(), observed(), card(), equivalent_points() (+17 more)
-
-### Community 8 - "coverage.py"
-Cohesion: 0.10
-Nodes (23): add_ground_test_analogue(), coverage_points(), coverage_table(), disruption_contrast(), evidence_points(), _explain(), main(), recommend_experiments() (+15 more)
+### Community 7 - "ranking.py"
+Cohesion: 0.07
+Nodes (26): card(), equivalent_points(), equivalent_pressure(), ground_test_row(), main(), pressure_factor(), _box_distance(), flow_score() (+18 more)
 
 ### Community 10 - "psi_tables.py"
-Cohesion: 0.19
-Nodes (15): _check_fraction(), _drop_non_tests(), load_bass(), load_bass2(), load_cfig(), load_inverse_flame(), _load_saffire(), load_saffire1() (+7 more)
+Cohesion: 0.12
+Nodes (22): card(), cool_flame_tests(), counts(), main(), observed(), _check_fraction(), _drop_non_tests(), load_bass() (+14 more)
 
 ### Community 11 - "Solid Fuel Ignition and Extinction (SoFIE): 10-40% O2, 0.2-1.5 atm"
 Cohesion: 0.32
@@ -131,8 +126,8 @@ Cohesion: 0.22
 Nodes (9): Flame Design inverse flame table PSI-10, Advanced Combustion via Microgravity Experiments (ACME), Burning Rate Emulator (BRE), Combustion Integrated Rack (CIR, 100-liter chamber), Coflow Laminar Diffusion Flame (CLD Flame), Electric-Field Effects on Laminar Diffusion Flames (E-FIELD), Flame Design experiment (soot inception, inverse flames), Multi-user Droplet Combustion Apparatus (MDCA): 1-5 mm droplets, 0-3 atm, up to 40% O2 (+1 more)
 
 ### Community 16 - "app.py"
-Cohesion: 0.09
-Nodes (27): a_link(), completion_note(), d2_curve(), fmt_range(), footer(), get_answer(), header(), load_models() (+19 more)
+Cohesion: 0.10
+Nodes (31): a_link(), banner(), _cached_answer(), citation_chips(), completion_note(), d2_curve(), fmt_range(), footer() (+23 more)
 
 ### Community 17 - "Flammability map with negative oxygen margin of safety (Fig. 8)"
 Cohesion: 0.40
@@ -148,22 +143,22 @@ Nodes (6): burn_time_approx flag, dup_id flag (193F001), flex_clean.csv (274 row
 
 ## Knowledge Gaps
 - **31 isolated node(s):** `BASS table PSI-26 (catalog only)`, `Early gas-jet flame experiments (LSP, TGDF, ELF)`, `Local N2 suppressant can strengthen flame via O2 entrainment`, `Smoke Aerosol Measurement Experiment (SAME) / Dust Aerosol test`, `SAMS / MAMS acceleration measurement` (+26 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 155 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 167 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **6 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `answer()` connect `test_p3.py` to `app.py`?**
-  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+- **Why does `answer()` connect `test_p3.py` to `app.py`, `llm_config.py`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `answer()` (e.g. with `Retriever` and `.search()`) actually correct?**
   _`answer()` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `BASS table PSI-26 (catalog only)`, `Early gas-jet flame experiments (LSP, TGDF, ELF)`, `Local N2 suppressant can strengthen flame via O2 entrainment` to the rest of the system?**
   _31 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Model Training Pipeline` be split into smaller, more focused modules?**
-  _Cohesion score 0.08888888888888889 - nodes in this community are weakly interconnected._
-- **Why does `load_providers()` connect `LLM Provider Chain` to `app.py`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+  _Cohesion score 0.0853302162478083 - nodes in this community are weakly interconnected._
+- **Why does `load_providers()` connect `llm_config.py` to `app.py`?**
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
 - **Should `A Researcher's Guide to ISS Combustion Science (NP-2015-10-034-JSC)` be split into smaller, more focused modules?**
   _Cohesion score 0.10869565217391304 - nodes in this community are weakly interconnected._
 

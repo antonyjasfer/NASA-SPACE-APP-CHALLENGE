@@ -140,6 +140,6 @@ def test_app_starts_without_secrets(monkeypatch):
     app_path = Path(__file__).resolve().parents[1] / "app" / "app.py"
     at = AppTest.from_file(str(app_path), default_timeout=120).run()
     assert not at.exception, [e.value for e in at.exception]
-    assert [t.label for t in at.tabs] == ["Catalog & Ranking", "Flame Predictor", "Oxygen-Margin Map",
-                                          "Ask Fire-Margin", "Lessons & Earth Impact"]
-    assert any("No AI key is configured" in i.value for i in at.info)
+    assert [t.label for t in at.tabs] == ["Oxygen-Margin Map", "Ask Fire-Margin", "Flame Predictor",
+                                          "Catalog & Ranking", "Lessons & Earth Impact"]
+    assert any("No AI key is configured" in m.value for m in at.markdown)
