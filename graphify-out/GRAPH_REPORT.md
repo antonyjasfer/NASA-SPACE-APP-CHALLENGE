@@ -1,18 +1,18 @@
 # Graph Report - NASA-SPACE-APP-CHALLENGE  (2026-11-15)
 
 ## Corpus Check
-- 29 files · ~40,347 words
+- 33 files · ~42,288 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 30 file(s) not represented in the graph (top: .csv 14, .joblib 10, (none) 3)
-- WARNING: 30 of 61 files seen (49%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
+- WARNING: 30 of 65 files seen (46%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
 
 ## Summary
-- 472 nodes · 1091 edges · 22 communities (17 shown, 5 thin omitted)
-- Extraction: 93% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 70 edges (avg confidence: 0.87)
+- 503 nodes · 1180 edges · 23 communities (18 shown, 5 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 70 edges (avg confidence: 0.87)
 - Token cost: 186,347 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `acf4a18f`
+- Built from commit: `35797dd4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -24,7 +24,8 @@
 - LLM Provider Chain
 - test_p3.py
 - test_p2.py
-- ranking.py
+- coolflame.py
+- coverage.py
 - psi_tables.py
 - Solid Fuel Ignition and Extinction (SoFIE): 10-40% O2, 0.2-1.5 atm
 - Coverage insight: gas/droplet data touch Moon-base O2, cabin solids do not
@@ -38,12 +39,12 @@
 ## God Nodes (most connected - your core abstractions)
 1. `A Researcher's Guide to ISS Combustion Science (NP-2015-10-034-JSC)` - 27 edges
 2. `answer()` - 22 edges
-3. `rank_investigations()` - 15 edges
+3. `recommend_experiments()` - 16 edges
 4. `load_clean()` - 15 edges
-5. `recommend_experiments()` - 14 edges
-6. `build_features()` - 14 edges
-7. `Retriever` - 13 edges
-8. `run_k()` - 13 edges
+5. `rank_investigations()` - 15 edges
+6. `coverage_points()` - 14 edges
+7. `build_features()` - 14 edges
+8. `Retriever` - 13 edges
 9. `LLMResult` - 13 edges
 10. `clean()` - 13 edges
 
@@ -67,7 +68,7 @@
 - **PSI tables feeding the O2 x pressure coverage map** — claude_flex_psi_69, claude_bass_ii_psi_25, claude_flame_design_psi_10, claude_cfi_g_psi_159, claude_saffire_psi_98_99_100, claude_coverage_insight, claude_tab_oxygen_margin_map [EXTRACTED 1.00]
 - **FLEX cleaning quality flags (no rows dropped)** — data_processed_flex_data_dictionary_flex_clean, data_processed_flex_data_dictionary_burn_time_approx, data_processed_flex_data_dictionary_dup_id, data_processed_flex_data_dictionary_p_was_zero, claude_data_rules [INFERRED 0.85]
 
-## Communities (22 total, 5 thin omitted)
+## Communities (23 total, 5 thin omitted)
 
 ### Community 0 - "Model Training Pipeline"
 Cohesion: 0.08
@@ -82,8 +83,8 @@ Cohesion: 0.19
 Nodes (10): Split-conformal-corrected K quantile intervals, d^2-law burn time ~ d0^2/K, Distance to nearest real test, Next-experiment recommender (stretch), Tab 2: Flame Predictor, K_mm2_s burning-rate constant (mm^2/s), test_date (80 dates, CV group; M/D/YY parsed), Undocumented M/D/YY date format in 50 FLEX rows (+2 more)
 
 ### Community 3 - "FLEX Ingest & Tests"
-Cohesion: 0.06
-Nodes (25): build_features(), d2law_burn_time(), main(), clean(), load_raw(), main(), _parse_burn_time(), parse_test_date() (+17 more)
+Cohesion: 0.07
+Nodes (25): build_features(), d2law_burn_time(), main(), clean(), load_clean(), load_raw(), main(), _parse_burn_time() (+17 more)
 
 ### Community 4 - "LLM Provider Chain"
 Cohesion: 0.10
@@ -94,16 +95,20 @@ Cohesion: 0.07
 Nodes (38): build_chunks(), card_chunks(), Chunk, clean_text(), Hit, lesson_chunks(), literature_chunks(), load_chunks() (+30 more)
 
 ### Community 6 - "test_p2.py"
-Cohesion: 0.07
-Nodes (42): build_investigations(), build_literature(), _cite(), investigation_cards(), main(), _psi_key_results(), psi_overrides(), table_range() (+34 more)
+Cohesion: 0.06
+Nodes (38): build_investigations(), build_literature(), _cite(), investigation_cards(), main(), _psi_key_results(), psi_overrides(), table_range() (+30 more)
 
-### Community 7 - "ranking.py"
-Cohesion: 0.14
-Nodes (11): _box_distance(), flow_score(), is_untested(), measured_by_psi(), normalise_weights(), _num(), o2_pressure_score(), score_row() (+3 more)
+### Community 7 - "coolflame.py"
+Cohesion: 0.35
+Nodes (6): card(), cool_flame_tests(), counts(), main(), observed(), test_cool_flame_counts_keep_unknown_separate()
+
+### Community 8 - "coverage.py"
+Cohesion: 0.08
+Nodes (24): add_ground_test_analogue(), coverage_points(), coverage_table(), disruption_contrast(), evidence_points(), _explain(), main(), recommend_experiments() (+16 more)
 
 ### Community 10 - "psi_tables.py"
-Cohesion: 0.19
-Nodes (15): _check_fraction(), _drop_non_tests(), load_bass(), load_bass2(), load_cfig(), load_inverse_flame(), _load_saffire(), load_saffire1() (+7 more)
+Cohesion: 0.17
+Nodes (17): _check_fraction(), _drop_non_tests(), load_all(), load_bass(), load_bass2(), load_cfig(), load_inverse_flame(), _load_saffire() (+9 more)
 
 ### Community 11 - "Solid Fuel Ignition and Extinction (SoFIE): 10-40% O2, 0.2-1.5 atm"
 Cohesion: 0.32
@@ -126,7 +131,7 @@ Cohesion: 0.22
 Nodes (9): Flame Design inverse flame table PSI-10, Advanced Combustion via Microgravity Experiments (ACME), Burning Rate Emulator (BRE), Combustion Integrated Rack (CIR, 100-liter chamber), Coflow Laminar Diffusion Flame (CLD Flame), Electric-Field Effects on Laminar Diffusion Flames (E-FIELD), Flame Design experiment (soot inception, inverse flames), Multi-user Droplet Combustion Apparatus (MDCA): 1-5 mm droplets, 0-3 atm, up to 40% O2 (+1 more)
 
 ### Community 16 - "app.py"
-Cohesion: 0.13
+Cohesion: 0.12
 Nodes (20): a_link(), _cached_answer(), completion_note(), d2_curve(), fmt_range(), footer(), get_answer(), header() (+12 more)
 
 ### Community 17 - "Flammability map with negative oxygen margin of safety (Fig. 8)"
@@ -142,21 +147,21 @@ Nodes (6): burn_time_approx flag, dup_id flag (193F001), flex_clean.csv (274 row
   data/raw/np-2015-10-034-jsc_combustion_in_reduced_gravity-iss-mini-book-011116-508.pdf · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **31 isolated node(s):** `Early gas-jet flame experiments (LSP, TGDF, ELF)`, `Smoke Aerosol Measurement Experiment (SAME) / Dust Aerosol test`, `SAMS / MAMS acceleration measurement`, `Telescience Support Center (TSC)`, `Water Mist Fire Suppression experiment (Mist), STS-107` (+26 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 143 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **31 isolated node(s):** `BASS table PSI-26 (catalog only)`, `Early gas-jet flame experiments (LSP, TGDF, ELF)`, `Local N2 suppressant can strengthen flame via O2 entrainment`, `Smoke Aerosol Measurement Experiment (SAME) / Dust Aerosol test`, `SAMS / MAMS acceleration measurement` (+26 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 153 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `answer()` connect `test_p3.py` to `app.py`?**
-  _High betweenness centrality (0.026) - this node is a cross-community bridge._
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `answer()` (e.g. with `Retriever` and `.search()`) actually correct?**
   _`answer()` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `Early gas-jet flame experiments (LSP, TGDF, ELF)`, `Smoke Aerosol Measurement Experiment (SAME) / Dust Aerosol test`, `SAMS / MAMS acceleration measurement` to the rest of the system?**
+- **What connects `BASS table PSI-26 (catalog only)`, `Early gas-jet flame experiments (LSP, TGDF, ELF)`, `Local N2 suppressant can strengthen flame via O2 entrainment` to the rest of the system?**
   _31 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Model Training Pipeline` be split into smaller, more focused modules?**
-  _Cohesion score 0.08090957165520889 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08418079096045197 - nodes in this community are weakly interconnected._
 - **Why does `load_providers()` connect `LLM Provider Chain` to `app.py`?**
   _High betweenness centrality (0.022) - this node is a cross-community bridge._
 - **Should `A Researcher's Guide to ISS Combustion Science (NP-2015-10-034-JSC)` be split into smaller, more focused modules?**

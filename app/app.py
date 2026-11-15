@@ -37,6 +37,7 @@ FLEX_DOI = "https://doi.org/10.60555/mbq8-0451"
 NIGHT, PANEL, TEXT, MUTED = "#0F1A2B", "#17243A", "#E6E1D6", "#9AA6B8"
 FLAME, OXYGEN, PLASMA, DANGER, CALM, PALE = "#FFB03B", "#5EC8E5", "#B79CFF", "#FF5A5F", "#7FB3D5", "#E8D27A"
 MAX_HISTORY = 8
+TARGET_SHORT = {"target_moon_34_8_2": "Moon base 34% / 8.2 psia", "target_challenge_30_10_2": "30% / 10.2 psi"}
 FUEL_COLOR = {"solid": FLAME, "droplet": OXYGEN, "gas": PLASMA}
 OUTCOME_COLOR = {"Disruption": DANGER, "Extinction": CALM, "Completion": PALE}
 FACTOR_LABEL = {"habitat": "Habitat relevance", "o2_pressure": "O2 / pressure near targets",
@@ -346,7 +347,7 @@ def oxygen_margin_map(t: dict, show: set[str], show_pg: bool = False) -> go.Figu
     tg = lit[lit["kind"] == "exploration_target"]
     fig.add_scatter(x=tg["p_atm"], y=tg["x_o2"] * 100, mode="markers+text", name="Exploration targets",
                     marker={"color": TEXT, "size": 16, "symbol": "x-thin", "line": {"width": 3, "color": TEXT}},
-                    text=tg["label"].tolist(), textposition="middle right",
+                    text=tg["point_id"].map(TARGET_SHORT).fillna(tg["label"]).tolist(), textposition="middle right",
                     textfont={"color": TEXT}, hovertext=tg["label"], hoverinfo="text")
     fig.add_scatter(x=nxt["p_atm"], y=nxt["x_o2"] * 100, mode="markers+text", name="Recommended next tests",
                     marker={"color": "#FFFFFF", "size": 15, "symbol": "star", "line": {"color": FLAME, "width": 1.5}},

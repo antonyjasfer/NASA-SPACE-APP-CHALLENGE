@@ -81,3 +81,14 @@ What the AI did:
   the corpus), unbounded input/history, unlabelled assumed pressure for the PMMA-rod points, fragile
   plotting, unescaped HTML. A browser click-through also caught markdown links not rendering inside
   HTML; fixed with real anchors. 85 tests pass.
+
+## 2026-11-15 — Phase P5 stretch goals (Claude Code, Anthropic)
+- `src/coolflame.py`: cool-flame flag from PSI-159 (7 yes, 1 no; 171 blank cells kept as "unknown",
+  never counted as "no"); "Invisible cool flames" card citing PSI-159 and the Researcher's Guide
+  (p. 33-34, 36, 41-42); heptane note in the Flame Predictor; cool-flame markers on the map.
+- `src/partial_gravity.py`: Grashof-scaling ground-test analogue (p_1g = p * sqrt(g/g_earth); Moon
+  factor 0.40, Mars 0.62), labelled as a heuristic everywhere; map toggle with caption; a separate
+  6th "ground-test analogue" recommendation (34% O2, ~0.22 atm). The evidence-gap top 5 are unchanged.
+- Saffire-III telemetry: inspected the workbook's sheets and headers only; stopped because several
+  channels (radiometers, anemometers) have no stated units. Nothing was converted or plotted.
+- 6 new tests (91 total); browser click-through of the map toggle and the heptane note.

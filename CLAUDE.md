@@ -120,7 +120,12 @@ Saffire-III telemetry replay; cool-flame risk flag from ACME CFI-G.
 - [x] P2 Investigation catalog + ranking engine + coverage analysis
 - [x] P3 Knowledge base + RAG chatbot + insight cards
 - [x] P4 Streamlit app (all tabs) + deploy-ready (Streamlit Cloud deploy itself is a team step: Python 3.12+, add secrets)
-- [ ] P5 Stretch goals
+- [x] P5 Stretch goals: next-experiment recommender (P2); cool-flame flag (src/coolflame.py: 7 yes / 1 no /
+  171 unknown, PSI-159); partial-gravity Grashof heuristic (src/partial_gravity.py, labelled, 6th "ground-test
+  analogue" 34% O2 / ~0.22 atm). Saffire-III telemetry replay SKIPPED: data arrived as
+  `data/raw/Saffire-III 1 Hz Telemetry Data.xlsx` (not a saffire3_telemetry/ folder) and the radiometer,
+  anemometer, fan-tach, smoke-wire and igniter channels have no units in the file; only Cygnus pressure (psi),
+  air temp (degC), smoke detector (V) and acceleration (m/s^2) are labelled. Needs team confirmation of units.
 - [ ] P6 README, data dictionary, AI disclosure, 30-s video, <=7 slides, submission
 
 ## Context & memory tools
