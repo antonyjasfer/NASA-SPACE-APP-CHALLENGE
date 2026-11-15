@@ -92,3 +92,9 @@ What the AI did:
 - Saffire-III telemetry: inspected the workbook's sheets and headers only; stopped because several
   channels (radiometers, anemometers) have no stated units. Nothing was converted or plotted.
 - 6 new tests (91 total); browser click-through of the map toggle and the heptane note.
+- Saffire-III telemetry replay (`src/telemetry.py`), after the team clarified how to handle units:
+  inspected the workbook, found both sheets time-multiplexed (placeholder values between real
+  samples) and adapted the baseline rule to real samples only, so radiometer counts are not inflated
+  by placeholders. Only published units are shown; radiometer/anemometer counts are labelled unitless.
+  Igniter current pulses mark ignition. Small CSV (1.4 MB) used by the app; the xlsx is never loaded
+  by the app. Also switched the devcontainer to a Python 3.12 image to match the pinned numpy/scipy.

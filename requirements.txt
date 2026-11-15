@@ -9,3 +9,4 @@ joblib==1.6.0
 pypdf==6.17.0
 openai==3.51.0
 pytest==9.2.0
+openpyxl==3.1.5   # only for python -m src.telemetry (offline); the app reads the small CSV

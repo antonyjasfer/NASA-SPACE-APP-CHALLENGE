@@ -1,18 +1,18 @@
 # Graph Report - NASA-SPACE-APP-CHALLENGE  (2026-11-15)
 
 ## Corpus Check
-- 33 files · ~42,288 words
+- 34 files · ~43,446 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 30 file(s) not represented in the graph (top: .csv 14, .joblib 10, (none) 3)
-- WARNING: 30 of 65 files seen (46%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
+- Unclassified: 32 file(s) not represented in the graph (top: .csv 16, .joblib 10, (none) 3)
+- WARNING: 32 of 68 files seen (47%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
 
 ## Summary
-- 503 nodes · 1180 edges · 23 communities (18 shown, 5 thin omitted)
-- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 70 edges (avg confidence: 0.87)
+- 516 nodes · 1219 edges · 23 communities (18 shown, 5 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 71 edges (avg confidence: 0.87)
 - Token cost: 186,347 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `35797dd4`
+- Built from commit: `a02b1218`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -24,7 +24,7 @@
 - LLM Provider Chain
 - test_p3.py
 - test_p2.py
-- coolflame.py
+- pandas
 - coverage.py
 - psi_tables.py
 - Solid Fuel Ignition and Extinction (SoFIE): 10-40% O2, 0.2-1.5 atm
@@ -42,8 +42,8 @@
 3. `recommend_experiments()` - 16 edges
 4. `load_clean()` - 15 edges
 5. `rank_investigations()` - 15 edges
-6. `coverage_points()` - 14 edges
-7. `build_features()` - 14 edges
+6. `build_features()` - 14 edges
+7. `coverage_points()` - 14 edges
 8. `Retriever` - 13 edges
 9. `LLMResult` - 13 edges
 10. `clean()` - 13 edges
@@ -71,8 +71,8 @@
 ## Communities (23 total, 5 thin omitted)
 
 ### Community 0 - "Model Training Pipeline"
-Cohesion: 0.08
-Nodes (31): _assert_no_shared_dates(), cv_classifier(), cv_quantile_interval(), cv_regressor(), CVResult, d2law_check(), fit_cqr(), _fold_dates() (+23 more)
+Cohesion: 0.09
+Nodes (21): _assert_no_shared_dates(), cv_classifier(), cv_regressor(), CVResult, d2law_check(), _fold_dates(), group_splits(), _linear_pre() (+13 more)
 
 ### Community 1 - "A Researcher's Guide to ISS Combustion Science (NP-2015-10-034-JSC)"
 Cohesion: 0.11
@@ -83,32 +83,32 @@ Cohesion: 0.19
 Nodes (10): Split-conformal-corrected K quantile intervals, d^2-law burn time ~ d0^2/K, Distance to nearest real test, Next-experiment recommender (stretch), Tab 2: Flame Predictor, K_mm2_s burning-rate constant (mm^2/s), test_date (80 dates, CV group; M/D/YY parsed), Undocumented M/D/YY date format in 50 FLEX rows (+2 more)
 
 ### Community 3 - "FLEX Ingest & Tests"
-Cohesion: 0.07
-Nodes (25): build_features(), d2law_burn_time(), main(), clean(), load_clean(), load_raw(), main(), _parse_burn_time() (+17 more)
+Cohesion: 0.09
+Nodes (20): clean(), load_raw(), main(), _parse_burn_time(), parse_test_date(), validate_schema(), write_data_dictionary(), feats() (+12 more)
 
 ### Community 4 - "LLM Provider Chain"
-Cohesion: 0.10
-Nodes (18): _cache_key(), chat(), _chat(), _default_client_factory(), get_setting(), _is_retryable(), load_providers(), Provider (+10 more)
+Cohesion: 0.09
+Nodes (20): _NotCacheable, _cache_key(), chat(), _chat(), _default_client_factory(), get_setting(), _is_retryable(), load_providers() (+12 more)
 
 ### Community 5 - "test_p3.py"
 Cohesion: 0.07
-Nodes (38): build_chunks(), card_chunks(), Chunk, clean_text(), Hit, lesson_chunks(), literature_chunks(), load_chunks() (+30 more)
+Nodes (39): _cached_answer(), load_retriever(), build_chunks(), card_chunks(), Chunk, clean_text(), Hit, lesson_chunks() (+31 more)
 
 ### Community 6 - "test_p2.py"
 Cohesion: 0.06
-Nodes (38): build_investigations(), build_literature(), _cite(), investigation_cards(), main(), _psi_key_results(), psi_overrides(), table_range() (+30 more)
+Nodes (36): build_investigations(), build_literature(), _cite(), investigation_cards(), main(), _psi_key_results(), psi_overrides(), table_range() (+28 more)
 
-### Community 7 - "coolflame.py"
-Cohesion: 0.35
-Nodes (6): card(), cool_flame_tests(), counts(), main(), observed(), test_cool_flame_counts_keep_unknown_separate()
+### Community 7 - "pandas"
+Cohesion: 0.09
+Nodes (25): load_tables(), card(), cool_flame_tests(), counts(), main(), observed(), card(), equivalent_points() (+17 more)
 
 ### Community 8 - "coverage.py"
-Cohesion: 0.08
-Nodes (24): add_ground_test_analogue(), coverage_points(), coverage_table(), disruption_contrast(), evidence_points(), _explain(), main(), recommend_experiments() (+16 more)
+Cohesion: 0.10
+Nodes (23): add_ground_test_analogue(), coverage_points(), coverage_table(), disruption_contrast(), evidence_points(), _explain(), main(), recommend_experiments() (+15 more)
 
 ### Community 10 - "psi_tables.py"
-Cohesion: 0.17
-Nodes (17): _check_fraction(), _drop_non_tests(), load_all(), load_bass(), load_bass2(), load_cfig(), load_inverse_flame(), _load_saffire() (+9 more)
+Cohesion: 0.19
+Nodes (15): _check_fraction(), _drop_non_tests(), load_bass(), load_bass2(), load_cfig(), load_inverse_flame(), _load_saffire(), load_saffire1() (+7 more)
 
 ### Community 11 - "Solid Fuel Ignition and Extinction (SoFIE): 10-40% O2, 0.2-1.5 atm"
 Cohesion: 0.32
@@ -131,8 +131,8 @@ Cohesion: 0.22
 Nodes (9): Flame Design inverse flame table PSI-10, Advanced Combustion via Microgravity Experiments (ACME), Burning Rate Emulator (BRE), Combustion Integrated Rack (CIR, 100-liter chamber), Coflow Laminar Diffusion Flame (CLD Flame), Electric-Field Effects on Laminar Diffusion Flames (E-FIELD), Flame Design experiment (soot inception, inverse flames), Multi-user Droplet Combustion Apparatus (MDCA): 1-5 mm droplets, 0-3 atm, up to 40% O2 (+1 more)
 
 ### Community 16 - "app.py"
-Cohesion: 0.12
-Nodes (20): a_link(), _cached_answer(), completion_note(), d2_curve(), fmt_range(), footer(), get_answer(), header() (+12 more)
+Cohesion: 0.09
+Nodes (27): a_link(), completion_note(), d2_curve(), fmt_range(), footer(), get_answer(), header(), load_models() (+19 more)
 
 ### Community 17 - "Flammability map with negative oxygen margin of safety (Fig. 8)"
 Cohesion: 0.40
@@ -148,7 +148,7 @@ Nodes (6): burn_time_approx flag, dup_id flag (193F001), flex_clean.csv (274 row
 
 ## Knowledge Gaps
 - **31 isolated node(s):** `BASS table PSI-26 (catalog only)`, `Early gas-jet flame experiments (LSP, TGDF, ELF)`, `Local N2 suppressant can strengthen flame via O2 entrainment`, `Smoke Aerosol Measurement Experiment (SAME) / Dust Aerosol test`, `SAMS / MAMS acceleration measurement` (+26 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 153 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 155 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
@@ -161,7 +161,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `BASS table PSI-26 (catalog only)`, `Early gas-jet flame experiments (LSP, TGDF, ELF)`, `Local N2 suppressant can strengthen flame via O2 entrainment` to the rest of the system?**
   _31 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Model Training Pipeline` be split into smaller, more focused modules?**
-  _Cohesion score 0.08418079096045197 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08888888888888889 - nodes in this community are weakly interconnected._
 - **Why does `load_providers()` connect `LLM Provider Chain` to `app.py`?**
   _High betweenness centrality (0.022) - this node is a cross-community bridge._
 - **Should `A Researcher's Guide to ISS Combustion Science (NP-2015-10-034-JSC)` be split into smaller, more focused modules?**

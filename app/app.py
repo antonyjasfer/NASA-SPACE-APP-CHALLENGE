@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:  # Streamlit Cloud runs app/app.py; make `src` importable
     sys.path.insert(0, str(ROOT))
 
-from src import coolflame, partial_gravity  # noqa: E402
+from src import coolflame, partial_gravity, telemetry  # noqa: E402
 from src.catalog_data import LITERATURE_POINTS  # noqa: E402
 from src.features import MODEL_FEATURES, build_features  # noqa: E402
 from src.knowledge import Retriever, load_chunks  # noqa: E402
@@ -74,6 +74,8 @@ def load_tables() -> dict:
         "metrics": json.loads((MODELS / "metrics.json").read_text()),
         "cool": coolflame.observed(),
         "pg": partial_gravity.equivalent_points(),
+        "telemetry": pd.read_csv(telemetry.SMALL_PATH) if telemetry.SMALL_PATH.exists() else None,
+        "ignitions": pd.read_csv(telemetry.EVENTS_PATH) if telemetry.EVENTS_PATH.exists() else None,
     }
 
 
@@ -380,8 +382,44 @@ def tab_map(t: dict) -> None:
                 "PSI tests count fully, verified literature counts half)")
     st.dataframe(t["next"][["rank", "kind", "fuel_type", "x_o2", "p_atm", "score", "explanation"]], hide_index=True,
                  width="stretch")
+    saffire3_replay(t)
     st.caption("Open circles: BASS-II and Saffire I-II have no pressure column; they are drawn at an assumed "
                "ISS-cabin 1 atm. BASS (PSI-26) and Saffire-III have no O2 value and are not plotted.")
+
+
+def saffire3_replay(t: dict) -> None:
+    tel, ign = t.get("telemetry"), t.get("ignitions")
+    if tel is None or tel.empty:
+        return
+    with st.expander("Saffire-III: a real fire in a spacecraft (PSI-100)"):
+        channels = sorted(tel["channel"].unique())
+        default = [c for c in ("Radiometer1", "Cabin air temperature", "FIZ 2 smoke obscuration") if c in channels]
+        chosen = st.multiselect("Channels", channels, default=default, key="s3_channels")
+        t_max = float(tel["t_s"].max())
+        t_now = st.slider("Replay time (s since telemetry start)", 0.0, t_max, t_max, 10.0, key="s3_time")
+        if not chosen:
+            st.info("Pick at least one channel to replay.")
+            return
+        sub = tel[tel["channel"].isin(chosen) & (tel["t_s"] <= t_now)]
+        fig = go.Figure()
+        for (name, unit), g in sub.groupby(["channel", "unit"]):
+            fig.add_scatter(x=g["t_s"], y=g["value"], mode="lines", name=f"{name} [{unit}]")
+        if ign is not None:
+            for i, r in enumerate(ign.sort_values("t_start_s").itertuples()):
+                if r.t_start_s <= t_now:
+                    fig.add_vline(x=r.t_start_s, line={"color": FLAME, "dash": "dash"},
+                                  annotation_text=f"{r.igniter} current pulse", annotation_font_color=FLAME,
+                                  annotation_position="top left" if i % 2 == 0 else "top right")
+        fig.update_layout(template="plotly_dark", paper_bgcolor=PANEL, plot_bgcolor=PANEL, height=420,
+                          margin={"l": 50, "r": 10, "t": 30, "b": 40}, xaxis_title="time since telemetry start (s)",
+                          xaxis_range=[0, t_max], legend={"orientation": "h", "y": -0.25})
+        st.plotly_chart(fig, width="stretch")
+        if len({u for u in sub["unit"]}) > 1:
+            st.caption("Channels with different units share one axis; compare shapes and timing, not magnitudes.")
+        st.caption(telemetry.CAPTION + " Units shown are exactly as labelled in the file (psi, degC, V). "
+                   "Multiplexed placeholder values (0 or the start-of-file value) were treated as missing; "
+                   "dashed lines mark igniter current pulses. Source: PSI-100 Saffire-III telemetry, DOI ")
+        st.markdown(a_link(f"{telemetry.DOI}", f"https://doi.org/{telemetry.DOI}"), unsafe_allow_html=True)
 
 
 # ------------------------------------------------------------------ tab 4: chatbot

@@ -60,3 +60,28 @@ def test_app_starts_without_secrets_and_shows_heptane_note(monkeypatch):
     assert any("Cool-flame note" in i.value for i in at.info)       # default fuel is Heptane
     at.toggle[0].set_value(True).run()
     assert not at.exception and any("Heuristic" in c.value for c in at.caption)
+
+
+def test_saffire3_small_file_exists_is_small_and_invents_no_units():
+    from src import telemetry
+
+    assert telemetry.SMALL_PATH.exists() and telemetry.SMALL_PATH.stat().st_size < 5_000_000
+    small = pd.read_csv(telemetry.SMALL_PATH)
+    assert small.groupby("channel").size().max() <= telemetry.MAX_POINTS
+    published = {"psi", "degC", "V"}
+    cyg = small[small["sheet"] == "CygnusData"]
+    assert set(cyg["unit"]) <= published
+    for raw, unit in zip(cyg["raw_column"], cyg["unit"]):
+        assert f"({unit.lower()})" in raw.lower()                 # unit copied from the column header
+    counts = small[small["sheet"] == "SaffireData"]
+    assert set(counts["unit"]) == {telemetry.UNITLESS}
+    assert counts["channel"].str.match(r"^(Radiometer[1-4]|Anemometer[12])$").all()
+    assert small["value"].notna().all() and not (cyg["value"] == 0).any()   # placeholders removed
+
+
+def test_saffire3_ignitions_are_clear_pulses():
+    from src import telemetry
+
+    ev = pd.read_csv(telemetry.EVENTS_PATH)
+    assert set(ev["igniter"]) == {"Igniter 1", "Igniter 2"}
+    assert (ev["peak_current_A"] > telemetry.IGNITION_CURRENT_A).all() and (ev["n_samples"] < 30).all()
