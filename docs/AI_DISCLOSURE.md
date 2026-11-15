@@ -98,3 +98,12 @@ What the AI did:
   by placeholders. Only published units are shown; radiometer/anemometer counts are labelled unitless.
   Igniter current pulses mark ignition. Small CSV (1.4 MB) used by the app; the xlsx is never loaded
   by the app. Also switched the devcontainer to a Python 3.12 image to match the pinned numpy/scipy.
+
+## 2026-11-15 — Meta Responses API provider (Claude Code, Anthropic)
+- `src/llm_config.py`: Meta provider for api.meta.ai via the OpenAI-compatible Responses API
+  (`responses.create(model, instructions, input)`, text from `output_text` or message/output_text
+  content only), configured by MODEL_API_KEY (or META_API_KEY), META_BASE_URL, META_MODEL,
+  META_API_STYLE; old Llama chat path kept; NVIDIA fallback, retries, timeout and citation checks
+  unchanged. Review fixes: reasoning items never returned as answers, thread-safe cache writes,
+  base URL in the cache key, llama.com URLs keep the chat style.
+- Mocked-client tests only: no live call was made (no key in the build environment).

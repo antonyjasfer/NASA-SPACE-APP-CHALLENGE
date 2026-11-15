@@ -427,7 +427,7 @@ def tab_ask() -> None:
     st.subheader("Ask Fire-Margin")
     if not load_providers():
         st.info("No AI key is configured, so answers show the matching NASA passages with citations instead "
-                "of a written summary. Add META_API_KEY (or NVIDIA_API_KEY) in Streamlit secrets to enable it.")
+                "of a written summary. Add MODEL_API_KEY (Meta, Responses API) or NVIDIA_API_KEY in Streamlit secrets to enable it.")
     st.caption("Answers come only from the Researcher's Guide, the insight cards and verified literature. "
                "Questions outside that evidence are declined.")
     history = st.session_state.setdefault("chat", [])

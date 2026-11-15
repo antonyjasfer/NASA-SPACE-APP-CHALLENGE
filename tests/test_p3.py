@@ -117,7 +117,8 @@ def test_long_question_is_truncated(retriever):
 
 
 def test_no_secrets_means_unavailable_not_crash(retriever, monkeypatch):
-    for v in ("META_API_KEY", "META_BASE_URL", "META_MODEL", "NVIDIA_API_KEY", "NVIDIA_BASE_URL", "NVIDIA_MODEL"):
+    for v in ("MODEL_API_KEY", "META_API_KEY", "META_BASE_URL", "META_MODEL", "NVIDIA_API_KEY",
+              "NVIDIA_BASE_URL", "NVIDIA_MODEL"):
         monkeypatch.delenv(v, raising=False)
     a = answer("Is a Moon base at 34% O2 safe from fire?", retriever)
     assert a.status == "unavailable" and a.hits
@@ -134,7 +135,7 @@ def test_literature_rows_have_verified_flag_and_url():
 def test_app_starts_without_secrets(monkeypatch):
     from streamlit.testing.v1 import AppTest
 
-    for v in ("META_API_KEY", "NVIDIA_API_KEY"):
+    for v in ("MODEL_API_KEY", "META_API_KEY", "NVIDIA_API_KEY"):
         monkeypatch.delenv(v, raising=False)
     app_path = Path(__file__).resolve().parents[1] / "app" / "app.py"
     at = AppTest.from_file(str(app_path), default_timeout=120).run()

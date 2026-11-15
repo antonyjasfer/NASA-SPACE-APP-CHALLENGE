@@ -53,7 +53,7 @@ def test_next_experiments_top5_unchanged_plus_separate_analogue():
 def test_app_starts_without_secrets_and_shows_heptane_note(monkeypatch):
     from streamlit.testing.v1 import AppTest
 
-    for v in ("META_API_KEY", "NVIDIA_API_KEY"):
+    for v in ("MODEL_API_KEY", "META_API_KEY", "NVIDIA_API_KEY"):
         monkeypatch.delenv(v, raising=False)
     at = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app" / "app.py"), default_timeout=120).run()
     assert not at.exception, [e.value for e in at.exception]

@@ -40,8 +40,16 @@ streamlit run app/app.py
 The app starts without any secrets. The chatbot then shows the matching NASA passages instead of a
 written answer. To turn on written answers, copy `.streamlit/secrets.toml.example` to
 `.streamlit/secrets.toml`, or set the same variables in Streamlit Cloud:
-`META_API_KEY`, `META_BASE_URL`, `META_MODEL`, and optionally `NVIDIA_API_KEY`, `NVIDIA_BASE_URL` and
-`NVIDIA_MODEL`. Never commit real keys.
+
+| Variable | Meaning |
+|---|---|
+| `MODEL_API_KEY` (or `META_API_KEY`) | Meta key (required to enable the chatbot) |
+| `META_BASE_URL` | default `https://api.meta.ai/v1` |
+| `META_MODEL` | default `muse-wonder-1.0` |
+| `META_API_STYLE` | `responses` (default, OpenAI-compatible Responses API) or `chat` (old Llama API path) |
+| `NVIDIA_API_KEY`, `NVIDIA_BASE_URL`, `NVIDIA_MODEL` | optional fallback (chat completions) |
+
+Never commit real keys.
 
 **Streamlit Community Cloud**: the entry point is `app/app.py`. Choose **Python 3.12 or newer** in Advanced
 settings, because the pinned numpy and scipy require it (tested on 3.13).
