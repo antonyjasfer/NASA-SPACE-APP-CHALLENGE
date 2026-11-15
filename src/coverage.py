@@ -215,6 +215,13 @@ def _explain(r: pd.Series) -> str:
     return (f"Test {r['fuel_type']} fuels at {r['x_o2']:.0%} O2 and {r['p_atm']:.2f} atm: {ev}; "
             f"closeness {r['closeness']:.2f} to '{r['nearest_target']}'.")
 
+def add_ground_test_analogue(picks: pd.DataFrame) -> pd.DataFrame:
+    """Append the heuristic 1-g ground-test analogue as a separate 6th row (top 5 unchanged)."""
+    from src.partial_gravity import ground_test_row
+
+    return pd.concat([picks, pd.DataFrame([ground_test_row()])], ignore_index=True)
+
+
 def main() -> pd.DataFrame:
     df = load_clean()
     table = coverage_table(df)
@@ -230,7 +237,7 @@ def main() -> pd.DataFrame:
     points.to_csv(POINTS_PATH, index=False)
     print("\nCoverage points:", points.groupby(["source", "fuel_type"]).size().to_dict())
     picks = recommend_experiments(points)
-    picks.to_csv(NEXT_PATH, index=False)
+    picks.assign(kind="recommended (evidence gap)").pipe(add_ground_test_analogue).to_csv(NEXT_PATH, index=False)
     print(picks[["rank", "fuel_type", "x_o2", "p_atm", "gap_units", "coverage", "closeness", "score"]].to_string(index=False))
     for e in picks["explanation"]:
         print(" -", e)

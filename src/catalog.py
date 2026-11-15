@@ -13,6 +13,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from src import coolflame, partial_gravity
 from src.catalog_data import (
     GUIDE,
     INVESTIGATIONS,
@@ -217,7 +218,8 @@ def special_cards() -> list[dict]:
          "fire_safety_implication": "Research at NASA GRC and in microgravity showed all three are false.",
          "citation": f"{GUIDE}, p. 35", "generated_by": GENERATED_BY},
     ] + [{"objective": NOT_STATED, "what_varied": NOT_STATED, **c,
-          "generated_by": "Claude Code from cited literature (team-verified)"} for c in QUALITATIVE_LITERATURE]
+          "generated_by": "Claude Code from cited literature (team-verified)"} for c in QUALITATIVE_LITERATURE] + [
+        coolflame.card(), partial_gravity.card()]
 
 
 def word_count(text: str) -> int:

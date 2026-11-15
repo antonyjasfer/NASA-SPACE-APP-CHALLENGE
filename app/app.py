@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:  # Streamlit Cloud runs app/app.py; make `src` importable
     sys.path.insert(0, str(ROOT))
 
+from src import coolflame, partial_gravity  # noqa: E402
 from src.catalog_data import LITERATURE_POINTS  # noqa: E402
 from src.features import MODEL_FEATURES, build_features  # noqa: E402
 from src.knowledge import Retriever, load_chunks  # noqa: E402
@@ -70,6 +71,8 @@ def load_tables() -> dict:
         "flex": pd.read_csv(PROC / "flex_clean.csv"),
         "summary": json.loads((PROC / "flex_coverage_summary.json").read_text()),
         "metrics": json.loads((MODELS / "metrics.json").read_text()),
+        "cool": coolflame.observed(),
+        "pg": partial_gravity.equivalent_points(),
     }
 
 
@@ -232,6 +235,9 @@ def tab_predictor(t: dict) -> None:
         st.error("O2 + CO2 + He add up to more than 1. Lower one of them; the rest is nitrogen.")
         return
     res = predict(fuel, x_o2, p_atm, x_co2, x_he, d0)
+    if fuel == "Heptane":
+        st.info(f"Cool-flame note: {coolflame.GUIDE_COOL_FLAME} ({coolflame.GUIDE_COOL_FLAME_CITE}). "
+                "The outcome model does not predict cool flames.")
     flex = t["flex"][t["flex"]["fuel"] == fuel]
     outside = [name for name, v, s in (("O2", x_o2, flex["x_o2"]), ("pressure", p_atm, flex["p_atm"]),
                                        ("d0", d0, flex["d0_mm"])) if not (s.min() <= v <= s.max())]
@@ -280,10 +286,11 @@ def d2_curve(d0: float, res: dict) -> go.Figure:
 
 
 # ------------------------------------------------------------------ tab 3: map
-def oxygen_margin_map(t: dict, show: set[str]) -> go.Figure:
-    pts, lit, nxt = t["points"], t["lit"], t["next"]
+def oxygen_margin_map(t: dict, show: set[str], show_pg: bool = False) -> go.Figure:
+    pts, lit = t["points"], t["lit"]
+    nxt = t["next"][t["next"]["kind"] == "recommended (evidence gap)"]
     fig = go.Figure()
-    fig.add_shape(type="rect", x0=0.3, x1=3.2, y0=22.2, y1=42, fillcolor=FLAME, opacity=0.07, line_width=0,
+    fig.add_shape(type="rect", x0=0.2, x1=3.2, y0=22.2, y1=42, fillcolor=FLAME, opacity=0.07, line_width=0,
                   layer="below")
     fig.add_annotation(x=np.log10(2.2), y=23.2, text="Above 22.2% O2: no PSI solid-material test",
                        showarrow=False, font={"color": FLAME, "size": 12})
@@ -320,6 +327,22 @@ def oxygen_margin_map(t: dict, show: set[str]) -> go.Figure:
                                     "line": {"color": TEXT if measured else FLAME, "width": 1.5}},
                             hovertext=g["label"] + " — " + g["citation"] + ("" if measured else " (pressure not stated)"),
                             hoverinfo="text+y")
+    cool = t["cool"]
+    if "gas" in show and len(cool):
+        for status, sym in (("yes", "triangle-up"), ("no", "triangle-up-open")):
+            g = cool[cool["cool_flame"] == status]
+            fig.add_scatter(x=g["p_atm"], y=g["x_o2"] * 100, mode="markers", name=f"CFI-G cool flame: {status}",
+                            marker={"color": OXYGEN, "size": 13, "symbol": sym, "line": {"color": TEXT, "width": 1}},
+                            hovertext=("PSI-159 " + g["test_id"].astype(str) + ": " + g["fuel"].astype(str)
+                                       + f", cool flame {status}"), hoverinfo="text+x+y")
+    if show_pg:
+        pg = t["pg"]
+        fig.add_scatter(x=pg["p_1g_equiv_atm"], y=pg["x_o2"] * 100, mode="markers+text",
+                        name="1-g partial-gravity equivalents (heuristic)",
+                        marker={"color": TEXT, "size": 14, "symbol": "circle-open", "line": {"width": 2}},
+                        text=pg["body"], textposition="bottom center", textfont={"color": MUTED},
+                        hovertext=pg["label"] + " — 1-g equivalent " + pg["p_1g_equiv_atm"].astype(str)
+                        + " atm (heuristic)", hoverinfo="text")
     tg = lit[lit["kind"] == "exploration_target"]
     fig.add_scatter(x=tg["p_atm"], y=tg["x_o2"] * 100, mode="markers+text", name="Exploration targets",
                     marker={"color": TEXT, "size": 16, "symbol": "x-thin", "line": {"width": 3, "color": TEXT}},
@@ -337,8 +360,8 @@ def oxygen_margin_map(t: dict, show: set[str]) -> go.Figure:
     fig.update_layout(template="plotly_dark", paper_bgcolor=NIGHT, plot_bgcolor=PANEL, height=620,
                       margin={"l": 60, "r": 20, "t": 30, "b": 60},
                       xaxis={"title": "Ambient pressure (atm, log scale)", "type": "log",
-                             "range": [np.log10(0.3), np.log10(3.2)], "gridcolor": "#22324D",
-                             "tickvals": [0.3, 0.4, 0.5, 0.7, 1, 1.5, 2, 3]},
+                             "range": [np.log10(0.2 if show_pg else 0.3), np.log10(3.2)], "gridcolor": "#22324D",
+                             "tickvals": [0.2, 0.3, 0.4, 0.5, 0.7, 1, 1.5, 2, 3]},
                       yaxis={"title": "Oxygen (% by volume)", "range": [10, 42], "gridcolor": "#22324D"},
                       legend={"orientation": "h", "y": -0.16, "font": {"size": 11}})
     return fig
@@ -348,10 +371,13 @@ def tab_map(t: dict) -> None:
     st.subheader("Where does NASA have fire evidence near a Moon-base atmosphere?")
     opts = {"droplet": "Droplets (FLEX)", "gas": "Gas flames", "solid": "Solid materials", "literature": "Literature"}
     chosen = st.multiselect("Show", list(opts), default=list(opts), format_func=opts.get)
-    st.plotly_chart(oxygen_margin_map(t, set(chosen)), width="stretch")
+    show_pg = st.toggle("Show partial-gravity equivalents")
+    st.plotly_chart(oxygen_margin_map(t, set(chosen), show_pg), width="stretch")
+    if show_pg:
+        st.caption(partial_gravity.CAPTION)
     st.markdown("**Recommended next experiments** (gap to the nearest evidence × closeness to a target; "
                 "PSI tests count fully, verified literature counts half)")
-    st.dataframe(t["next"][["rank", "fuel_type", "x_o2", "p_atm", "score", "explanation"]], hide_index=True,
+    st.dataframe(t["next"][["rank", "kind", "fuel_type", "x_o2", "p_atm", "score", "explanation"]], hide_index=True,
                  width="stretch")
     st.caption("Open circles: BASS-II and Saffire I-II have no pressure column; they are drawn at an assumed "
                "ISS-cabin 1 atm. BASS (PSI-26) and Saffire-III have no O2 value and are not plotted.")

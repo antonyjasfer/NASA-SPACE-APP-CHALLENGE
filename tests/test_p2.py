@@ -126,7 +126,7 @@ def test_literature_is_labelled_and_separate(points):
 # --------------------------------------------------------------------------- cards
 def test_cards_word_limits_and_provenance(inv):
     cards = investigation_cards(inv) + special_cards()
-    assert len(cards) == len(inv) + 5
+    assert len(cards) == len(inv) + 7   # 4 analysis + BASS-II lit + cool flames + partial gravity
     for c in cards:
         assert c["generated_by"] and c["citation"]
         for k in ("objective", "what_varied", "key_result", "fire_safety_implication"):

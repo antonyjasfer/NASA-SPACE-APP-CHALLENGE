@@ -313,5 +313,25 @@
     "citation": "Olson et al., ICES 2019, 'Flammability Limits from BASS-II Testing in Microgravity Compared to Normal Gravity Limits'",
     "url": "https://ttu-ir.tdl.org/items/1922ad9f-ef4c-4f52-96a4-980c23debe5e",
     "generated_by": "Claude Code from cited literature (team-verified)"
+  },
+  {
+    "card_id": "invisible_cool_flames",
+    "title": "Invisible cool flames",
+    "objective": "Flag where a flame may keep burning after it looks extinguished.",
+    "what_varied": "Fuel blend, O2 and pressure (PSI-159 CFI-G gas flames); heptane droplets (FLEX).",
+    "key_result": "PSI-159 records a cool flame in 7 tests and none in 1; the other 171 tests have no entry (unknown, not 'no'). All 7 were 30% butane at 39%-40% O2 and 2.0 atm. After the visible (hot) flame of a heptane droplet extinguishes by radiative loss, a low-temperature cool flame can keep the droplet vaporizing and burning for an extended time, invisible to the eye.",
+    "fire_safety_implication": "Reduced gravity favours very weak, persistent flames invisible to the unaided eye that can spontaneously re-ignite long after the visible flame is gone. A fire that looks out may not be out: detectors and crew procedures must not rely on the visible flame.",
+    "citation": "PSI-159 table; NASA ISS Researcher's Guide: Combustion Science (NP-2015-10-034-JSC), p. 33-34, 36; NASA ISS Researcher's Guide: Combustion Science (NP-2015-10-034-JSC), p. 41-42",
+    "generated_by": "Claude Code from PSI-159 data and NASA PDF"
+  },
+  {
+    "card_id": "partial_gravity_analogue",
+    "title": "Approximating lunar gravity on the ground (heuristic)",
+    "objective": "Find a 1-g test that mimics lunar buoyancy, since no partial-gravity data exist in PSI.",
+    "what_varied": "Pressure, scaled by sqrt(g/g_earth): factor 0.40 for the Moon, 0.62 for Mars.",
+    "key_result": "Buoyancy (Grashof) at 34% O2 / 0.558 atm on the Moon equals a 1-g test at ~0.22 atm; 30% O2 / 0.694 atm maps to ~0.28 atm.",
+    "fire_safety_implication": "A 1-g ground test of solid cabin materials at 34% O2 and ~0.22 atm would bracket lunar fire behaviour cheaply. Heuristic: matches buoyancy (Grashof) only; ignores radiation, residence time and flame-size effects. Bounds lunar behaviour between the microgravity and 1-g results; not a validated prediction. PSI contains no partial-gravity combustion data.",
+    "citation": "Fire-Margin heuristic (Grashof scaling Gr ~ g p^2); targets: NASA/TM-2013-217377",
+    "generated_by": "Claude Code (heuristic, labelled)"
   }
 ]
