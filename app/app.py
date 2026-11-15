@@ -408,7 +408,7 @@ def saffire3_replay(t: dict) -> None:
             for i, r in enumerate(ign.sort_values("t_start_s").itertuples()):
                 if r.t_start_s <= t_now:
                     fig.add_vline(x=r.t_start_s, line={"color": FLAME, "dash": "dash"},
-                                  annotation_text=f"{r.igniter} current pulse", annotation_font_color=FLAME,
+                                  annotation_text=f"{r.igniter} channel pulse", annotation_font_color=FLAME,
                                   annotation_position="top left" if i % 2 == 0 else "top right")
         fig.update_layout(template="plotly_dark", paper_bgcolor=PANEL, plot_bgcolor=PANEL, height=420,
                           margin={"l": 50, "r": 10, "t": 30, "b": 40}, xaxis_title="time since telemetry start (s)",
@@ -418,7 +418,7 @@ def saffire3_replay(t: dict) -> None:
             st.caption("Channels with different units share one axis; compare shapes and timing, not magnitudes.")
         st.caption(telemetry.CAPTION + " Units shown are exactly as labelled in the file (psi, degC, V). "
                    "Multiplexed placeholder values (0 or the start-of-file value) were treated as missing; "
-                   "dashed lines mark igniter current pulses. Source: PSI-100 Saffire-III telemetry, DOI ")
+                   "dashed lines mark igniter-channel pulses (Sample*IgniterI above 0.5; unit not labelled in the file). Source: PSI-100 Saffire-III telemetry, DOI ")
         st.markdown(a_link(f"{telemetry.DOI}", f"https://doi.org/{telemetry.DOI}"), unsafe_allow_html=True)
 
 

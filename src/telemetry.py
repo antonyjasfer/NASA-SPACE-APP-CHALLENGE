@@ -7,14 +7,15 @@ Cleaning rules (documented, no unit invented):
 - Both sheets are time-multiplexed: in most rows a channel is not sampled and holds a placeholder.
   CygnusData placeholder = exactly 0 (cabin pressure ~14 psi / air ~20 degC can never read 0);
   SaffireData placeholder = the channel's start-of-file value, repeated exactly (e.g. radiometer
-  -4002.47, anemometer -76.19, igniter current -3.05). Placeholders -> missing.
+  -4002.47, anemometer -76.19, igniter channel -3.05). Placeholders -> missing.
 - Cygnus channels keep their published units. Channels with < 50 real samples are dropped
   (FIZ 1 obscuration: none; FIZ 1 scatterometer: 2).
 - Radiometers/anemometers have no published unit: shown as change from baseline in raw counts
   (unitless), baseline = median of the first 60 s of REAL samples. (The first 60 s of the file are
   placeholders only, so a file-start baseline would be meaningless.)
-- Ignition is marked only where an igniter current shows a clear pulse (> 0.5 A after placeholders
-  are removed); the file does not say which PSI-100 sample each igniter lit.
+- Ignition is marked only where an igniter channel (Sample*IgniterI) shows a clear pulse above 0.5 after
+  placeholders are removed. The file gives no unit for this channel, so none is stated; it also does
+  not say which PSI-100 sample each igniter lit.
 - Downsampling keeps every k-th real sample (no averaging or interpolation), <= 2,000 per channel.
 """
 from __future__ import annotations
@@ -31,7 +32,7 @@ DOI = "10.60555/040q-4h36"
 MAX_POINTS = 2000
 MIN_REAL_SAMPLES = 50
 BASELINE_S = 60
-IGNITION_CURRENT_A = 0.5
+IGNITION_THRESHOLD = 0.5   # igniter channel value; the file gives no unit for Sample*IgniterI
 UNITLESS = "change from baseline (raw counts, unitless)"
 CAPTION = "Raw radiometer/anemometer counts are unitless; units are not published in PSI-100."
 
@@ -95,11 +96,11 @@ def ignition_events(saf: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for name, col in IGNITERS.items():
         v = saf[col].where(saf[col] != saf[col].iloc[0])
-        on = saf.loc[v > IGNITION_CURRENT_A, "Relative Time (s)"]
+        on = saf.loc[v > IGNITION_THRESHOLD, "Relative Time (s)"]
         if len(on):
             rows.append({"igniter": name, "t_start_s": float(on.min()), "t_end_s": float(on.max()),
-                         "n_samples": int(len(on)), "peak_current_A": float(v.max()), "raw_column": col})
-    return pd.DataFrame(rows, columns=["igniter", "t_start_s", "t_end_s", "n_samples", "peak_current_A", "raw_column"])
+                         "n_samples": int(len(on)), "peak_value_unit_unlabelled": float(v.max()), "raw_column": col})
+    return pd.DataFrame(rows, columns=["igniter", "t_start_s", "t_end_s", "n_samples", "peak_value_unit_unlabelled", "raw_column"])
 
 
 def main() -> pd.DataFrame:

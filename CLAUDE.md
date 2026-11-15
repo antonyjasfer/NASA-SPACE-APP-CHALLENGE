@@ -126,7 +126,7 @@ Saffire-III telemetry replay; cool-flame risk flag from ACME CFI-G.
   saffire3_telemetry_small.csv, 1.4 MB): CygnusData channels with published units only (psi, degC, V);
   multiplexed placeholders (0 in CygnusData, the start-of-file value in SaffireData) treated as missing;
   radiometers/anemometers shown as change from baseline in raw counts (unitless), baseline = median of the
-  first 60 s of REAL samples (the file's first 60 s are placeholders only); igniter-current pulses (>0.5 A)
+  first 60 s of REAL samples (the file's first 60 s are placeholders only); igniter-channel pulses (Sample*IgniterI > 0.5; unit not labelled)
   marked at ~5759 s (igniter 2) and ~5954 s (igniter 1). PSI-100 DOI 10.60555/040q-4h36.
 - [ ] P6 README, data dictionary, AI disclosure, 30-s video, <=7 slides, submission
 

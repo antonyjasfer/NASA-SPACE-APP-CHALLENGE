@@ -84,4 +84,5 @@ def test_saffire3_ignitions_are_clear_pulses():
 
     ev = pd.read_csv(telemetry.EVENTS_PATH)
     assert set(ev["igniter"]) == {"Igniter 1", "Igniter 2"}
-    assert (ev["peak_current_A"] > telemetry.IGNITION_CURRENT_A).all() and (ev["n_samples"] < 30).all()
+    assert (ev["peak_value_unit_unlabelled"] > telemetry.IGNITION_THRESHOLD).all() and (ev["n_samples"] < 30).all()
+    assert not any(c.endswith("_A") for c in ev.columns)   # no unit invented for the igniter channel

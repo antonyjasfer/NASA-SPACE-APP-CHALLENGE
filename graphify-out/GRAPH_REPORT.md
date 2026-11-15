@@ -1,18 +1,18 @@
 # Graph Report - NASA-SPACE-APP-CHALLENGE  (2026-11-15)
 
 ## Corpus Check
-- 34 files · ~43,446 words
+- 34 files · ~43,496 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 32 file(s) not represented in the graph (top: .csv 16, .joblib 10, (none) 3)
 - WARNING: 32 of 68 files seen (47%) have no supported extractor and are missing from this graph entirely. It may look complete while representing only part of the codebase.
 
 ## Summary
 - 516 nodes · 1219 edges · 23 communities (18 shown, 5 thin omitted)
-- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 71 edges (avg confidence: 0.87)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 70 edges (avg confidence: 0.87)
 - Token cost: 186,347 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a02b1218`
+- Built from commit: `6458537e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
