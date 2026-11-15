@@ -81,6 +81,24 @@ def verify_citations(text: str, hits: Sequence[Hit]) -> tuple[str, bool]:
     return text, bool(cited) and cited <= allowed
 
 
+def number_citations(text: str, sources: Sequence[dict]) -> tuple[str, list[tuple[int, dict]]]:
+    """Display only: replace each full [source, page] citation with [n] (same source = same number,
+    numbered by first appearance). Returns the new text and the cited sources in number order.
+    Does not change which citations are accepted (see verify_citations)."""
+    by_cite = {s["cite"]: s for s in sources}
+    numbers: dict[str, int] = {}
+
+    def repl(m: re.Match) -> str:
+        cite = m.group(0)
+        if cite not in by_cite:
+            return cite
+        numbers.setdefault(cite, len(numbers) + 1)
+        return f"[{numbers[cite]}]"
+
+    out = _CITATION.sub(repl, text)
+    return out, [(n, by_cite[c]) for c, n in numbers.items()]
+
+
 def answer(question: str, retriever: Retriever,
            chat_fn: Callable[..., LLMResult] = chat) -> RagAnswer:
     """Grounded answer, refusal, or retrieved passages when the AI is unavailable or unverifiable."""

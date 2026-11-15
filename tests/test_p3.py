@@ -143,3 +143,14 @@ def test_app_starts_without_secrets(monkeypatch):
     assert [t.label for t in at.tabs] == ["Oxygen-Margin Map", "Ask Fire-Margin", "Flame Predictor",
                                           "Catalog & Ranking", "Lessons & Earth Impact"]
     assert any("No AI key is configured" in m.value for m in at.markdown)
+
+
+def test_number_citations_display_only():
+    from src.rag import number_citations
+
+    srcs = [{"cite": "[Guide, p. 34]", "text": "a"}, {"cite": "[PSI-69, card]", "text": "b"},
+            {"cite": "[Unused, p. 1]", "text": "c"}]
+    text, cited = number_citations("Fire [Guide, p. 34]. Drops [PSI-69, card]. Again [Guide, p. 34].", srcs)
+    assert text == "Fire [1]. Drops [2]. Again [1]."
+    assert [(n, s["cite"]) for n, s in cited] == [(1, "[Guide, p. 34]"), (2, "[PSI-69, card]")]
+    assert number_citations("No cites.", srcs) == ("No cites.", [])

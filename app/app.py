@@ -29,7 +29,7 @@ from src.knowledge import Retriever, load_chunks  # noqa: E402
 from src.lessons import LESSONS  # noqa: E402
 from src.llm_config import connection_report, load_providers  # noqa: E402
 from src.models import NEAREST_FEATURES, predict_interval  # noqa: E402
-from src.rag import STARTER_QUESTIONS, answer  # noqa: E402
+from src.rag import STARTER_QUESTIONS, answer, number_citations  # noqa: E402
 from src.ranking import DEFAULT_WEIGHTS, FACTORS, rank_investigations  # noqa: E402
 
 PROC, MODELS = ROOT / "data" / "processed", ROOT / "models"
@@ -544,9 +544,11 @@ def _queue_starter() -> None:
     st.session_state["starter_pill"] = None
 
 
-def citation_chips(sources: list[dict]) -> None:
-    for s in sources:
+def citation_chips(sources: list[dict], numbers: list[int] | None = None) -> None:
+    for i, s in enumerate(sources):
         label = s["cite"] if len(s["cite"]) <= 70 else s["cite"][:67] + "...]"
+        if numbers is not None:
+            label = f"[{numbers[i]}] {label}"
         with st.popover(label, width="stretch"):
             st.markdown(f"**{s['cite']}**")
             st.caption(f"Retrieval similarity {s['score']}")
@@ -560,7 +562,11 @@ def render_answer(a: dict) -> None:
     st.markdown(f'<p class="fm-status">{STATUS_LINE.get(a["status"], "{n} passages").format(n=n)}</p>',
                 unsafe_allow_html=True)
     if a["status"] == "answered":
-        st.markdown(a["text"])
+        text, cited = number_citations(a["text"], a["sources"])
+        st.markdown(text)
+        if cited:
+            citation_chips([src for _, src in cited], [n for n, _ in cited])
+        return
     elif a["status"] == "refused":
         st.markdown("I don't have NASA evidence for that. Try asking about oxygen limits, droplets, solid "
                     "materials, suppression or past spacecraft fires.")
