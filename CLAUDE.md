@@ -15,7 +15,7 @@ Disruption. Show exactly where evidence exists, where it is missing, and which e
 run next.
 
 ## Stack
-Python 3.11, pandas, numpy, scikit-learn, scipy, plotly, streamlit, joblib, pypdf, openai (SDK only).
+Python 3.12+ (tested 3.13; pinned numpy/scipy need >= 3.12), pandas, numpy, scikit-learn, scipy, plotly, streamlit, joblib, pypdf, openai (SDK only).
 Deploy: Streamlit Community Cloud from this GitHub repo. Entry point: `app/app.py`.
 LLM: Meta API (primary, paid credits) via the OpenAI Python SDK; NVIDIA NIM free API as optional fallback.
 All settings come from env vars / Streamlit secrets — never commit keys, never hard-code URLs or models:
@@ -118,8 +118,8 @@ Saffire-III telemetry replay; cool-flame risk flag from ACME CFI-G.
 ## Phases (tick as done)
 - [x] P1 Data ingest + cleaning + FLEX models + metrics
 - [x] P2 Investigation catalog + ranking engine + coverage analysis
-- [ ] P3 Knowledge base + RAG chatbot + insight cards
-- [ ] P4 Streamlit app (all tabs) + deploy
+- [x] P3 Knowledge base + RAG chatbot + insight cards
+- [x] P4 Streamlit app (all tabs) + deploy-ready (Streamlit Cloud deploy itself is a team step: Python 3.12+, add secrets)
 - [ ] P5 Stretch goals
 - [ ] P6 README, data dictionary, AI disclosure, 30-s video, <=7 slides, submission
 

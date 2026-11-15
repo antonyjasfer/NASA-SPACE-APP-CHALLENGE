@@ -343,7 +343,11 @@ def main() -> dict:
     disruption, f2 = run_binary(df, "Disruption")
     extinction, f2b = run_binary(df, "Extinction")
     k_res, f3 = run_k(df)
-    index = NearestTestIndex.fit(df, NEAREST_FEATURES)
+    # Pickle the importable class (src.models.NearestTestIndex), not __main__'s copy when run with -m,
+    # otherwise the app cannot unpickle it.
+    from src.models import NearestTestIndex as ImportableIndex
+
+    index = ImportableIndex.fit(df, NEAREST_FEATURES)
     for name, model in {**f1, **f2, **f2b, **f3, "nearest_test": index}.items():
         joblib.dump(model, MODELS_DIR / f"{name}.joblib")
 

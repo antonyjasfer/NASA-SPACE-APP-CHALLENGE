@@ -53,3 +53,25 @@ What the AI did:
 
 Insight cards are written by the AI from the PDF text and PSI tables only (`generated_by` field);
 no LLM API was called and no number was produced by a model.
+
+## 2026-11-15 — P2 fixes, Phase P3 and P4 (Claude Code, Anthropic)
+Tool: Claude Code with a Python-review sub-agent; graphify for the code map.
+Human: verified the literature values against the primary sources (Saffire IV-VI test matrix,
+PMMA-rod Scientific Reports paper, BASS-II ICES 2019) and chose the app content.
+
+What the AI did:
+- Replaced unverified literature rows with the team-verified ones (value_verified + URL); removed the
+  unverifiable BASS-II 13.6%/16% row; made planned/capability ranges count as "not evidence" in the
+  ranking; reworked the recommender to use weighted evidence (PSI measured 1.0, PSI with flagged
+  assumed 1 atm 1.0, verified literature 0.5); updated the headline from computed numbers.
+- `src/knowledge.py`: chunks the Researcher's Guide (~800 chars, page kept), insight cards, literature,
+  lessons and recommendations into `data/knowledge/chunks.jsonl`; TF-IDF retrieval with a similarity
+  threshold and a term-overlap gate, tuned so off-topic questions are refused.
+- `src/rag.py`: grounded answers through the Meta -> NVIDIA chain with mandatory [source, page]
+  citations; refusal below threshold; retrieved passages shown when every provider fails.
+- `src/lessons.py`: Apollo 1, Apollo 13, Mir 1997 and three NASA spinoffs, each with a NASA source
+  found by web search (links listed in the file).
+- `app/app.py`: the five-tab Streamlit app (dark theme), plus README, pinned requirements and
+  `.streamlit/config.toml`. Found and fixed a pickling bug (nearest-test index saved under `__main__`).
+- 21 new tests (79 total). The chatbot could not be exercised against a live LLM here: no API key is
+  available in the build environment, so only the refusal and fallback paths were run end to end.
