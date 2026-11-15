@@ -97,8 +97,10 @@ def coverage_points() -> pd.DataFrame:
         d = t[psi].data
         frames.append(pd.DataFrame({
             "source": psi, "investigation": name, "test_id": d["test_id"], "fuel_type": "solid",
-            "fuel": d["material"], "x_o2": d["x_o2"], "p_atm": np.nan, "flow_cms": d["flow_cms"],
-            "flow_raw": d["flow_raw"], "approx_note": np.where(d["x_o2_approx"], "O2 approximate (~)", "")}))
+            "fuel": d["material"], "x_o2": d["x_o2"], "p_atm": np.nan, "p_assumed_atm": 1.0,
+            "p_assumed": True, "flow_cms": d["flow_cms"],
+            "flow_raw": d["flow_raw"], "approx_note": np.where(d["x_o2_approx"], "O2 approximate (~); pressure assumed ISS cabin 1 atm",
+                                   "pressure assumed ISS cabin 1 atm")}))
     out = pd.concat(frames, ignore_index=True).reindex(columns=POINT_COLUMNS)
     out["p_assumed"] = out["p_assumed"].fillna(False).astype(bool)
     return out
@@ -119,40 +121,71 @@ def _targets() -> list[tuple[str, float, float]]:
     return [(p["label"], p["x_o2"], p["p_atm"]) for p in LITERATURE_POINTS if p["kind"] == "exploration_target"]
 
 
+LITERATURE_WEIGHT = 0.5            # published but not in PSI: counts half as much as a PSI test
+EVIDENCE_COLUMNS = ["fuel_type", "x_o2", "p_atm", "weight", "kind", "label"]
+
+
+def evidence_points(points: pd.DataFrame) -> pd.DataFrame:
+    """Evidence used by the recommender: PSI tests with measured O2 + pressure (weight 1), PSI tests
+    whose pressure is the flagged ISS-cabin assumption (weight 1, kind 'assumed pressure'), and
+    verified literature points (weight 0.5). Targets are never evidence."""
+    from src.catalog_data import LITERATURE_POINTS
+
+    measured = points[points["x_o2"].notna() & points["p_atm"].notna()]
+    assumed = points[points["x_o2"].notna() & points["p_atm"].isna() & points["p_assumed"]]
+    lit = pd.DataFrame([p for p in LITERATURE_POINTS
+                        if p["kind"] == "literature" and p["value_verified"] and p["p_atm"] is not None])
+    frames = [
+        pd.DataFrame({"fuel_type": measured["fuel_type"], "x_o2": measured["x_o2"], "p_atm": measured["p_atm"],
+                      "weight": 1.0, "kind": "PSI measured",
+                      "label": measured["source"] + " " + measured["test_id"].astype(str)}),
+        pd.DataFrame({"fuel_type": assumed["fuel_type"], "x_o2": assumed["x_o2"], "p_atm": assumed["p_assumed_atm"],
+                      "weight": 1.0, "kind": "PSI, pressure assumed 1 atm (ISS cabin)",
+                      "label": assumed["source"] + " " + assumed["test_id"].astype(str)}),
+    ]
+    if len(lit):
+        frames.append(pd.DataFrame({"fuel_type": lit["fuel_type"], "x_o2": lit["x_o2"], "p_atm": lit["p_atm"],
+                                    "weight": LITERATURE_WEIGHT, "kind": "verified literature (not PSI)",
+                                    "label": lit["label"]}))
+    return pd.concat(frames, ignore_index=True)[EVIDENCE_COLUMNS]
+
+
 def recommend_experiments(points: pd.DataFrame, top_n: int = 5,
                           fuel_types: tuple[str, ...] = FUEL_TYPES) -> pd.DataFrame:
-    """Rank candidate (fuel type, O2, pressure) points by gap to the nearest real test x closeness
-    to an exploration target. Only tests with MEASURED O2 and pressure count as evidence."""
+    """Rank candidate (fuel type, O2, pressure) points: score = (1 - coverage) x closeness, where
+    coverage = max over evidence of weight x (1 - min(d, GAP_CAP) / GAP_CAP) and closeness is the
+    Gaussian proximity to the nearest exploration target."""
     if top_n < 1:
         raise ValueError("top_n must be >= 1")
-    targets = _targets()
+    ev = evidence_points(points)
     o2, p = np.meshgrid(O2_GRID, P_GRID, indexing="ij")
     o2, p = o2.ravel(), p.ravel()
     closeness = np.zeros_like(o2)
     nearest_target = np.empty(o2.shape, dtype=object)
-    for label, to2, tp in targets:
+    for label, to2, tp in _targets():
         c = np.exp(-0.5 * (((o2 - to2) / O2_SCALE) ** 2 + ((p - tp) / P_SCALE) ** 2))
         nearest_target = np.where(c > closeness, label, nearest_target)
         closeness = np.maximum(closeness, c)
     rows = []
     for ft in fuel_types:
-        real = points[(points["fuel_type"] == ft) & points["x_o2"].notna() & points["p_atm"].notna()]
-        if len(real):
-            d = np.sqrt(((o2[:, None] - real["x_o2"].to_numpy()) / O2_SCALE) ** 2
-                        + ((p[:, None] - real["p_atm"].to_numpy()) / P_SCALE) ** 2)
-            idx = d.argmin(axis=1)
+        e = ev[ev["fuel_type"] == ft]
+        if len(e):
+            d = np.sqrt(((o2[:, None] - e["x_o2"].to_numpy()) / O2_SCALE) ** 2
+                        + ((p[:, None] - e["p_atm"].to_numpy()) / P_SCALE) ** 2)
+            cov_each = e["weight"].to_numpy() * (1 - np.minimum(d, GAP_CAP) / GAP_CAP)
+            idx = cov_each.argmax(axis=1)
+            coverage = cov_each[np.arange(len(o2)), idx]
             gap = d[np.arange(len(o2)), idx]
-            near = real.iloc[idx]
-            near_desc = (near["source"] + " " + near["test_id"].astype(str) + " (O2 "
-                         + near["x_o2"].round(3).astype(str) + ", " + near["p_atm"].round(2).astype(str) + " atm)").to_numpy()
+            best = e.iloc[idx]
+            desc = (best["label"] + " [" + best["kind"] + "] (O2 " + best["x_o2"].round(3).astype(str)
+                    + ", " + best["p_atm"].round(2).astype(str) + " atm)").to_numpy()
         else:
-            gap = np.full(len(o2), np.inf)
-            near_desc = np.full(len(o2), "none: no PSI test of this fuel type has measured O2 and pressure")
-        gap_c = np.minimum(gap, GAP_CAP)
+            coverage, gap = np.zeros(len(o2)), np.full(len(o2), np.inf)
+            desc = np.full(len(o2), "none: no evidence of this fuel type")
         rows.append(pd.DataFrame({"fuel_type": ft, "x_o2": o2, "p_atm": p, "gap_units": gap,
-                                  "closeness": closeness, "nearest_target": nearest_target,
-                                  "nearest_real_test": near_desc,
-                                  "score": (gap_c / GAP_CAP) * closeness}))
+                                  "coverage": coverage, "closeness": closeness,
+                                  "nearest_target": nearest_target, "nearest_evidence": desc,
+                                  "score": (1 - coverage) * closeness}))
     cand = pd.concat(rows, ignore_index=True).sort_values(
         ["score", "fuel_type", "x_o2", "p_atm"], ascending=[False, True, False, True], kind="mergesort")
     # Diversity: first the best pick of each fuel type (if it clears MIN_SCORE), then fill by score;
@@ -170,17 +203,17 @@ def recommend_experiments(points: pd.DataFrame, top_n: int = 5,
     out = pd.DataFrame(picks).sort_values("score", ascending=False, kind="mergesort").reset_index(drop=True)
     out.insert(0, "rank", range(1, len(out) + 1))
     out["gap_units"] = out["gap_units"].replace(np.inf, np.nan).round(2)
-    out[["closeness", "score"]] = out[["closeness", "score"]].round(3)
+    out[["coverage", "closeness", "score"]] = out[["coverage", "closeness", "score"]].round(3)
     out["explanation"] = [_explain(r) for _, r in out.iterrows()]
     return out
 
 
 def _explain(r: pd.Series) -> str:
-    gap = ("no real test of this fuel type with measured pressure exists" if pd.isna(r["gap_units"])
-           else f"nearest real test {r['nearest_real_test']} is {r['gap_units']:.2f} units away")
-    return (f"Test {r['fuel_type']} fuels at {r['x_o2']:.0%} O2 and {r['p_atm']:.2f} atm: {gap}; "
+    ev = ("no evidence of this fuel type exists" if pd.isna(r["gap_units"])
+          else f"best evidence {r['nearest_evidence']} is {r['gap_units']:.2f} units away "
+               f"(coverage {r['coverage']:.2f})")
+    return (f"Test {r['fuel_type']} fuels at {r['x_o2']:.0%} O2 and {r['p_atm']:.2f} atm: {ev}; "
             f"closeness {r['closeness']:.2f} to '{r['nearest_target']}'.")
-
 
 def main() -> pd.DataFrame:
     df = load_clean()
@@ -198,7 +231,7 @@ def main() -> pd.DataFrame:
     print("\nCoverage points:", points.groupby(["source", "fuel_type"]).size().to_dict())
     picks = recommend_experiments(points)
     picks.to_csv(NEXT_PATH, index=False)
-    print(picks[["rank", "fuel_type", "x_o2", "p_atm", "gap_units", "closeness", "score"]].to_string(index=False))
+    print(picks[["rank", "fuel_type", "x_o2", "p_atm", "gap_units", "coverage", "closeness", "score"]].to_string(index=False))
     for e in picks["explanation"]:
         print(" -", e)
     return table

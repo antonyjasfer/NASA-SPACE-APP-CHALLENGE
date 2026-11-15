@@ -701,16 +701,16 @@ PSI-159,CFI-G,21291 G2,gas,30% butane,0.38845523,1.000049346163336,,False,,,Self
 PSI-159,CFI-G,21291 J1,gas,30% butane,0.385436483,1.000049346163336,,False,,,Flow terminated,pressure approximate (bar column)
 PSI-159,CFI-G,21291 J2,gas,30% butane,0.382657026,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
 PSI-159,CFI-G,21291 J3,gas,30% butane,0.380783875,1.000049346163336,,False,,,Self-extinguished,pressure approximate (bar column)
-PSI-98,Saffire-I,S1,solid,SIBAL Fabric,0.215,,,False,20.0,20,,
-PSI-98,Saffire-I,S2,solid,SIBAL Fabric,0.215,,,False,20.0,20,,O2 approximate (~)
-PSI-99,Saffire-II,2-1,solid,Silicone,0.215,,,False,20.0,20 cm/s,,O2 approximate (~)
-PSI-99,Saffire-II,2-2,solid,Silicone,0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
-PSI-99,Saffire-II,2-3,solid,Silicone,0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
-PSI-99,Saffire-II,2-4,solid,Silicone,0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
-PSI-99,Saffire-II,2-5,solid,Cotton-Fiberglass (SIBAL),0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
-PSI-99,Saffire-II,2-6,solid,,0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
-PSI-99,Saffire-II,2-7,solid,PMMA & Nomex,0.221,,,False,20.0,20 cm/s,,O2 approximate (~)
-PSI-99,Saffire-II,2-8,solid,PMMA,0.221,,,False,20.0,20 cm/s,,
-PSI-99,Saffire-II,2-9,solid,,0.22,,,False,20.0,20 cm/s,,
-PSI-100,Saffire-III,S1,solid,SIBAL Fabric,,,,False,30.0,30 cm/s,,
-PSI-100,Saffire-III,S2,solid,SIBAL Fabric,,,,False,30.0,30 cm/s,,
+PSI-98,Saffire-I,S1,solid,SIBAL Fabric,0.215,,1.0,True,20.0,20,,pressure assumed ISS cabin 1 atm
+PSI-98,Saffire-I,S2,solid,SIBAL Fabric,0.215,,1.0,True,20.0,20,,O2 approximate (~); pressure assumed ISS cabin 1 atm
+PSI-99,Saffire-II,2-1,solid,Silicone,0.215,,1.0,True,20.0,20 cm/s,,O2 approximate (~); pressure assumed ISS cabin 1 atm
+PSI-99,Saffire-II,2-2,solid,Silicone,0.221,,1.0,True,20.0,20 cm/s,,O2 approximate (~); pressure assumed ISS cabin 1 atm
+PSI-99,Saffire-II,2-3,solid,Silicone,0.221,,1.0,True,20.0,20 cm/s,,O2 approximate (~); pressure assumed ISS cabin 1 atm
+PSI-99,Saffire-II,2-4,solid,Silicone,0.221,,1.0,True,20.0,20 cm/s,,O2 approximate (~); pressure assumed ISS cabin 1 atm
+PSI-99,Saffire-II,2-5,solid,Cotton-Fiberglass (SIBAL),0.221,,1.0,True,20.0,20 cm/s,,O2 approximate (~); pressure assumed ISS cabin 1 atm
+PSI-99,Saffire-II,2-6,solid,,0.221,,1.0,True,20.0,20 cm/s,,O2 approximate (~); pressure assumed ISS cabin 1 atm
+PSI-99,Saffire-II,2-7,solid,PMMA & Nomex,0.221,,1.0,True,20.0,20 cm/s,,O2 approximate (~); pressure assumed ISS cabin 1 atm
+PSI-99,Saffire-II,2-8,solid,PMMA,0.221,,1.0,True,20.0,20 cm/s,,pressure assumed ISS cabin 1 atm
+PSI-99,Saffire-II,2-9,solid,,0.22,,1.0,True,20.0,20 cm/s,,pressure assumed ISS cabin 1 atm
+PSI-100,Saffire-III,S1,solid,SIBAL Fabric,,,1.0,True,30.0,30 cm/s,,pressure assumed ISS cabin 1 atm
+PSI-100,Saffire-III,S2,solid,SIBAL Fabric,,,1.0,True,30.0,30 cm/s,,pressure assumed ISS cabin 1 atm

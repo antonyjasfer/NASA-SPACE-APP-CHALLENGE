@@ -126,7 +126,7 @@ def test_literature_is_labelled_and_separate(points):
 # --------------------------------------------------------------------------- cards
 def test_cards_word_limits_and_provenance(inv):
     cards = investigation_cards(inv) + special_cards()
-    assert len(cards) == len(inv) + 4
+    assert len(cards) == len(inv) + 5
     for c in cards:
         assert c["generated_by"] and c["citation"]
         for k in ("objective", "what_varied", "key_result", "fire_safety_implication"):
@@ -150,7 +150,15 @@ def test_ranking_deterministic_and_order_independent(inv):
 def test_o2p_uses_nearest_measured_test_not_box(inv, points):
     r = rank_investigations(inv, points=points).set_index("key")
     assert r.loc["flame_design", "o2p_method"] == "nearest measured test"
-    assert r.loc["sofie", "o2p_method"] == "stated range"
+    assert r.loc["sofie", "o2p_method"] == "not tested (planned)"
+    assert r.loc["bass", "o2p_method"] == "stated range"
+
+
+def test_planned_and_capability_ranges_are_not_evidence(inv, points):
+    r = rank_investigations(inv, points=points).set_index("key")
+    for key in ("sofie", "flex2"):
+        assert r.loc[key, "o2_pressure_score"] == 0 and r.loc[key, "flow_score"] == 0, key
+        assert r.loc[key, "not_tested"], key
     box = rank_investigations(inv).set_index("key")   # without points: box (bound)
     assert r.loc["flame_design", "o2_pressure_score"] < box.loc["flame_design", "o2_pressure_score"]
 
@@ -176,7 +184,7 @@ def test_slider_effects(inv):
     assert {"flex", "cfig", "flame_design"} <= set(only_o2p.head(3)["key"])
     up = rank_investigations(inv, {"data": 1.0}).set_index("key")["score"]
     base = rank_investigations(inv).set_index("key")["score"]
-    assert up["bass2"] > base["bass2"] and up["sofie"] < base["sofie"]   # table vs no data
+    assert up["bass2"] > base["bass2"] and up["sofie"] <= base["sofie"]   # table vs no data
 
 
 def test_missing_gives_zero_and_flag():
@@ -204,11 +212,11 @@ def test_coverage_points_are_real_tests_only(points, tables):
 def test_recommender_prioritises_moon_base_gap(points):
     picks = recommend_experiments(points)
     assert len(picks) == 5 and picks["rank"].tolist() == [1, 2, 3, 4, 5]
-    top = picks.iloc[0]
-    d = np.hypot((top["x_o2"] - 0.34) / 0.05, (top["p_atm"] - 0.558) / 0.2)
-    assert d <= 0.5 and top["score"] >= 0.9
+    d = np.hypot((picks["x_o2"] - 0.34) / 0.05, (picks["p_atm"] - 0.558) / 0.2)
+    assert d.head(2).min() <= 0.5                       # Moon-base corner is a top-2 pick
+    assert picks.iloc[0]["fuel_type"] == "solid" and picks.iloc[0]["score"] >= 0.5
     assert picks["explanation"].str.len().gt(40).all()
-    assert len(set(picks["fuel_type"])) >= 2   # diverse across fuel types
+    assert len(set(picks["fuel_type"])) >= 2            # diverse across fuel types
 
 
 def test_recommender_droplet_gap_is_below_flex_pressures(points):
@@ -216,6 +224,25 @@ def test_recommender_droplet_gap_is_below_flex_pressures(points):
     assert pick["x_o2"] >= 0.30 and pick["p_atm"] < points.loc[points["source"] == "PSI-69", "p_atm"].min()
 
 
-def test_recommender_ignores_assumed_pressure(points):
-    pick = recommend_experiments(points, top_n=1, fuel_types=("solid",)).iloc[0]
-    assert pd.isna(pick["gap_units"]) and "no PSI test" in pick["nearest_real_test"]
+def test_evidence_weights_and_assumed_pressure_flag(points):
+    from src.coverage import LITERATURE_WEIGHT, evidence_points
+
+    ev = evidence_points(points)
+    assumed = ev[ev["kind"].str.contains("assumed")]
+    assert set(assumed["label"].str.split().str[0]) == {"PSI-25", "PSI-98", "PSI-99"}  # Saffire-III: no O2
+    assert (assumed["p_atm"] == 1.0).all()
+    lit = ev[ev["kind"].str.contains("literature")]
+    assert len(lit) == 5 and (lit["weight"] == LITERATURE_WEIGHT).all()   # Saffire IV-VI only
+    assert not ev["label"].str.contains("target").any()
+    # a candidate exactly on a literature point is only half covered
+    one = recommend_experiments(points, top_n=1, fuel_types=("solid",)).iloc[0]
+    assert 0 < one["coverage"] <= LITERATURE_WEIGHT + 1e-9
+
+
+def test_literature_rows_verified_with_url():
+    lit = build_literature()
+    rows = lit[lit["kind"] == "literature"]
+    assert rows["value_verified"].all() and rows["url"].str.startswith("https://").all()
+    assert not rows["point_id"].str.contains("bass2").any()      # unverifiable BASS-II row removed
+    vi = rows.set_index("point_id").loc["saffire_vi_2"]
+    assert vi["x_o2"] == 0.31 and vi["p_atm"] == round(54.1 / 101.325, 3)

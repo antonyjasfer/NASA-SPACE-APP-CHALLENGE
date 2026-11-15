@@ -13,7 +13,13 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from src.catalog_data import GUIDE, INVESTIGATIONS, LITERATURE_POINTS, MISCONCEPTIONS
+from src.catalog_data import (
+    GUIDE,
+    INVESTIGATIONS,
+    LITERATURE_POINTS,
+    MISCONCEPTIONS,
+    QUALITATIVE_LITERATURE,
+)
 from src.ingest import PROCESSED_DIR, load_clean
 from src.psi_tables import load_all, read_raw
 
@@ -158,14 +164,16 @@ def special_cards() -> list[dict]:
     metrics = json.loads(METRICS_PATH.read_text())["d2law_consistency"]
     comp = metrics["completion_only"]
     allt = metrics["all_tests"]
-    from src.catalog_data import O2_SCALE, P_SCALE
+    from src.catalog_data import SAFFIRE_SOURCE
 
     tables = load_all()
     cf, b2 = tables["PSI-159"].data, tables["PSI-25"].data
     moon = next(p for p in LITERATURE_POINTS if p["point_id"] == "target_moon_34_8_2")
     t_o2, t_p = moon["x_o2"], moon["p_atm"]
-    d = np.hypot((cf["x_o2"] - t_o2) / O2_SCALE, (cf["p_atm"] - t_p) / P_SCALE)
-    near = cf[d <= 1.0]   # within one distance unit of the Moon-base point
+    # CFI-G tests "near Moon-base conditions": within 0.1 atm of the target pressure and O2 >= target - 1 pt
+    near = cf[((cf["p_atm"] - t_p).abs() <= 0.1) & (cf["x_o2"] >= t_o2 - 0.01)]
+    lit = pd.DataFrame(LITERATURE_POINTS)
+    vi = lit[lit["point_id"].str.startswith("saffire_vi_")]
     flex_cite = "Fire-Margin analysis of PSI-69 FLEX table (DOI 10.60555/mbq8-0451)"
     return [
         {"card_id": "flex_disruption_by_o2", "title": "High oxygen turns droplet burns into bursts",
@@ -178,18 +186,21 @@ def special_cards() -> list[dict]:
                                      "and scatter fuel than to burn out quietly. Cells are small and pressure "
                                      "coverage is uneven, so treat this as a strong signal, not a law."),
          "citation": flex_cite, "generated_by": "Claude Code from PSI-69 data"},
-        {"card_id": "pressure_gap", "title": "No droplet or solid test at Moon-base pressure",
+        {"card_id": "pressure_gap", "title": "Where Moon-base fire evidence exists, and where it does not",
          "objective": (f"Check whether real tests reach the {t_o2:.0%} O2 / 8.2 psia ({t_p:.3f} atm) "
                        "habitat atmosphere."),
-         "what_varied": "Pressure coverage per fuel type.",
-         "key_result": (f"Lowest FLEX pressure is {flex['p_atm'].min():.2f} atm, above the {t_p:.3f} atm target. "
-                        f"PSI solid-material tables give no measured pressure and stop at {b2['x_o2'].max():.1%} O2. "
-                        f"Gas flames do reach it: CFI-G ran {len(near)} tests within one distance unit, at O2 "
-                        f"{near['x_o2'].min():.3f}-{near['x_o2'].max():.3f} and {near['p_atm'].min():.2f}-"
-                        f"{near['p_atm'].max():.2f} atm."),
-         "fire_safety_implication": ("Droplet and cabin-solid behaviour at the planned habitat atmosphere is "
-                                     "untested in PSI data: the next experiments should target that corner."),
-         "citation": f"{flex_cite}; PSI-25; PSI-159", "generated_by": "Claude Code from PSI data"},
+         "what_varied": "Fuel type; PSI public data vs verified literature.",
+         "key_result": (f"In PSI's public data, solid materials stop at {b2['x_o2'].max():.1%} O2. Only "
+                        f"{len(vi)} solid samples (Saffire-VI, 2024) burned near Moon-base conditions "
+                        f"({vi['x_o2'].min():.0%}-{vi['x_o2'].max():.0%} O2, ~{vi['p_atm'].mean():.2f} atm): not in "
+                        "PSI, one flight, no partial gravity. Gas flames (CFI-G) were tested at "
+                        f"{near['x_o2'].min():.0%}-{near['x_o2'].max():.0%} O2 / {near['p_atm'].min():.2f} atm; FLEX "
+                        f"droplets reach {flex['x_o2'].max():.0%} O2 but only at >= {flex['p_atm'].min():.2f} atm, "
+                        f"and at O2 >= 25% {hi['disruption_share']:.0%} of FLEX tests ended in Disruption."),
+         "fire_safety_implication": ("Cabin-material and droplet fire behaviour at the planned habitat "
+                                     "atmosphere rests on one literature flight: the next experiments should "
+                                     "target that corner, including partial gravity."),
+         "citation": f"{flex_cite}; PSI-25; PSI-159; {SAFFIRE_SOURCE}", "generated_by": "Claude Code from PSI data"},
         {"card_id": "d2law_validity", "title": "The d-squared law only fits droplets that burn out",
          "objective": "Check burn time against the d-squared law t = d0^2 / K.",
          "what_varied": "Test outcome (Completion vs early end).",
@@ -205,7 +216,8 @@ def special_cards() -> list[dict]:
          "key_result": " ".join(f"({i}) {m}" for i, m in enumerate(MISCONCEPTIONS, 1)),
          "fire_safety_implication": "Research at NASA GRC and in microgravity showed all three are false.",
          "citation": f"{GUIDE}, p. 35", "generated_by": GENERATED_BY},
-    ]
+    ] + [{"objective": NOT_STATED, "what_varied": NOT_STATED, **c,
+          "generated_by": "Claude Code from cited literature (team-verified)"} for c in QUALITATIVE_LITERATURE]
 
 
 def word_count(text: str) -> int:

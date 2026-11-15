@@ -229,35 +229,64 @@ MISCONCEPTIONS = [
     "represent a very conservative approach to fire safety.",
 ]
 
-# Literature points: never PSI data, never training data. `value_verified` is False when the number
-# comes from the project brief (CLAUDE.md) and the primary text could not be read in this session.
+# Literature points: never PSI data, never training data. Values verified by the team against the
+# cited primary sources (2026-11-15). kPa -> atm: / 101.325.
+KPA_PER_ATM = 101.325
+SAFFIRE_SOURCE = ("Urban et al., Preliminary Results from the Saffire VI Experiment, ICES-2024-365; "
+                  "test matrix in NTRS 20240007488 presentation")
+SAFFIRE_URL = ("https://ntrs.nasa.gov/api/citations/20240007488/downloads/"
+               "Saffire%20ICES%202024%20Saffire%20presentation072124small.pdf")
+_SAFFIRE_MATRIX = [  # (run, material, kPa, O2 mol%, flow cm/s); all concurrent flow
+    ("IV-1", "SIBAL cloth", 100.0, 22.0, 20),
+    ("V-2", "cotton jersey", 70.7, 26.2, 20),
+    ("VI-2", "SIBAL cloth", 54.1, 31.0, 20),
+    ("VI-3", "two-sided PMMA", 54.6, 30.3, 20),
+    ("VI-4", "one-sided PMMA", 55.2, 28.8, 20),
+]
 LITERATURE_POINTS: list[dict] = [
-    dict(point_id="bass2_concurrent_ug", kind="literature", label="BASS-II steady concurrent spread (microgravity)",
-         fuel_type="solid", x_o2=0.136, p_atm=None, p_assumed_atm=1.0, flow_cms=None,
-         note="Microgravity concurrent-flow spread at 13.6% O2 vs 1-g limit 16%: oxygen margin -2.4 points.",
-         citation="Candidate source: 'Flammability Limits from BASS-II Testing in Microgravity Compared to "
-                  "Normal Gravity Limits', ICES 2019 (Texas Tech repository).",
-         value_verified=False),
-    dict(point_id="bass2_blowoff_1g", kind="literature", label="BASS-II material 1-g limit (normal gravity)",
-         fuel_type="solid", x_o2=0.16, p_atm=None, p_assumed_atm=1.0, flow_cms=None,
-         note="Normal-gravity comparison point for the BASS-II microgravity limit.",
-         citation="Same candidate source as bass2_concurrent_ug.", value_verified=False),
-    dict(point_id="saffire6_sibal", kind="literature", label="Saffire-VI SIBAL fabric burn",
-         fuel_type="solid", x_o2=0.30, p_atm=0.54, p_assumed_atm=None, flow_cms=None,
-         note="Large-scale fabric fire in an elevated-O2, reduced-pressure atmosphere (Cygnus).",
-         citation="NASA Task Book (per project brief). Candidate: 'Preliminary Results from the Saffire VI "
-                  "Experiment', ICES-2024-365, NTRS 20240002981. NASA describes the final run as higher O2 "
-                  "and lower pressure; exact values not confirmed here.",
-         value_verified=False),
+    dict(point_id=f"saffire_{run.lower().replace('-', '_')}", kind="literature",
+         label=f"Saffire {run} {material}", material=material, fuel_type="solid",
+         x_o2=round(o2 / 100, 3), p_atm=round(kpa / KPA_PER_ATM, 3), p_kpa=kpa, p_assumed_atm=None,
+         flow_cms=float(flow), flow_direction="concurrent",
+         note=f"Large-scale spacecraft fire test run {run} (uncrewed Cygnus, not in PSI).",
+         citation=SAFFIRE_SOURCE, url=SAFFIRE_URL, value_verified=True)
+    for run, material, kpa, o2, flow in _SAFFIRE_MATRIX
+] + [
+    dict(point_id="pmma_rod_opposed_ug", kind="literature",
+         label="PMMA rod opposed-flow spread sustained at 17% O2 (micro-g)", material="PMMA rod",
+         fuel_type="solid", x_o2=0.17, p_atm=None, p_kpa=None, p_assumed_atm=1.0, flow_cms=None,
+         flow_direction="opposed",
+         note="Sustained in micro-g at 17% O2 vs 18% in 1-g (-1 point oxygen margin). Pressure not "
+              "stated here: 1 atm (ISS cabin) assumed for plotting only.",
+         citation="Fernandez-Pello et al., Scientific Reports (2017)",
+         url="https://doi.org/10.1038/s41598-017-18398-4", value_verified=True),
+    dict(point_id="pmma_rod_opposed_1g", kind="literature",
+         label="PMMA rod opposed-flow limit in 1-g (18% O2)", material="PMMA rod",
+         fuel_type="solid", x_o2=0.18, p_atm=None, p_kpa=None, p_assumed_atm=1.0, flow_cms=None,
+         flow_direction="opposed", note="Normal-gravity comparison for pmma_rod_opposed_ug.",
+         citation="Fernandez-Pello et al., Scientific Reports (2017)",
+         url="https://doi.org/10.1038/s41598-017-18398-4", value_verified=True),
     dict(point_id="target_moon_34_8_2", kind="exploration_target", label="Exploration atmosphere 34% O2 / 8.2 psia",
-         fuel_type=None, x_o2=0.34, p_atm=round(8.2 * 0.0680460, 3), p_assumed_atm=None, flow_cms=None,
+         material=None, fuel_type=None, x_o2=0.34, p_atm=round(8.2 * 0.0680460, 3), p_kpa=None,
+         p_assumed_atm=None, flow_cms=None, flow_direction=None,
          note="Lunar/Mars habitat atmosphere (JSC 29353D: min 33.7% O2 at 8.2 psia).",
-         citation="NASA/TM-2013-217377 (NTRS record: 8.0 psia/32% O2 later revised to 8.2 psia/34% O2); "
-                  "JSC 29353D as cited in the project brief (not verified here).",
-         value_verified=True),
-    dict(point_id="target_challenge_30_10_2", kind="exploration_target", label="Challenge target >=30% O2 at <=10.2 psi",
-         fuel_type=None, x_o2=0.30, p_atm=round(10.2 * 0.0680460, 3), p_assumed_atm=None, flow_cms=None,
+         citation="NASA/TM-2013-217377 (8.0 psia/32% O2 later revised to 8.2 psia/34% O2); JSC 29353D",
+         url=None, value_verified=True),
+    dict(point_id="target_challenge_30_10_2", kind="exploration_target",
+         label="Challenge target >=30% O2 at <=10.2 psi", material=None, fuel_type=None, x_o2=0.30,
+         p_atm=round(10.2 * 0.0680460, 3), p_kpa=None, p_assumed_atm=None, flow_cms=None, flow_direction=None,
          note="Upper-pressure / lower-O2 corner of the challenge's exploration atmosphere.",
-         citation="NASA Space Apps 2026 'Flame in Freefall' challenge page (as quoted in the project brief).",
-         value_verified=False),
+         citation="NASA Space Apps 2026 'Flame in Freefall' challenge page (as quoted in CLAUDE.md)",
+         url=None, value_verified=False),
+]
+
+# Qualitative literature (no plotted number), shown as an insight card.
+QUALITATIVE_LITERATURE: list[dict] = [
+    dict(card_id="lit_bass2_limits", title="BASS-II: lower-oxygen burning in micro-g",
+         key_result="Materials burn at lower oxygen concentrations in microgravity than in normal gravity.",
+         fire_safety_implication="Shutting down ventilation may not extinguish flames in high-oxygen, "
+                                 "low-pressure exploration atmospheres.",
+         citation="Olson et al., ICES 2019, 'Flammability Limits from BASS-II Testing in Microgravity "
+                  "Compared to Normal Gravity Limits'",
+         url="https://ttu-ir.tdl.org/items/1922ad9f-ef4c-4f52-96a4-980c23debe5e"),
 ]

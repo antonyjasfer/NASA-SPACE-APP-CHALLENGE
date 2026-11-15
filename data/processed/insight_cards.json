@@ -275,12 +275,12 @@
   },
   {
     "card_id": "pressure_gap",
-    "title": "No droplet or solid test at Moon-base pressure",
+    "title": "Where Moon-base fire evidence exists, and where it does not",
     "objective": "Check whether real tests reach the 34% O2 / 8.2 psia (0.558 atm) habitat atmosphere.",
-    "what_varied": "Pressure coverage per fuel type.",
-    "key_result": "Lowest FLEX pressure is 0.69 atm, above the 0.558 atm target. PSI solid-material tables give no measured pressure and stop at 22.2% O2. Gas flames do reach it: CFI-G ran 17 tests within one distance unit, at O2 0.332-0.385 and 0.50-0.50 atm.",
-    "fire_safety_implication": "Droplet and cabin-solid behaviour at the planned habitat atmosphere is untested in PSI data: the next experiments should target that corner.",
-    "citation": "Fire-Margin analysis of PSI-69 FLEX table (DOI 10.60555/mbq8-0451); PSI-25; PSI-159",
+    "what_varied": "Fuel type; PSI public data vs verified literature.",
+    "key_result": "In PSI's public data, solid materials stop at 22.2% O2. Only 3 solid samples (Saffire-VI, 2024) burned near Moon-base conditions (29%-31% O2, ~0.54 atm): not in PSI, one flight, no partial gravity. Gas flames (CFI-G) were tested at 33%-39% O2 / 0.50 atm; FLEX droplets reach 34% O2 but only at >= 0.69 atm, and at O2 >= 25% 80% of FLEX tests ended in Disruption.",
+    "fire_safety_implication": "Cabin-material and droplet fire behaviour at the planned habitat atmosphere rests on one literature flight: the next experiments should target that corner, including partial gravity.",
+    "citation": "Fire-Margin analysis of PSI-69 FLEX table (DOI 10.60555/mbq8-0451); PSI-25; PSI-159; Urban et al., Preliminary Results from the Saffire VI Experiment, ICES-2024-365; test matrix in NTRS 20240007488 presentation",
     "generated_by": "Claude Code from PSI data"
   },
   {
@@ -302,5 +302,16 @@
     "fire_safety_implication": "Research at NASA GRC and in microgravity showed all three are false.",
     "citation": "NASA ISS Researcher's Guide: Combustion Science (NP-2015-10-034-JSC), p. 35",
     "generated_by": "Claude Code from NASA PDF"
+  },
+  {
+    "objective": "Not stated in the available sources.",
+    "what_varied": "Not stated in the available sources.",
+    "card_id": "lit_bass2_limits",
+    "title": "BASS-II: lower-oxygen burning in micro-g",
+    "key_result": "Materials burn at lower oxygen concentrations in microgravity than in normal gravity.",
+    "fire_safety_implication": "Shutting down ventilation may not extinguish flames in high-oxygen, low-pressure exploration atmospheres.",
+    "citation": "Olson et al., ICES 2019, 'Flammability Limits from BASS-II Testing in Microgravity Compared to Normal Gravity Limits'",
+    "url": "https://ttu-ir.tdl.org/items/1922ad9f-ef4c-4f52-96a4-980c23debe5e",
+    "generated_by": "Claude Code from cited literature (team-verified)"
   }
 ]

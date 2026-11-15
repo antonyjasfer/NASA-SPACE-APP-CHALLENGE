@@ -7,10 +7,12 @@ summarizes, ranks and interprets NASA microgravity combustion investigations (PS
 
 ## Headline insight (the pitch)
 NASA plans lunar/Martian habitats at ~34% O2 / 8.2 psia (JSC 29353D: min 33.7% O2 at 8.2 psia;
-challenge page: >=30% O2 at <=10.2 psi). FLEX droplets DID reach 30-34% O2 at ~0.70 atm (~10.4 psia),
-close to the Moon-base atmosphere — and there the dominant outcome is Disruption, not quiet burn-out.
-But cabin-relevant SOLID materials in PSI (BASS/BASS-II) stop at ~22% O2 (Saffire-VI 30% O2 is literature,
-outside PSI). Show exactly where evidence exists, where it is missing, and which experiment NASA should run next.
+challenge page: >=30% O2 at <=10.2 psi). In PSI's public data, solid materials stop at 22.2% O2.
+Only 3 solid samples (Saffire-VI, 2024) have burned near Moon-base conditions (29-31% O2, ~0.54 atm):
+not in PSI, one flight, no partial gravity. Gas flames (CFI-G) were tested at 33-39% O2 / 0.50 atm;
+FLEX droplets reach 34% O2 but only at >= 0.69 atm, and at O2 >= 25% 80% of FLEX tests ended in
+Disruption. Show exactly where evidence exists, where it is missing, and which experiment NASA should
+run next.
 
 ## Stack
 Python 3.11, pandas, numpy, scikit-learn, scipy, plotly, streamlit, joblib, pypdf, openai (SDK only).
@@ -71,8 +73,12 @@ tests/             pytest
   pressure. Gas flames reach 0.40 (normal) / 0.85 (inverse) O2 and down to 0.43 atm; FLEX droplets 0.34 O2,
   min 0.69 atm. So: gas and droplet data touch Moon-base O2; cabin solids do not.
 - BASS/BASS-II tables have NO spread-rate column. Don't invent one; use them for the coverage map only.
-- Literature values (e.g., Saffire-VI SIBAL at 30% O2, 0.54 atm; BASS-II steady spread at 13.6% O2 vs
-  1-g blowoff 16%) are plotted as clearly labelled "literature points", with citation, never mixed into training data.
+- Literature values are plotted as clearly labelled "literature points", with citation + URL, never mixed into
+  training data. Team-verified (2026-11-15): Saffire IV-1/V-2/VI-2/VI-3/VI-4 test matrix (Urban et al.,
+  ICES-2024-365; NTRS 20240007488) and PMMA rods 17% (micro-g) vs 18% (1-g) O2 (Fernandez-Pello et al.,
+  Sci. Rep. 2017, doi 10.1038/s41598-017-18398-4). The BASS-II "13.6% vs 16%" number is unverifiable: removed.
+  Recommender evidence weights: PSI measured 1.0; PSI with assumed 1 atm (BASS-II, Saffire I-II) 1.0, flagged;
+  verified literature 0.5. Ranking: planned / facility-capability ranges are not evidence (score 0).
 - Every number shown in the app traces to a PSI ID / DOI / paper.
 
 ## Modelling rules
